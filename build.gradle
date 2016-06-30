@@ -10,7 +10,7 @@ subprojects {
 	apply plugin: 'maven'
 	apply plugin: 'eclipse'
 	
-	group = 'com.blackducksoftware.protex.sdkclient'
+	group = 'com.blackducksoftware.codecenter.sdkclient'
 	version = codeCenterVersion
 
 	sourceCompatibility = 1.7
