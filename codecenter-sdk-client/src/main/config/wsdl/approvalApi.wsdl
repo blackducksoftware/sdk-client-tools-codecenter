@@ -1,0 +1,1971 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ApprovalApiService" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approvalApi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:approvalApi" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:complexType abstract="true" name="userNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="userNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:userNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="userIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:userNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="userPageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:userColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="user">
+    <xs:sequence>
+      <xs:element name="active" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="department" type="xs:string"/>
+      <xs:element minOccurs="0" name="email" type="xs:string"/>
+      <xs:element minOccurs="0" name="firstName" type="xs:string"/>
+      <xs:element minOccurs="0" name="id" type="tns:userIdToken"/>
+      <xs:element minOccurs="0" name="jobTitle" type="xs:string"/>
+      <xs:element minOccurs="0" name="lastName" type="xs:string"/>
+      <xs:element minOccurs="0" name="location" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="tns:userNameToken"/>
+      <xs:element minOccurs="0" name="phone" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:simpleType name="userColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="USER_NAME"/>
+      <xs:enumeration value="USER_FIRST_NAME"/>
+      <xs:enumeration value="USER_LAST_NAME"/>
+      <xs:enumeration value="USER_JOB_TITLE"/>
+      <xs:enumeration value="USER_EMAIL"/>
+      <xs:enumeration value="USER_LOCATION"/>
+      <xs:enumeration value="USER_DEPARTMENT"/>
+      <xs:enumeration value="USER_ACTIVE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault">
+  <xs:element name="sdkFaultDetails" type="tns:sdkFaultDetails"/>
+  <xs:complexType name="sdkFaultDetails">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="causedByErrors" nillable="true" type="tns:sdkError"/>
+      <xs:element minOccurs="0" name="errorCode" type="tns:errorCode"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType final="extension restriction" name="sdkError">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:simpleType name="errorCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NO_COMPONENT_ID_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_NAMEVERSION_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENT_ID_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENT_NAME_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_ID_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_NAME_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_RELEASE_ID_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_RELEASE_NAMEVERSION_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_ID_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_NAMEVERSION_FOUND"/>
+      <xs:enumeration value="NO_KB_COMPONENT_FOUND"/>
+      <xs:enumeration value="NO_APPLICATION_ID_FOUND"/>
+      <xs:enumeration value="NO_APPLICATION_NAMEVERISON_FOUND"/>
+      <xs:enumeration value="APPLICATION_CREATE_NONAME"/>
+      <xs:enumeration value="APPLICATION_CREATE_NOVERSION"/>
+      <xs:enumeration value="APPLICATION_UPDATE_NONAME"/>
+      <xs:enumeration value="APPLICATION_UPDATE_NOVERSION"/>
+      <xs:enumeration value="APPLICATION_CREATE_INVALID_ROLE"/>
+      <xs:enumeration value="APPLICATION_UPDATE_INVALID_ROLE"/>
+      <xs:enumeration value="APPLICATION_UPDATE_OWNER_ROLE_REQUIRED"/>
+      <xs:enumeration value="DATE_CANNOT_BE_NULL"/>
+      <xs:enumeration value="NO_USER_NAME_FOUND"/>
+      <xs:enumeration value="NO_USER_ID_FOUND"/>
+      <xs:enumeration value="NO_USER_ID_OR_USERNAME_FOUND"/>
+      <xs:enumeration value="APPLICATION_NAME_TOO_LONG"/>
+      <xs:enumeration value="NO_WORKFLOW_NAME_FOUND"/>
+      <xs:enumeration value="NO_WORKFLOW_ID_FOUND"/>
+      <xs:enumeration value="NO_ROLE_NAME_FOUND"/>
+      <xs:enumeration value="NO_ROLE_ID_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTE_NAME_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTE_VALUE_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTE_ID_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTEGROUP_NAME_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTEGROUP_ID_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_ATTRIBUTEGROUP_NAME_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_ATTRIBUTEGROUP_ID_FOUND"/>
+      <xs:enumeration value="NO_REQUEST_FOUND"/>
+      <xs:enumeration value="NO_REQUEST_ID_FOUND"/>
+      <xs:enumeration value="NO_REQUEST_LICENSE_FOUND"/>
+      <xs:enumeration value="METHOD_NOT_YET_IMPLEMENTED"/>
+      <xs:enumeration value="INVALID_CREDENTIALS"/>
+      <xs:enumeration value="INSUFFICIENT_PERMISSION"/>
+      <xs:enumeration value="SDK_LICENSE_UNAVAILABLE"/>
+      <xs:enumeration value="SDK_LICENSE_EXPIRED"/>
+      <xs:enumeration value="UNKNOWN_ERROR"/>
+      <xs:enumeration value="GENERIC_ERROR"/>
+      <xs:enumeration value="TASK_NOT_PRESENT"/>
+      <xs:enumeration value="NO_PERMISSION_UPDATE_REQUEST_LICENSE"/>
+      <xs:enumeration value="TODO_CONVERT_EXCEPTION"/>
+      <xs:enumeration value="INVALID_SORT_KEY"/>
+      <xs:enumeration value="UNEXPECTED_EXCEPTION_ERROR"/>
+      <xs:enumeration value="CLIENT_WRITING_ERROR"/>
+      <xs:enumeration value="PAGE_FILTER_NULL"/>
+      <xs:enumeration value="PAGE_FILTER_INVALID_FIRSTROW"/>
+      <xs:enumeration value="PAGE_FILTER_INVALID_LASTROW"/>
+      <xs:enumeration value="PAGE_FILTER_INVALID_RANGE"/>
+      <xs:enumeration value="PROTEX_SERVER_USER_ASSOCIATED"/>
+      <xs:enumeration value="PROTEX_SERVER_CREDENTIALS_ASSOCIATED"/>
+      <xs:enumeration value="APPROVAL_RULE_NOT_VALID_ATTRIBUTE"/>
+      <xs:enumeration value="APPROVAL_RULE_NOT_VALID_ATTRIBUTE_TYPE"/>
+      <xs:enumeration value="APPROVAL_RULE_NOT_VALID"/>
+      <xs:enumeration value="NO_LICENSE_ID_FOUND"/>
+      <xs:enumeration value="NO_LICENSE_NAME_FOUND"/>
+      <xs:enumeration value="NO_SERVER_ID_FOUND"/>
+      <xs:enumeration value="NO_SERVER_NAME_FOUND"/>
+      <xs:enumeration value="NO_PROTEX_PROJECT_ASSOCIATED"/>
+      <xs:enumeration value="NO_PROJECT_ID_FOUND"/>
+      <xs:enumeration value="NO_PROJECT_NAME_FOUND"/>
+      <xs:enumeration value="NO_CREDENTIALS_FOUND"/>
+      <xs:enumeration value="PROTEX_SERVER_NOT_REACHABLE"/>
+      <xs:enumeration value="NO_PROTEX_PROJECT_FOUND"/>
+      <xs:enumeration value="PROJECT_ALREADY_ASSOCIATED"/>
+      <xs:enumeration value="APPLICATION_ALREADY_ASSOCIATED"/>
+      <xs:enumeration value="PROTEX_SDK_FAULT"/>
+      <xs:enumeration value="WEBSERVICE_EXCEPTION"/>
+      <xs:enumeration value="NO_APPLICATION_WITH_ASSOCIATED_PROTEX_PROJECT_FOUND"/>
+      <xs:enumeration value="APPLICATION_NOT_ASSOCIATED_WITH_PROTEX_PROJECT"/>
+      <xs:enumeration value="NO_APPLICATION_ASSOCIATED_TO_PROTEX_PROJECT"/>
+      <xs:enumeration value="NO_PROTEX_SERVER_ASSOCIATED_WITH_APPLICATION_FOUND"/>
+      <xs:enumeration value="INVALID_PROTEX_CREDENTIALS_FOR_SUB_PROJECTS_FOUND"/>
+      <xs:enumeration value="APPLICATIN_NO_VALIDATION"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_ID_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_NAME_FOUND"/>
+      <xs:enumeration value="NO_TASK_DEFINITION_ID_FOUND"/>
+      <xs:enumeration value="NO_TASK_DEFINITION_NAME_FOUND"/>
+      <xs:enumeration value="INVALID_APPLICATION_STATIC_FIELD_ENUM_FOUND"/>
+      <xs:enumeration value="INVALID_COMPONENT_STATIC_FIELD_ENUM_FOUND"/>
+      <xs:enumeration value="INVALID_COMPONENTUSE_STATIC_FIELD_ENUM_FOUND"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_NAME_VERSION"/>
+      <xs:enumeration value="NO_EMPTY_COMPONENT_NAME_VERSION"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_ATTACHMENT_ID"/>
+      <xs:enumeration value="NO_EMPTY_COMPONENT_ATTACHMENT_ID"/>
+      <xs:enumeration value="NO_NULL_APPROVAL_STATUS"/>
+      <xs:enumeration value="NO_EMPTY_TRANSITION_NAME"/>
+      <xs:enumeration value="NO_GLOBAL_APPROVAL_CRITERIA_ID_FOUND"/>
+      <xs:enumeration value="NO_GLOBAL_APPROVAL_CRITERIA_FOUND_FOR_COMPONENT_APPROVAL"/>
+      <xs:enumeration value="NO_TANSITION_NAME_FOUND"/>
+      <xs:enumeration value="NO_NULL_TASKINSTANCE_ID"/>
+      <xs:enumeration value="NO_NULL_PASSWORD"/>
+      <xs:enumeration value="NO_EMPTY_PASSWORD"/>
+      <xs:enumeration value="NO_NULL_USER_NAME"/>
+      <xs:enumeration value="NO_NULL_NAME_FOR_CLONE_APPLICATION"/>
+      <xs:enumeration value="NO_NULL_VERSION_FOR_CLONE_APPLICATION"/>
+      <xs:enumeration value="NO_NULL_APPROVAL_NAME"/>
+      <xs:enumeration value="ERROR_READING_INPUT_FILE_STREAM"/>
+      <xs:enumeration value="NO_BOARD_ID_FOUND"/>
+      <xs:enumeration value="NO_BOARD_NAME_FOUND"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_VERSION"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_NAME"/>
+      <xs:enumeration value="NO_NULL_APPLICATION_VERSION"/>
+      <xs:enumeration value="NO_NULL_APPLICATION_NAME"/>
+      <xs:enumeration value="NO_LATEST_WORKFLOW_VERSION"/>
+      <xs:enumeration value="NO_ATTACHMENT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="APPLICATION_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="APPLICATION_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="APPROVAL_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="COMPONENT_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="COMPONENT_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="COMPONENT_ATTACHMENT_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUEST_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUEST_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUEST_ALREADY_SUBMITTED"/>
+      <xs:enumeration value="USER_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="USER_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUIRED_ATTRIBUTE_ID_NOT_FOUND"/>
+      <xs:enumeration value="REQUIRED_ATTRIBUTE_VALUE_EMPTY"/>
+      <xs:enumeration value="NO_VALID_ATTRIBUTE_GROUP_TYPE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_CRITERIA_ID_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_CRITERIA_FOUND_FOR_REQUEST_APPROVAL"/>
+      <xs:enumeration value="NO_NULL_TASK_INSTANCE_ID"/>
+      <xs:enumeration value="NO_ATTACHMENT_FOUND_WITH_ID"/>
+      <xs:enumeration value="ATTACHMENT_IO_ERROR"/>
+      <xs:enumeration value="ATTACHMENT_SQL_ERROR"/>
+      <xs:enumeration value="NOT_A_DEVELOPER_USER"/>
+      <xs:enumeration value="NO_APPEAL_ACTION_FOUND_FOR_REQUEST"/>
+      <xs:enumeration value="ATTRIBUTE_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="ATTRIBUTE_NAME_FOUND_WITH_NULL"/>
+      <xs:enumeration value="ATTRIBUTE_TYPE_FOUND_WITH_NULL"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_NAME_FOUND_NULL"/>
+      <xs:enumeration value="NO_VULNERABILITY_STATUS_ID_FOUND"/>
+      <xs:enumeration value="NO_VULNERABILITY_ID_FOUND"/>
+      <xs:enumeration value="NO_VULNERABILITY_STATUS_NAME_FOUND"/>
+      <xs:enumeration value="NO_VULNERABILITY_NAME_FOUND"/>
+      <xs:enumeration value="APPLICATION_ATTACHMENT_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="PROTEX_SUB_PROJECT_FOUND"/>
+      <xs:enumeration value="ROLE_NOT_ASSIGNED_FOR_IMPORTING_APPLICATION"/>
+      <xs:enumeration value="NOT_AN_APPLICATION_ROLE"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_NAME_FOUND_NULL"/>
+      <xs:enumeration value="NOT_A_VALID_ROLE_ASSIGNMENT_FOR_APPLICATION"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_UPDATE_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_TYPE_NULL"/>
+      <xs:enumeration value="ATTACHMENT_FILE_SIZE_ZERO"/>
+      <xs:enumeration value="ATTACHMENT_FILE_SIZE_MAX"/>
+      <xs:enumeration value="NOT_A_VALID_APPROVER_FOR_APPROVAL"/>
+      <xs:enumeration value="GLOBAL_WORKFLOW_CAN_NOT_BE_USED_IN_APPLICATION"/>
+      <xs:enumeration value="KNOWLEDGE_BASE_VERSION_NOT_SUPPORTED_FOR_IMPORT"/>
+      <xs:enumeration value="CAN_NOT_IMPORT_VALIDATE_WHEN_UNRESOLVED_CONFLICTS"/>
+      <xs:enumeration value="VALIDATE_UNSUPPORTED_SERVER_UNSYNCHRONIZED"/>
+      <xs:enumeration value="KNOWLEDGE_BASE_VERSION_NOT_SUPPORTED_FOR_VALIDATE"/>
+      <xs:enumeration value="APPLICATION_NAME_ALREADY_EXIST"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_NAME_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_VERSION_FOUND"/>
+      <xs:enumeration value="CAN_NOT_ADD_USER_TO_LOCKED_APPLICATION_TEAM"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_ADDED_IN_APPLICATION_TEAM"/>
+      <xs:enumeration value="CAN_NOT_REMOVE_USER_TO_LOCKED_APPLICATION_TEAM"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_OWNER_OF_IMPORT_APPLICATION"/>
+      <xs:enumeration value="INVALID_COMPONENTUSE_USAGE_VALUE"/>
+      <xs:enumeration value="ATTRIBUTE_OPTION_VALUE_FOUND_WITH_NULL"/>
+      <xs:enumeration value="NO_COMMENT_FOUND_FOR_SEND_BACK"/>
+      <xs:enumeration value="APPLICATION_NAME_VERSION_ALREADY_EXIST"/>
+      <xs:enumeration value="CANNOT_DELETE_UPDATE_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CANNOT_DELETE_USER_IF_APPLICATION_OWNER"/>
+      <xs:enumeration value="COMPONENT_ALREADY_EXISTS"/>
+      <xs:enumeration value="COMPONENT_ALREADY_EXISTS_IN_REQUEST"/>
+      <xs:enumeration value="CANNOT_DELETE_APPLICATION_PUBLISHED_AS_COMPONENT"/>
+      <xs:enumeration value="ATTRIBUTE_NAME_ALREADY_EXISTS"/>
+      <xs:enumeration value="ATTRIBUTE_VALUES_CANNOT_BE_EMPTY"/>
+      <xs:enumeration value="ATTRIBUTE_FORMAT_VALUE_FIELD_DATE"/>
+      <xs:enumeration value="ATTRIBUTE_FORMAT_FIELD_NUMBER"/>
+      <xs:enumeration value="ATTRIBUTE_FORMAT_FIELD_URL"/>
+      <xs:enumeration value="USER_ALREADY_EXIST"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_SET_AS_OWNER_FOR_APPLICATION"/>
+      <xs:enumeration value="COMPONENT_WITH_SAME_NAME_VER_IN_KB"/>
+      <xs:enumeration value="COMPONENT_WITH_SAME_NAME_IN_KB"/>
+      <xs:enumeration value="COMPONENT_IN_USE"/>
+      <xs:enumeration value="ATTRIBUTE_ASSOCIATION_EXISTS"/>
+      <xs:enumeration value="ATTRIBUTE_ASSOCIATION_EXISTS_AND_IN_USE"/>
+      <xs:enumeration value="WORKFLOW_CLONE_APPLICATION_WORKFLOW_NOEXIST"/>
+      <xs:enumeration value="DUPLICATE_OBJECT_CANNOT_BE_CREATED_UPDATED"/>
+      <xs:enumeration value="CAN_NOT_CREATE_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_UPDATE_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_DELETE_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="USER_NAME_CAN_NOT_EMPTY_OR_WHITESPACE"/>
+      <xs:enumeration value="USER_EMAIL_ADDRESS_NOT_VALID"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_ALREADY_EXISTS"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_CONFIGURATION_ERROR"/>
+      <xs:enumeration value="REQUEST_WITH_SEND_BACK_REQUESTER_STATUS"/>
+      <xs:enumeration value="REQUEST_WITH_SEND_BACK_REQUESTER_FOR_APPLICATION_STATUS"/>
+      <xs:enumeration value="CAN_NOT_RESET_WORKFLOW_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_ADD_DEVELOPERS_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_REMOVE_DEVELOPERS_APPLICATION_LOCKED"/>
+      <xs:enumeration value="REQUEST_COMPLETION_FAILURE"/>
+      <xs:enumeration value="REQUEST_WITH_SEND_BACK_REQUESTER_FOR_APPLICATIONREQUEST_STATUS"/>
+      <xs:enumeration value="COMPONENT_TYPE_NOT_VALID"/>
+      <xs:enumeration value="COMPONENT_ADDITIONAL_INFORMATION_NOT_VALID"/>
+      <xs:enumeration value="REQUEST_NOT_IN_PENDING_STATE"/>
+      <xs:enumeration value="NO_REQUEST_FOUND_FOR_COMPONENT"/>
+      <xs:enumeration value="PREVIOUS_NODE_REJECTED"/>
+      <xs:enumeration value="NO_EXTERNAL_NAMESPACE_REQUEST"/>
+      <xs:enumeration value="EXTERNAL_NAMESPACE_NAME_TOO_LONG"/>
+      <xs:enumeration value="DUPLICATE_EXTERNAL_NAMESPACE_KEY"/>
+      <xs:enumeration value="NO_EXTERNAL_NAMESPACE_UPDATE_REQUEST"/>
+      <xs:enumeration value="EXTERNAL_NAMESPACE_NOT_FOUND"/>
+      <xs:enumeration value="NO_EXTERNAL_NAMESPACE_KEY"/>
+      <xs:enumeration value="NO_EXTERNAL_ID_INFO"/>
+      <xs:enumeration value="NO_EXTERNAL_ID"/>
+      <xs:enumeration value="NO_KB_RELEASE_ID"/>
+      <xs:enumeration value="EXTERNAL_ID_MAPPING_FOR_OBJECT_NOT_FOUND"/>
+      <xs:enumeration value="EXTERNAL_ID_MAPPING_FOR_EXTERNAL_ID_NOT_FOUND"/>
+      <xs:enumeration value="EXTERNAL_NAMESPACE_NOTNULL_OR_EMPTY_NAME_OR_NAMESPACE"/>
+      <xs:enumeration value="NO_CODE_CENTER_OBJECT_ID"/>
+      <xs:enumeration value="NO_CODE_CENTER_OBJECT_KEY"/>
+      <xs:enumeration value="DUPLICATE_EXTERNAL_ID_MAPPING"/>
+      <xs:enumeration value="NO_CODE_CENTER_OBJECT_TYPE"/>
+      <xs:enumeration value="CONFLICTING_CODE_CENTER_OBJECT_TYPES"/>
+      <xs:enumeration value="NO_EXTERNAL_ID_MAPPING"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_NAME_ALREADY_EXISTS"/>
+      <xs:enumeration value="SORT_COLUMN_NOT_SUPPORTED"/>
+      <xs:enumeration value="SETTINGS_RESCHEDULE_ALREADY_RUNNING"/>
+      <xs:enumeration value="SETTINGS_RESCHEDULE_STOPPED"/>
+      <xs:enumeration value="DECLARED_LICENSE_CANNOT_BE_MORE_THAN_MAX_LENGH"/>
+      <xs:enumeration value="ATTRIBUTE_ID_OR_NAME_CAN_NOT_NULL"/>
+      <xs:enumeration value="APPROVER_SELECT_AT_REQUEST_TIME_IS_NOT_ENABLED"/>
+      <xs:enumeration value="APPROVER_NOT_AVAILABLE_FOR_ALL_APPROVAL_SELECT_AT_REQUEST_TIME"/>
+      <xs:enumeration value="VALIDATION_APPROVAL_NOT_IN_WF_OR_NO_REQUEST_APPROVER_SELECTION_OPTION"/>
+      <xs:enumeration value="CAN_NOT_CREATE_COMPONENT_WITH_NAME_VERSION_MIMATCH_FOR_RELEASE"/>
+      <xs:enumeration value="CAN_NOT_CREATE_COMPONENT_WITH_NAME_MISMATCH_FORGENERIC"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_USED"/>
+      <xs:enumeration value="REQUEST_NOT_SUBMITTED"/>
+      <xs:enumeration value="APPLICATION_LOCKED"/>
+      <xs:enumeration value="NOT_VALID_LIST_OF_ROLES"/>
+      <xs:enumeration value="USER_NAME_ID_CAN_NOT_EMPTY_OR_WHITESPACE"/>
+      <xs:enumeration value="BOARD_NAME_ID_CAN_NOT_EMPTY"/>
+      <xs:enumeration value="USER_ROLE_ASSIGNMENT_NULL"/>
+      <xs:enumeration value="INVALID_BOARD_ROLE"/>
+      <xs:enumeration value="INVALID_USER_ROLE"/>
+      <xs:enumeration value="INVALID_OVERALL_ROLE"/>
+      <xs:enumeration value="NO_LDAP_AUTHENTICATION_TYPE"/>
+      <xs:enumeration value="LDAP_GROUP_NAME_ID_CAN_NOT_EMPTY"/>
+      <xs:enumeration value="NOT_VALID_LIST_OF_LDAP_GROUP_ROLES"/>
+      <xs:enumeration value="LDAP_GROUP_NOT_FOUND"/>
+      <xs:enumeration value="NO_LDAP_GROUPROLE_FOR_OVERALL"/>
+      <xs:enumeration value="NO_LDAP_GROUPROLE_FOR_BOARD"/>
+      <xs:enumeration value="NO_LDAP_GROUPROLE_FOR_APPLICATION"/>
+      <xs:enumeration value="REQUEST_PREVIOUS_NODE_INCOMPLETE"/>
+      <xs:enumeration value="NO_NODE_ID_FOUND"/>
+      <xs:enumeration value="INVALID_DECISION_NODE_ID"/>
+      <xs:enumeration value="INVALID_DECISION_NODE_NAME"/>
+      <xs:enumeration value="NO_VALID_WORKFLOW"/>
+      <xs:enumeration value="NO_DATA_FOUND"/>
+      <xs:enumeration value="NOT_RELEASE_COMPONENT"/>
+      <xs:enumeration value="RELEASEID_CAN_NOT_NULL"/>
+      <xs:enumeration value="LICENSEORFAMILYID_CAN_NOT_NULL"/>
+      <xs:enumeration value="PAGEFILTER_CAN_NOT_NULL"/>
+      <xs:enumeration value="RELEASE_ID_AND_SCAN_ID_CAN_NOT_NULL"/>
+      <xs:enumeration value="PAGENO_AND_PAGESIZE_CAN_NOT_NULL"/>
+      <xs:enumeration value="FAMILY_ID_NULL"/>
+      <xs:enumeration value="LICENSE_ID_NULL"/>
+      <xs:enumeration value="FILEID_NOT_NULL"/>
+      <xs:enumeration value="FILEID_AND_SCAN_ID_NOT_NULL"/>
+      <xs:enumeration value="NOT_FOUND_EXCEPTION"/>
+      <xs:enumeration value="NO_RELEASE_ID_NULL"/>
+      <xs:enumeration value="AUTHENTICATION_FAILED_EXCEPTION"/>
+      <xs:enumeration value="NO_DATA_FOUND_EXCEPTION"/>
+      <xs:enumeration value="UNABLE_DISPLAY_DATA_FAMILY"/>
+      <xs:enumeration value="UNABLE_DISPLAY_DATA_LICENSE"/>
+      <xs:enumeration value="DEEPLICENCE_SERVER_NOT_REACHABLE"/>
+      <xs:enumeration value="DEPRECATED_KBCOMPONENTRELEASE_COMPONENT_FOUND"/>
+      <xs:enumeration value="DEPRECATED_COMPONENT_FOUND"/>
+      <xs:enumeration value="VALIDATION_USER_NO_DELETE_ATTRIBUTE"/>
+      <xs:enumeration value="VALIDATION_USER_NO_UPDATE_INACTIVE"/>
+      <xs:enumeration value="ATTRIBUTE_USER_SUGGESTION_BOX_NOTSUPPORTED"/>
+      <xs:enumeration value="CREDENTIAL_VALIDATION_REMOTE_EXCEPTION"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_BOARD_RULE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_TASK_ASSIGNEE_RULE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_TASK_GROUP_RULE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_APPROVER_RULE_FOUND"/>
+      <xs:enumeration value="NO_PERMISSION_TO_UPDATE_RULES"/>
+      <xs:enumeration value="NO_RULE_TO_CONFIGURE"/>
+      <xs:enumeration value="WRONG_SELECTION_TYPE_FOR_APPROVAL"/>
+      <xs:enumeration value="APPROVAL_EXISTING_RULES_CANNOT_BE_REMOVED"/>
+      <xs:enumeration value="APPROVAL_ALREADY_EXISTS"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_BEAN_NULL"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_NAME_ALREADY_EXIST"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_NAME_NOT_EMPTY"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_SERVICEURL_NOT_EMPTY"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_REQUESTMETHOD_NOT_EMPTY"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_REQUESTMETHOD_NOT_VALID"/>
+      <xs:enumeration value="NO_WORKFLOWWEBRESOURCE_ID_FOUND"/>
+      <xs:enumeration value="NO_WORKFLOWWEBRESOURCE_NAME_FOUND"/>
+      <xs:enumeration value="WEB_RESOURCE_TRANSITION_NOT_EXISTS"/>
+      <xs:enumeration value="WEB_RESOURCE_TRANSITION_NULL"/>
+      <xs:enumeration value="COMMENT_NOT_FOUND"/>
+      <xs:enumeration value="WEB_RESOURCE_NULL"/>
+      <xs:enumeration value="WEB_RESOURCE_TASK_ALREADY_COMPLETED"/>
+      <xs:enumeration value="WEB_RESOURCE_DEF_NOT_FOUND"/>
+      <xs:enumeration value="WEB_RESOURCE_APPLICATION_LOCKED"/>
+      <xs:enumeration value="WEB_RESOURCE_CANNOT_RESET"/>
+      <xs:enumeration value="WEB_RESOURCE_EXECUTION_ERROR"/>
+      <xs:enumeration value="WEB_RESOURCE_WITHWORKFLOWREFERENCE_CANNOT_BE_DELETED"/>
+      <xs:enumeration value="NO_NULL_DOWNLOADHASHTYPE_ALLOWED"/>
+      <xs:enumeration value="NO_NULL_KB_COMPONENT_RELEASE_ID_ALLOWED"/>
+      <xs:enumeration value="NO_NULL_OR_EMPTY_HASH_ALLOWED"/>
+      <xs:enumeration value="ROLE_ALREADY_PRESENT"/>
+      <xs:enumeration value="PERMISSION_NOT_PRESENT"/>
+      <xs:enumeration value="ROLE_LOCKED"/>
+      <xs:enumeration value="ROLE_GENERIC_VALIDATION_EXCEPTION"/>
+      <xs:enumeration value="ROLE_CANNOT_BE_NULL"/>
+      <xs:enumeration value="ROLE_NAME_CANNOT_BE_NULL_OR_EMPTY"/>
+      <xs:enumeration value="ROLE_TYPE_ENUM_CANNOT_BE_NULL"/>
+      <xs:enumeration value="ROLE_IN_USE"/>
+      <xs:enumeration value="NO_TASK_PRESENT"/>
+      <xs:enumeration value="INVALID_ORDER_FIELD"/>
+      <xs:enumeration value="ENUM_CANNOT_BE_NULL"/>
+      <xs:enumeration value="REPORT_ID_NULL"/>
+      <xs:enumeration value="INVALID_MAIN_REPORT"/>
+      <xs:enumeration value="INVALID_APPLICATION_REPORT"/>
+      <xs:enumeration value="INVALID_COMPONENT_REPORT"/>
+      <xs:enumeration value="NO_REPORT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="NO_REPORT_FOUND_WITH_ID"/>
+      <xs:enumeration value="REPORT_PARAMETER_VALIDATION_ERROR"/>
+      <xs:enumeration value="REPORT_PARAMETER_VALIDATION_INVALID_VALUE"/>
+      <xs:enumeration value="REPORT_PARAMETER_VALIDATION_INVALID_TYPE"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_NULL"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_FUTURE"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_DIFFERENCE"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_INVALID"/>
+      <xs:enumeration value="STARTDATE_CANNOT_BE_GREATER_THAN_ENDDATE"/>
+      <xs:enumeration value="VALIDATION_WORKFLOW_LATEST_NOTEXIST"/>
+      <xs:enumeration value="REQUEST_VULNE_UPDATE_NULL"/>
+      <xs:enumeration value="REQUEST_VULNE_NOT_FOUND"/>
+      <xs:enumeration value="SEARCH_BEAN_CANNOT_BE_NULL"/>
+      <xs:enumeration value="ONLY_ONE_VALUE_ALLOWED"/>
+      <xs:enumeration value="SEARCH_USING_INVALID_OPERATOR_FOR_ATTRIBUTE"/>
+      <xs:enumeration value="INVALID_RELEASE_DATE"/>
+      <xs:enumeration value="INVALID_ATTRIBUTE_NOT_INCLUDE_IN_SEARCH_INDEX"/>
+      <xs:enumeration value="INVALID_ATTRIBUTE_VALUE"/>
+      <xs:enumeration value="NO_SEARCH_FIELD_OPERATOR_VALUES_SET"/>
+      <xs:enumeration value="ATTACHMENT_NAME_TOO_LONG"/>
+      <xs:enumeration value="CANNOT_UPDATE_APPROVAl_CRITERIA"/>
+      <xs:enumeration value="CANNOT_UPDATE_TASK"/>
+      <xs:enumeration value="CANNOT_UPDATE_REQUEST_MOREINFO"/>
+      <xs:enumeration value="GENERIC_CUSTOMCOMPONENTNAMEORIDTOKEN_CANNOT_NULL"/>
+      <xs:enumeration value="NO_GENRIC_COMPONENT_FOUND_WITH_ID"/>
+      <xs:enumeration value="NO_GENERIC_COMPONENT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="MULTIPLE_PARENT_COMPONENT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="WRONG_GENERICCOMPONENT_ID_PASSED"/>
+      <xs:enumeration value="GENERICCOMPONENT_PASSED_MISMATCHED"/>
+      <xs:enumeration value="VALIDATION_USER_SSO_ENABLED"/>
+      <xs:enumeration value="CREDENTIAL_VALIDATION_SSO_ENABLED_SERVER"/>
+      <xs:enumeration value="GENERIC_CUSTOMCOMPONENTIDTOKEN_IS_NULL"/>
+      <xs:enumeration value="GENERIC_CUSTOMCOMPONENTNAMETOKEN_IS_NULL"/>
+      <xs:enumeration value="GENERIC_COMPONENT_CANNOT_BE_UPDATED"/>
+      <xs:enumeration value="COMPONENT_WHERE_USED_IN_APPLICATION"/>
+      <xs:enumeration value="GENERIC_COMPONENT_FILED_EMPTY"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" version="1.0">
+<xs:complexType name="nameDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="pageFilter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="firstRowIndex" type="xs:int"/>
+      <xs:element minOccurs="0" name="lastRowIndex" type="xs:int"/>
+      <xs:element minOccurs="0" name="sortAscending" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" version="1.0">
+<xs:complexType abstract="true" name="attributeNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="attributeNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="attributeIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="attributeGroupIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeGroupNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="attributeGroupNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="attributeGroupNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeGroupNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="attributeGroupNullableToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeGroupNameOrIdToken">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:approvalApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approvalApi" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data"/>
+<xs:element name="configureApproverRules" type="tns:configureApproverRules"/>
+<xs:element name="configureApproverRulesResponse" type="tns:configureApproverRulesResponse"/>
+<xs:element name="configureBoardRules" type="tns:configureBoardRules"/>
+<xs:element name="configureBoardRulesResponse" type="tns:configureBoardRulesResponse"/>
+<xs:element name="configureTaskAssigneeRule" type="tns:configureTaskAssigneeRule"/>
+<xs:element name="configureTaskAssigneeRuleResponse" type="tns:configureTaskAssigneeRuleResponse"/>
+<xs:element name="configureTaskGroupRule" type="tns:configureTaskGroupRule"/>
+<xs:element name="configureTaskGroupRuleResponse" type="tns:configureTaskGroupRuleResponse"/>
+<xs:element name="createWorkflowWebResourceDefinition" type="tns:createWorkflowWebResourceDefinition"/>
+<xs:element name="createWorkflowWebResourceDefinitionResponse" type="tns:createWorkflowWebResourceDefinitionResponse"/>
+<xs:element name="deleteApproverRules" type="tns:deleteApproverRules"/>
+<xs:element name="deleteApproverRulesResponse" type="tns:deleteApproverRulesResponse"/>
+<xs:element name="deleteBoardRules" type="tns:deleteBoardRules"/>
+<xs:element name="deleteBoardRulesResponse" type="tns:deleteBoardRulesResponse"/>
+<xs:element name="deleteTaskAssigneeRule" type="tns:deleteTaskAssigneeRule"/>
+<xs:element name="deleteTaskAssigneeRuleResponse" type="tns:deleteTaskAssigneeRuleResponse"/>
+<xs:element name="deleteTaskGroupRule" type="tns:deleteTaskGroupRule"/>
+<xs:element name="deleteTaskGroupRuleResponse" type="tns:deleteTaskGroupRuleResponse"/>
+<xs:element name="deleteWorkflowWebResourceDefinition" type="tns:deleteWorkflowWebResourceDefinition"/>
+<xs:element name="deleteWorkflowWebResourceDefinitionResponse" type="tns:deleteWorkflowWebResourceDefinitionResponse"/>
+<xs:element name="getApproval" type="tns:getApproval"/>
+<xs:element name="getApprovalResponse" type="tns:getApprovalResponse"/>
+<xs:element name="getApproverRules" type="tns:getApproverRules"/>
+<xs:element name="getApproverRulesResponse" type="tns:getApproverRulesResponse"/>
+<xs:element name="getApprovers" type="tns:getApprovers"/>
+<xs:element name="getApproversResponse" type="tns:getApproversResponse"/>
+<xs:element name="getBoardMembers" type="tns:getBoardMembers"/>
+<xs:element name="getBoardMembersResponse" type="tns:getBoardMembersResponse"/>
+<xs:element name="getBoardRules" type="tns:getBoardRules"/>
+<xs:element name="getBoardRulesResponse" type="tns:getBoardRulesResponse"/>
+<xs:element name="getTask" type="tns:getTask"/>
+<xs:element name="getTaskAssigneeRule" type="tns:getTaskAssigneeRule"/>
+<xs:element name="getTaskAssigneeRuleResponse" type="tns:getTaskAssigneeRuleResponse"/>
+<xs:element name="getTaskGroupRule" type="tns:getTaskGroupRule"/>
+<xs:element name="getTaskGroupRuleResponse" type="tns:getTaskGroupRuleResponse"/>
+<xs:element name="getTaskResponse" type="tns:getTaskResponse"/>
+<xs:element name="getWorkflowWebResourceDefinition" type="tns:getWorkflowWebResourceDefinition"/>
+<xs:element name="getWorkflowWebResourceDefinitionResponse" type="tns:getWorkflowWebResourceDefinitionResponse"/>
+<xs:element name="searchApprovals" type="tns:searchApprovals"/>
+<xs:element name="searchApprovalsResponse" type="tns:searchApprovalsResponse"/>
+<xs:element name="searchBoards" type="tns:searchBoards"/>
+<xs:element name="searchBoardsResponse" type="tns:searchBoardsResponse"/>
+<xs:element name="searchTaskGroup" type="tns:searchTaskGroup"/>
+<xs:element name="searchTaskGroupResponse" type="tns:searchTaskGroupResponse"/>
+<xs:element name="updateApproval" type="tns:updateApproval"/>
+<xs:element name="updateApprovalResponse" type="tns:updateApprovalResponse"/>
+<xs:element name="updateApproverInApproval" type="tns:updateApproverInApproval"/>
+<xs:element name="updateApproverInApprovalResponse" type="tns:updateApproverInApprovalResponse"/>
+<xs:element name="updateWorkflowWebResourceDefinition" type="tns:updateWorkflowWebResourceDefinition"/>
+<xs:element name="updateWorkflowWebResourceDefinitionResponse" type="tns:updateWorkflowWebResourceDefinitionResponse"/>
+<xs:complexType name="configureApproverRules">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalApproverRule" type="ns1:approvalApproverRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="configureApproverRulesResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getTask">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="taskId" type="ns1:taskNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getTaskResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:task"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getWorkflowWebResourceDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="webResourceId" type="ns1:webResourceNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getWorkflowWebResourceDefinitionResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:webResource"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateApproverInApproval">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalId" type="ns1:approvalNameOrIdToken"/>
+      <xs:element minOccurs="0" name="approverId" type="ns3:userNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateApproverInApprovalResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getApproverRules">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalId" type="ns1:approvalNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApproverRulesResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:approvalApproverRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchTaskGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:taskGroupPageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchTaskGroupResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:taskGroup"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="configureBoardRules">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalBoardRule" type="ns1:approvalBoardRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="configureBoardRulesResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getTaskAssigneeRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="taskId" type="ns1:taskNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getTaskAssigneeRuleResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:taskAssigneeRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateWorkflowWebResourceDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="webResourceUpdate" type="ns1:webResourceUpdate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateWorkflowWebResourceDefinitionResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="updateApproval">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approval" type="ns1:approvalUpdate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateApprovalResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getBoardMembers">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="ns1:boardNameOrIdToken"/>
+      <xs:element minOccurs="0" name="arg1" type="ns3:userPageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getBoardMembersResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns3:user"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createWorkflowWebResourceDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="webResourceCreate" type="ns1:webResourceCreate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createWorkflowWebResourceDefinitionResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:webResourceIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApprovers">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalId" type="ns1:approvalNameOrIdToken"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns3:userPageFilter"/>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApproversResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns3:user"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getTaskGroupRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="taskId" type="ns1:taskNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getTaskGroupRuleResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:taskGroupRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteBoardRules">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalId" type="ns1:approvalNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteBoardRulesResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getBoardRules">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalId" type="ns1:approvalNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getBoardRulesResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:approvalBoardRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteTaskGroupRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="taskId" type="ns1:taskNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteTaskGroupRuleResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="configureTaskAssigneeRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="taskAssigneeRule" type="ns1:taskAssigneeRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="configureTaskAssigneeRuleResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="configureTaskGroupRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="taskGroupRule" type="ns1:taskGroupRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="configureTaskGroupRuleResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="searchApprovals">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:approvalPageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchApprovalsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:approval"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteWorkflowWebResourceDefinition">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="webResourceId" type="ns1:webResourceNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteWorkflowWebResourceDefinitionResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="searchBoards">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:boardPageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchBoardsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:board"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteTaskAssigneeRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="taskId" type="ns1:taskNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteTaskAssigneeRuleResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="deleteApproverRules">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalId" type="ns1:approvalNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteApproverRulesResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getApproval">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalId" type="ns1:approvalNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApprovalResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:approval"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:complexType name="approvalApproverRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalId" type="tns:approvalNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="approverRules" nillable="true" type="tns:approverRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="approvalNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="approvalNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:approvalNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="approvalIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:approvalNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="approverRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approver" type="ns1:userNameOrIdToken"/>
+      <xs:element minOccurs="0" name="rule" type="tns:rule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="rule">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="conditions" nillable="true" type="tns:condition"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="condition">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="field" type="tns:expressionFieldToken"/>
+      <xs:element minOccurs="0" name="operator" type="tns:operatorEnum"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="expressionFieldToken">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="field" type="tns:dynamicOrStaticFieldToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="dynamicOrStaticFieldToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="dynamicFieldToken">
+    <xs:complexContent>
+      <xs:extension base="tns:dynamicOrStaticFieldToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="attributeId" type="attribute:attributeNameOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="staticFieldToken">
+    <xs:complexContent>
+      <xs:extension base="tns:dynamicOrStaticFieldToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="field" type="tns:expressionStaticFieldsEnum"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="applicationFieldToken">
+    <xs:complexContent>
+      <xs:extension base="tns:expressionFieldToken">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="approvalFieldToken">
+    <xs:complexContent>
+      <xs:extension base="tns:expressionFieldToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="tns:approvalNameOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="componentFieldToken">
+    <xs:complexContent>
+      <xs:extension base="tns:expressionFieldToken">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="componentUseFieldToken">
+    <xs:complexContent>
+      <xs:extension base="tns:expressionFieldToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="approvalId" type="tns:approvalNameOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="vulnerabilityFieldToken">
+    <xs:complexContent>
+      <xs:extension base="tns:expressionFieldToken">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="taskNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="taskNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:taskNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:taskNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="task">
+    <xs:complexContent>
+      <xs:extension base="tns:taskSummary">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="generalAttributeGroupId" type="attribute:attributeGroupIdToken"/>
+          <xs:element name="transitionAttributeGroups">
+            <xs:complexType>
+              <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" name="entry">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element minOccurs="0" name="key" type="xs:string"/>
+                      <xs:element minOccurs="0" name="value" type="attribute:attributeGroupIdToken"/>
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
+              </xs:sequence>
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskSummary">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="defaultAssignee" type="ns1:userIdToken"/>
+          <xs:element minOccurs="0" name="defaultTaskGroupIdToken" type="tns:taskGroupIdToken"/>
+          <xs:element minOccurs="0" name="id" type="tns:taskIdToken"/>
+          <xs:element minOccurs="0" name="taskGroupAssigneeSelectionType" type="tns:assignmentTypeEnum"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskGroupIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:taskGroupNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="taskGroupNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="taskGroupNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:taskGroupNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="webResourceNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="webResourceNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:webResourceNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="webResourceIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:webResourceNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="webResource">
+    <xs:complexContent>
+      <xs:extension base="tns:webResourceUpdate">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="webResourceUpdate">
+    <xs:complexContent>
+      <xs:extension base="tns:webResourceCreate">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="tns:webResourceIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="webResourceCreate">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="requestMethod" type="tns:requestMethodEnum"/>
+          <xs:element minOccurs="0" name="serviceUrl" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskGroupPageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:taskGroupColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskGroup">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="defaultAssigneeId" type="ns1:userIdToken"/>
+          <xs:element minOccurs="0" name="id" type="tns:taskGroupIdToken"/>
+          <xs:element minOccurs="0" name="ownerId" type="ns1:userIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="approvalBoardRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalId" type="tns:approvalNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="boardRules" nillable="true" type="tns:boardRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="boardRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="boardId" type="tns:boardNameOrIdToken"/>
+      <xs:element minOccurs="0" name="rule" type="tns:rule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="boardNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="boardNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:boardNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="boardIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:boardNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskAssigneeRule">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="assigneeRules" nillable="true" type="tns:assigneeRule"/>
+      <xs:element minOccurs="0" name="taskId" type="tns:taskNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="assigneeRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="assignee" type="ns1:userNameOrIdToken"/>
+      <xs:element minOccurs="0" name="rule" type="tns:rule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="approvalUpdate">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="appealedAttributeGroupId" type="attribute:attributeGroupNameOrIdToken"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="approvalRule" nillable="true" type="tns:rule"/>
+          <xs:element minOccurs="0" name="approvedAttributeGroupId" type="attribute:attributeGroupNameOrIdToken"/>
+          <xs:element minOccurs="0" name="boardApproverSelectionType" type="tns:assignmentTypeEnum"/>
+          <xs:element minOccurs="0" name="defaultBoardId" type="tns:boardNameOrIdToken"/>
+          <xs:element minOccurs="0" name="deferredAttributeGroupId" type="attribute:attributeGroupNameOrIdToken"/>
+          <xs:element minOccurs="0" name="generalAttributeGroupId" type="attribute:attributeGroupNameOrIdToken"/>
+          <xs:element minOccurs="0" name="id" type="tns:approvalNameOrIdToken"/>
+          <xs:element minOccurs="0" name="rejectedAttributeGroupId" type="attribute:attributeGroupNameOrIdToken"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="rejectionRule" nillable="true" type="tns:rule"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskGroupRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="taskId" type="tns:taskNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="taskRules" nillable="true" type="tns:taskRule"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="taskRule">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="rule" type="tns:rule"/>
+      <xs:element minOccurs="0" name="taskGroupId" type="tns:taskGroupNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="approvalPageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:approvalColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="approval">
+    <xs:complexContent>
+      <xs:extension base="tns:approvalSummary">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="appealedAttributeGroupId" type="attribute:attributeGroupIdToken"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="approvalRule" nillable="true" type="tns:rule"/>
+          <xs:element minOccurs="0" name="approvedAttributeGroupId" type="attribute:attributeGroupIdToken"/>
+          <xs:element minOccurs="0" name="deferredAttributeGroupId" type="attribute:attributeGroupIdToken"/>
+          <xs:element minOccurs="0" name="generalAttributeGroupId" type="attribute:attributeGroupIdToken"/>
+          <xs:element minOccurs="0" name="rejectedAttributeGroupId" type="attribute:attributeGroupIdToken"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="rejectionRule" nillable="true" type="tns:rule"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="approvalSummary">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="boardApproverSelectionType" type="tns:assignmentTypeEnum"/>
+          <xs:element minOccurs="0" name="defaultApprover" type="ns1:userIdToken"/>
+          <xs:element minOccurs="0" name="defaultBoardId" type="tns:boardIdToken"/>
+          <xs:element minOccurs="0" name="id" type="tns:approvalIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="boardPageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:boardColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="board">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="boardId" type="tns:boardIdToken"/>
+          <xs:element minOccurs="0" name="defaultApproverId" type="ns1:userIdToken"/>
+          <xs:element minOccurs="0" name="ownerId" type="ns1:userIdToken"/>
+          <xs:element name="receiveVulnerabilityAlerts" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:simpleType name="expressionStaticFieldsEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NAME"/>
+      <xs:enumeration value="VERSION"/>
+      <xs:enumeration value="LICENSE"/>
+      <xs:enumeration value="HOMEPAGE"/>
+      <xs:enumeration value="RELEASEDATE"/>
+      <xs:enumeration value="CATEGORIES"/>
+      <xs:enumeration value="DBENVIRONMENTS"/>
+      <xs:enumeration value="INTENDEDAUDIENCES"/>
+      <xs:enumeration value="OPERATORSYSTEMS"/>
+      <xs:enumeration value="PROJECTMATURITY"/>
+      <xs:enumeration value="PROGRAMMINGLANGUAGES"/>
+      <xs:enumeration value="USERINTERFACES"/>
+      <xs:enumeration value="USAGE"/>
+      <xs:enumeration value="NUMBERCONTRIBUTORS"/>
+      <xs:enumeration value="SEVERITY"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="operatorEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Contains"/>
+      <xs:enumeration value="DoesNotContain"/>
+      <xs:enumeration value="Equals"/>
+      <xs:enumeration value="DoesNotEqual"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="assignmentTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DEFAULT"/>
+      <xs:enumeration value="BOARD_BY_RULE"/>
+      <xs:enumeration value="APPROVER_BY_RULE"/>
+      <xs:enumeration value="SELECT_AT_REQUEST"/>
+      <xs:enumeration value="TASKGROUP_BY_RULE"/>
+      <xs:enumeration value="ASSIGNEE_BY_RULE"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="requestMethodEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="GET"/>
+      <xs:enumeration value="POST"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="taskGroupColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NAME"/>
+      <xs:enumeration value="DESCRIPTION"/>
+      <xs:enumeration value="OWNER"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="approvalColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NAME"/>
+      <xs:enumeration value="DESCRIPTION"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="boardColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NAME"/>
+      <xs:enumeration value="DESCRIPTION"/>
+      <xs:enumeration value="OWNER"/>
+      <xs:enumeration value="RECEIVEVULNERABILITYALERTS"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="configureApproverRules">
+    <wsdl:part name="parameters" element="tns:configureApproverRules">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchTaskGroupResponse">
+    <wsdl:part name="parameters" element="tns:searchTaskGroupResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="configureTaskGroupRuleResponse">
+    <wsdl:part name="parameters" element="tns:configureTaskGroupRuleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchApprovalsResponse">
+    <wsdl:part name="parameters" element="tns:searchApprovalsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="configureApproverRulesResponse">
+    <wsdl:part name="parameters" element="tns:configureApproverRulesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateApproverInApproval">
+    <wsdl:part name="parameters" element="tns:updateApproverInApproval">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchTaskGroup">
+    <wsdl:part name="parameters" element="tns:searchTaskGroup">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="configureBoardRules">
+    <wsdl:part name="parameters" element="tns:configureBoardRules">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateApproval">
+    <wsdl:part name="parameters" element="tns:updateApproval">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteWorkflowWebResourceDefinitionResponse">
+    <wsdl:part name="parameters" element="tns:deleteWorkflowWebResourceDefinitionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApprovalResponse">
+    <wsdl:part name="parameters" element="tns:getApprovalResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SdkFault">
+    <wsdl:part name="SdkFault" element="ns1:SdkFault">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBoardMembersResponse">
+    <wsdl:part name="parameters" element="tns:getBoardMembersResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteTaskGroupRule">
+    <wsdl:part name="parameters" element="tns:deleteTaskGroupRule">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="configureTaskAssigneeRule">
+    <wsdl:part name="parameters" element="tns:configureTaskAssigneeRule">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTaskResponse">
+    <wsdl:part name="parameters" element="tns:getTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="configureTaskGroupRule">
+    <wsdl:part name="parameters" element="tns:configureTaskGroupRule">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getWorkflowWebResourceDefinitionResponse">
+    <wsdl:part name="parameters" element="tns:getWorkflowWebResourceDefinitionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteWorkflowWebResourceDefinition">
+    <wsdl:part name="parameters" element="tns:deleteWorkflowWebResourceDefinition">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteTaskGroupRuleResponse">
+    <wsdl:part name="parameters" element="tns:deleteTaskGroupRuleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="configureBoardRulesResponse">
+    <wsdl:part name="parameters" element="tns:configureBoardRulesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateApprovalResponse">
+    <wsdl:part name="parameters" element="tns:updateApprovalResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTask">
+    <wsdl:part name="parameters" element="tns:getTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getWorkflowWebResourceDefinition">
+    <wsdl:part name="parameters" element="tns:getWorkflowWebResourceDefinition">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateWorkflowWebResourceDefinitionResponse">
+    <wsdl:part name="parameters" element="tns:updateWorkflowWebResourceDefinitionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApproverRules">
+    <wsdl:part name="parameters" element="tns:getApproverRules">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchBoardsResponse">
+    <wsdl:part name="parameters" element="tns:searchBoardsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTaskAssigneeRule">
+    <wsdl:part name="parameters" element="tns:getTaskAssigneeRule">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateWorkflowWebResourceDefinition">
+    <wsdl:part name="parameters" element="tns:updateWorkflowWebResourceDefinition">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createWorkflowWebResourceDefinitionResponse">
+    <wsdl:part name="parameters" element="tns:createWorkflowWebResourceDefinitionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTaskGroupRuleResponse">
+    <wsdl:part name="parameters" element="tns:getTaskGroupRuleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBoardMembers">
+    <wsdl:part name="parameters" element="tns:getBoardMembers">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBoardRulesResponse">
+    <wsdl:part name="parameters" element="tns:getBoardRulesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createWorkflowWebResourceDefinition">
+    <wsdl:part name="parameters" element="tns:createWorkflowWebResourceDefinition">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApprovers">
+    <wsdl:part name="parameters" element="tns:getApprovers">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApproversResponse">
+    <wsdl:part name="parameters" element="tns:getApproversResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTaskGroupRule">
+    <wsdl:part name="parameters" element="tns:getTaskGroupRule">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateApproverInApprovalResponse">
+    <wsdl:part name="parameters" element="tns:updateApproverInApprovalResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteBoardRules">
+    <wsdl:part name="parameters" element="tns:deleteBoardRules">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBoardRules">
+    <wsdl:part name="parameters" element="tns:getBoardRules">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTaskAssigneeRuleResponse">
+    <wsdl:part name="parameters" element="tns:getTaskAssigneeRuleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchApprovals">
+    <wsdl:part name="parameters" element="tns:searchApprovals">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteBoardRulesResponse">
+    <wsdl:part name="parameters" element="tns:deleteBoardRulesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchBoards">
+    <wsdl:part name="parameters" element="tns:searchBoards">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteTaskAssigneeRule">
+    <wsdl:part name="parameters" element="tns:deleteTaskAssigneeRule">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteApproverRules">
+    <wsdl:part name="parameters" element="tns:deleteApproverRules">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApproverRulesResponse">
+    <wsdl:part name="parameters" element="tns:getApproverRulesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteTaskAssigneeRuleResponse">
+    <wsdl:part name="parameters" element="tns:deleteTaskAssigneeRuleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApproval">
+    <wsdl:part name="parameters" element="tns:getApproval">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteApproverRulesResponse">
+    <wsdl:part name="parameters" element="tns:deleteApproverRulesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="configureTaskAssigneeRuleResponse">
+    <wsdl:part name="parameters" element="tns:configureTaskAssigneeRuleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ApprovalApi">
+    <wsdl:operation name="configureApproverRules">
+      <wsdl:input name="configureApproverRules" message="tns:configureApproverRules">
+    </wsdl:input>
+      <wsdl:output name="configureApproverRulesResponse" message="tns:configureApproverRulesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTask">
+      <wsdl:input name="getTask" message="tns:getTask">
+    </wsdl:input>
+      <wsdl:output name="getTaskResponse" message="tns:getTaskResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getWorkflowWebResourceDefinition">
+      <wsdl:input name="getWorkflowWebResourceDefinition" message="tns:getWorkflowWebResourceDefinition">
+    </wsdl:input>
+      <wsdl:output name="getWorkflowWebResourceDefinitionResponse" message="tns:getWorkflowWebResourceDefinitionResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateApproverInApproval">
+      <wsdl:input name="updateApproverInApproval" message="tns:updateApproverInApproval">
+    </wsdl:input>
+      <wsdl:output name="updateApproverInApprovalResponse" message="tns:updateApproverInApprovalResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApproverRules">
+      <wsdl:input name="getApproverRules" message="tns:getApproverRules">
+    </wsdl:input>
+      <wsdl:output name="getApproverRulesResponse" message="tns:getApproverRulesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchTaskGroup">
+      <wsdl:input name="searchTaskGroup" message="tns:searchTaskGroup">
+    </wsdl:input>
+      <wsdl:output name="searchTaskGroupResponse" message="tns:searchTaskGroupResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="configureBoardRules">
+      <wsdl:input name="configureBoardRules" message="tns:configureBoardRules">
+    </wsdl:input>
+      <wsdl:output name="configureBoardRulesResponse" message="tns:configureBoardRulesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTaskAssigneeRule">
+      <wsdl:input name="getTaskAssigneeRule" message="tns:getTaskAssigneeRule">
+    </wsdl:input>
+      <wsdl:output name="getTaskAssigneeRuleResponse" message="tns:getTaskAssigneeRuleResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateWorkflowWebResourceDefinition">
+      <wsdl:input name="updateWorkflowWebResourceDefinition" message="tns:updateWorkflowWebResourceDefinition">
+    </wsdl:input>
+      <wsdl:output name="updateWorkflowWebResourceDefinitionResponse" message="tns:updateWorkflowWebResourceDefinitionResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateApproval">
+      <wsdl:input name="updateApproval" message="tns:updateApproval">
+    </wsdl:input>
+      <wsdl:output name="updateApprovalResponse" message="tns:updateApprovalResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getBoardMembers">
+      <wsdl:input name="getBoardMembers" message="tns:getBoardMembers">
+    </wsdl:input>
+      <wsdl:output name="getBoardMembersResponse" message="tns:getBoardMembersResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createWorkflowWebResourceDefinition">
+      <wsdl:input name="createWorkflowWebResourceDefinition" message="tns:createWorkflowWebResourceDefinition">
+    </wsdl:input>
+      <wsdl:output name="createWorkflowWebResourceDefinitionResponse" message="tns:createWorkflowWebResourceDefinitionResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApprovers">
+      <wsdl:input name="getApprovers" message="tns:getApprovers">
+    </wsdl:input>
+      <wsdl:output name="getApproversResponse" message="tns:getApproversResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTaskGroupRule">
+      <wsdl:input name="getTaskGroupRule" message="tns:getTaskGroupRule">
+    </wsdl:input>
+      <wsdl:output name="getTaskGroupRuleResponse" message="tns:getTaskGroupRuleResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteBoardRules">
+      <wsdl:input name="deleteBoardRules" message="tns:deleteBoardRules">
+    </wsdl:input>
+      <wsdl:output name="deleteBoardRulesResponse" message="tns:deleteBoardRulesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getBoardRules">
+      <wsdl:input name="getBoardRules" message="tns:getBoardRules">
+    </wsdl:input>
+      <wsdl:output name="getBoardRulesResponse" message="tns:getBoardRulesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteTaskGroupRule">
+      <wsdl:input name="deleteTaskGroupRule" message="tns:deleteTaskGroupRule">
+    </wsdl:input>
+      <wsdl:output name="deleteTaskGroupRuleResponse" message="tns:deleteTaskGroupRuleResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="configureTaskAssigneeRule">
+      <wsdl:input name="configureTaskAssigneeRule" message="tns:configureTaskAssigneeRule">
+    </wsdl:input>
+      <wsdl:output name="configureTaskAssigneeRuleResponse" message="tns:configureTaskAssigneeRuleResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="configureTaskGroupRule">
+      <wsdl:input name="configureTaskGroupRule" message="tns:configureTaskGroupRule">
+    </wsdl:input>
+      <wsdl:output name="configureTaskGroupRuleResponse" message="tns:configureTaskGroupRuleResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchApprovals">
+      <wsdl:input name="searchApprovals" message="tns:searchApprovals">
+    </wsdl:input>
+      <wsdl:output name="searchApprovalsResponse" message="tns:searchApprovalsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteWorkflowWebResourceDefinition">
+      <wsdl:input name="deleteWorkflowWebResourceDefinition" message="tns:deleteWorkflowWebResourceDefinition">
+    </wsdl:input>
+      <wsdl:output name="deleteWorkflowWebResourceDefinitionResponse" message="tns:deleteWorkflowWebResourceDefinitionResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchBoards">
+      <wsdl:input name="searchBoards" message="tns:searchBoards">
+    </wsdl:input>
+      <wsdl:output name="searchBoardsResponse" message="tns:searchBoardsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteTaskAssigneeRule">
+      <wsdl:input name="deleteTaskAssigneeRule" message="tns:deleteTaskAssigneeRule">
+    </wsdl:input>
+      <wsdl:output name="deleteTaskAssigneeRuleResponse" message="tns:deleteTaskAssigneeRuleResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteApproverRules">
+      <wsdl:input name="deleteApproverRules" message="tns:deleteApproverRules">
+    </wsdl:input>
+      <wsdl:output name="deleteApproverRulesResponse" message="tns:deleteApproverRulesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApproval">
+      <wsdl:input name="getApproval" message="tns:getApproval">
+    </wsdl:input>
+      <wsdl:output name="getApprovalResponse" message="tns:getApprovalResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ApprovalApiServiceSoapBinding" type="tns:ApprovalApi">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="configureApproverRules">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="configureApproverRules">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="configureApproverRulesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getWorkflowWebResourceDefinition">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getWorkflowWebResourceDefinition">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getWorkflowWebResourceDefinitionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateApproverInApproval">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateApproverInApproval">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateApproverInApprovalResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApproverRules">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getApproverRules">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getApproverRulesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchTaskGroup">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchTaskGroup">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchTaskGroupResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="configureBoardRules">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="configureBoardRules">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="configureBoardRulesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTaskAssigneeRule">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getTaskAssigneeRule">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getTaskAssigneeRuleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateWorkflowWebResourceDefinition">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateWorkflowWebResourceDefinition">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateWorkflowWebResourceDefinitionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateApproval">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateApproval">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateApprovalResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getBoardMembers">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getBoardMembers">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getBoardMembersResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createWorkflowWebResourceDefinition">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createWorkflowWebResourceDefinition">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createWorkflowWebResourceDefinitionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApprovers">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getApprovers">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getApproversResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTaskGroupRule">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getTaskGroupRule">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getTaskGroupRuleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteBoardRules">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteBoardRules">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteBoardRulesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getBoardRules">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getBoardRules">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getBoardRulesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteTaskGroupRule">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteTaskGroupRule">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteTaskGroupRuleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="configureTaskAssigneeRule">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="configureTaskAssigneeRule">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="configureTaskAssigneeRuleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="configureTaskGroupRule">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="configureTaskGroupRule">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="configureTaskGroupRuleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchApprovals">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchApprovals">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchApprovalsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteWorkflowWebResourceDefinition">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteWorkflowWebResourceDefinition">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteWorkflowWebResourceDefinitionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchBoards">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchBoards">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchBoardsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteTaskAssigneeRule">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteTaskAssigneeRule">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteTaskAssigneeRuleResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteApproverRules">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteApproverRules">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteApproverRulesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApproval">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getApproval">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getApprovalResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ApprovalApiService">
+    <wsdl:port name="ApprovalApiPort" binding="tns:ApprovalApiServiceSoapBinding">
+      <soap:address location="http://localhost:9090/ApprovalApiPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

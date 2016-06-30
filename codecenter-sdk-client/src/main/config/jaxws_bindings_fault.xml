@@ -1,0 +1,7 @@
+<jaxws:bindings xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+	<jaxws:bindings node="wsdl:fault">
+		<jaxws:package name="com.blackducksoftware.sdk.codecenter.fault" />
+	</jaxws:bindings>
+
+</jaxws:bindings>

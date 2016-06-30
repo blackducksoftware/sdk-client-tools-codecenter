@@ -1,0 +1,30 @@
+# Gradle cache
+/.gradle/
+
+# Build output
+build/
+
+# Eclipse files
+.settings/
+.classpath
+.project
+
+# Eclipse TestNG plugin output
+test-output/
+
+# IntelliJ files
+/.idea/
+*.iml
+/.README.md.html
+/bin/
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# Mac folder attribute caches
+*.DS_Store
+

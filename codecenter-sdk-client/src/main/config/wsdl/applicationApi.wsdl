@@ -1,0 +1,2409 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ApplicationApiService" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:applicationApi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:applicationApi" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:request="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" version="1.0">
+<xs:complexType name="vulnerabilityNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="vulnerabilityIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:vulnerabilityNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="vulnerabilityNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:vulnerabilityNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" version="1.0">
+<xs:complexType name="userIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:userNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="userNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="userNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:userNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fault="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data"/>
+<xs:complexType abstract="true" name="roleNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="roleNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:roleNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="roleIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:roleNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="applicationRoleAssignment">
+    <xs:complexContent>
+      <xs:extension base="tns:userRoleAssignment">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="applicationIdToken" type="ns1:applicationIdToken"/>
+          <xs:element minOccurs="0" name="applicationNameVersionToken" type="ns1:applicationNameVersionToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="userRoleAssignment">
+    <xs:complexContent>
+      <xs:extension base="tns:roleAssignment">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="userIdToken" type="ns2:userIdToken"/>
+          <xs:element minOccurs="0" name="userNameToken" type="ns2:userNameToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="roleAssignment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="roleIdToken" type="tns:roleIdToken"/>
+      <xs:element minOccurs="0" name="roleNameToken" type="tns:roleNameToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="boardRoleAssignment">
+    <xs:complexContent>
+      <xs:extension base="tns:userRoleAssignment">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="boardIdToken" type="ns3:boardIdToken"/>
+          <xs:element minOccurs="0" name="boardNameToken" type="ns3:boardNameToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="userOverAllRoleAssignment">
+    <xs:complexContent>
+      <xs:extension base="tns:userRoleAssignment">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:application="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:complexType name="requestSummary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationComponentToken" type="tns:requestApplicationComponentToken"/>
+      <xs:element minOccurs="0" name="approvalStatus" type="common:approvalStatusEnum"/>
+      <xs:element minOccurs="0" name="componentId" type="cola:componentIdToken"/>
+      <xs:element minOccurs="0" name="id" type="tns:requestIdToken"/>
+      <xs:element name="inUse" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="licenseInfo" type="cola:licenseSummary"/>
+      <xs:element minOccurs="0" name="timeCreated" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="timeSubmitted" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="usage" type="tns:componentUsageEnum"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="requestApplicationComponentToken">
+    <xs:complexContent>
+      <xs:extension base="tns:requestApplicationComponentOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="applicationId" type="application:applicationNameVersionOrIdToken"/>
+          <xs:element minOccurs="0" name="componentId" type="cola:componentNameVersionOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="requestApplicationComponentOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="requestIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:requestApplicationComponentOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="requestPageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="approvalStatuses" nillable="true" type="common:approvalStatusEnum"/>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:requestColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskInstancePageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element name="onlyCurrentUserTasks" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:taskColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:simpleType name="componentUsageEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="IMPLEMENTATION_OF_STANDARD"/>
+      <xs:enumeration value="SNIPPET"/>
+      <xs:enumeration value="FILE"/>
+      <xs:enumeration value="COMPONENT"/>
+      <xs:enumeration value="COMPONENT_MODULE"/>
+      <xs:enumeration value="COMPONENT_DYNAMIC_LIBRARY"/>
+      <xs:enumeration value="COMPONENT_SEPARATE_WORK"/>
+      <xs:enumeration value="COMPONENT_MERELY_AGGREGATED"/>
+      <xs:enumeration value="PREREQUISITE"/>
+      <xs:enumeration value="PREREQUISITE_MODULE"/>
+      <xs:enumeration value="PREREQUISITE_DYNAMIC_LIBRARY"/>
+      <xs:enumeration value="PREREQUISITE_SEPARATE_WORK"/>
+      <xs:enumeration value="PREREQUISITE_MERLY_AGGREGATED"/>
+      <xs:enumeration value="PREREQUISITE_SERVICE"/>
+      <xs:enumeration value="DEVELOPMENT_TOOL"/>
+      <xs:enumeration value="NULLIFY"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="requestColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="REQUEST_APPLICATION_NAME"/>
+      <xs:enumeration value="REQUEST_APPLICATION_VERSION"/>
+      <xs:enumeration value="REQUEST_APPLICATION_OWNER"/>
+      <xs:enumeration value="REQUEST_COMPONENT_NAME"/>
+      <xs:enumeration value="REQUEST_COMPONENT_VERSION"/>
+      <xs:enumeration value="REQUEST_COMPONENT_LICENSE"/>
+      <xs:enumeration value="REQUEST_TIME_CREATED"/>
+      <xs:enumeration value="REQUEST_TIME_SUBMITTED"/>
+      <xs:enumeration value="REQUEST_PROGRAMMING_LANGUAGES"/>
+      <xs:enumeration value="REQUEST_APPROVAL_STATUS"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="taskColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="COMPONENT_NAME"/>
+      <xs:enumeration value="COMPONENT_VERSION"/>
+      <xs:enumeration value="TASK_NAME"/>
+      <xs:enumeration value="CREATION_DATE"/>
+      <xs:enumeration value="COMPONENT_TYPE"/>
+      <xs:enumeration value="APPLICATION_NAME"/>
+      <xs:enumeration value="APPLICATION_VERSION"/>
+      <xs:enumeration value="APPROVAL_DEFINITION_NAME"/>
+      <xs:enumeration value="BOARD_NAME"/>
+      <xs:enumeration value="DAYS_PASSED"/>
+      <xs:enumeration value="WORKFLOW_NAME"/>
+      <xs:enumeration value="WORKFLOW_VERSION"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="shippingStatusEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SHIPPED"/>
+      <xs:enumeration value="USED_AT_RUNTIME"/>
+      <xs:enumeration value="IMPLEMENTATION_OF_STANDARD"/>
+      <xs:enumeration value="USED_AT_DEVELOPMENT"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault">
+  <xs:element name="sdkFaultDetails" type="tns:sdkFaultDetails"/>
+  <xs:complexType name="sdkFaultDetails">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="causedByErrors" nillable="true" type="tns:sdkError"/>
+      <xs:element minOccurs="0" name="errorCode" type="tns:errorCode"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType final="extension restriction" name="sdkError">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:simpleType name="errorCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NO_COMPONENT_ID_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_NAMEVERSION_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENT_ID_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENT_NAME_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_ID_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_NAME_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_RELEASE_ID_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_RELEASE_NAMEVERSION_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_ID_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_NAMEVERSION_FOUND"/>
+      <xs:enumeration value="NO_KB_COMPONENT_FOUND"/>
+      <xs:enumeration value="NO_APPLICATION_ID_FOUND"/>
+      <xs:enumeration value="NO_APPLICATION_NAMEVERISON_FOUND"/>
+      <xs:enumeration value="APPLICATION_CREATE_NONAME"/>
+      <xs:enumeration value="APPLICATION_CREATE_NOVERSION"/>
+      <xs:enumeration value="APPLICATION_UPDATE_NONAME"/>
+      <xs:enumeration value="APPLICATION_UPDATE_NOVERSION"/>
+      <xs:enumeration value="APPLICATION_CREATE_INVALID_ROLE"/>
+      <xs:enumeration value="APPLICATION_UPDATE_INVALID_ROLE"/>
+      <xs:enumeration value="APPLICATION_UPDATE_OWNER_ROLE_REQUIRED"/>
+      <xs:enumeration value="DATE_CANNOT_BE_NULL"/>
+      <xs:enumeration value="NO_USER_NAME_FOUND"/>
+      <xs:enumeration value="NO_USER_ID_FOUND"/>
+      <xs:enumeration value="NO_USER_ID_OR_USERNAME_FOUND"/>
+      <xs:enumeration value="APPLICATION_NAME_TOO_LONG"/>
+      <xs:enumeration value="NO_WORKFLOW_NAME_FOUND"/>
+      <xs:enumeration value="NO_WORKFLOW_ID_FOUND"/>
+      <xs:enumeration value="NO_ROLE_NAME_FOUND"/>
+      <xs:enumeration value="NO_ROLE_ID_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTE_NAME_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTE_VALUE_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTE_ID_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTEGROUP_NAME_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTEGROUP_ID_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_ATTRIBUTEGROUP_NAME_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_ATTRIBUTEGROUP_ID_FOUND"/>
+      <xs:enumeration value="NO_REQUEST_FOUND"/>
+      <xs:enumeration value="NO_REQUEST_ID_FOUND"/>
+      <xs:enumeration value="NO_REQUEST_LICENSE_FOUND"/>
+      <xs:enumeration value="METHOD_NOT_YET_IMPLEMENTED"/>
+      <xs:enumeration value="INVALID_CREDENTIALS"/>
+      <xs:enumeration value="INSUFFICIENT_PERMISSION"/>
+      <xs:enumeration value="SDK_LICENSE_UNAVAILABLE"/>
+      <xs:enumeration value="SDK_LICENSE_EXPIRED"/>
+      <xs:enumeration value="UNKNOWN_ERROR"/>
+      <xs:enumeration value="GENERIC_ERROR"/>
+      <xs:enumeration value="TASK_NOT_PRESENT"/>
+      <xs:enumeration value="NO_PERMISSION_UPDATE_REQUEST_LICENSE"/>
+      <xs:enumeration value="TODO_CONVERT_EXCEPTION"/>
+      <xs:enumeration value="INVALID_SORT_KEY"/>
+      <xs:enumeration value="UNEXPECTED_EXCEPTION_ERROR"/>
+      <xs:enumeration value="CLIENT_WRITING_ERROR"/>
+      <xs:enumeration value="PAGE_FILTER_NULL"/>
+      <xs:enumeration value="PAGE_FILTER_INVALID_FIRSTROW"/>
+      <xs:enumeration value="PAGE_FILTER_INVALID_LASTROW"/>
+      <xs:enumeration value="PAGE_FILTER_INVALID_RANGE"/>
+      <xs:enumeration value="PROTEX_SERVER_USER_ASSOCIATED"/>
+      <xs:enumeration value="PROTEX_SERVER_CREDENTIALS_ASSOCIATED"/>
+      <xs:enumeration value="APPROVAL_RULE_NOT_VALID_ATTRIBUTE"/>
+      <xs:enumeration value="APPROVAL_RULE_NOT_VALID_ATTRIBUTE_TYPE"/>
+      <xs:enumeration value="APPROVAL_RULE_NOT_VALID"/>
+      <xs:enumeration value="NO_LICENSE_ID_FOUND"/>
+      <xs:enumeration value="NO_LICENSE_NAME_FOUND"/>
+      <xs:enumeration value="NO_SERVER_ID_FOUND"/>
+      <xs:enumeration value="NO_SERVER_NAME_FOUND"/>
+      <xs:enumeration value="NO_PROTEX_PROJECT_ASSOCIATED"/>
+      <xs:enumeration value="NO_PROJECT_ID_FOUND"/>
+      <xs:enumeration value="NO_PROJECT_NAME_FOUND"/>
+      <xs:enumeration value="NO_CREDENTIALS_FOUND"/>
+      <xs:enumeration value="PROTEX_SERVER_NOT_REACHABLE"/>
+      <xs:enumeration value="NO_PROTEX_PROJECT_FOUND"/>
+      <xs:enumeration value="PROJECT_ALREADY_ASSOCIATED"/>
+      <xs:enumeration value="APPLICATION_ALREADY_ASSOCIATED"/>
+      <xs:enumeration value="PROTEX_SDK_FAULT"/>
+      <xs:enumeration value="WEBSERVICE_EXCEPTION"/>
+      <xs:enumeration value="NO_APPLICATION_WITH_ASSOCIATED_PROTEX_PROJECT_FOUND"/>
+      <xs:enumeration value="APPLICATION_NOT_ASSOCIATED_WITH_PROTEX_PROJECT"/>
+      <xs:enumeration value="NO_APPLICATION_ASSOCIATED_TO_PROTEX_PROJECT"/>
+      <xs:enumeration value="NO_PROTEX_SERVER_ASSOCIATED_WITH_APPLICATION_FOUND"/>
+      <xs:enumeration value="INVALID_PROTEX_CREDENTIALS_FOR_SUB_PROJECTS_FOUND"/>
+      <xs:enumeration value="APPLICATIN_NO_VALIDATION"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_ID_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_NAME_FOUND"/>
+      <xs:enumeration value="NO_TASK_DEFINITION_ID_FOUND"/>
+      <xs:enumeration value="NO_TASK_DEFINITION_NAME_FOUND"/>
+      <xs:enumeration value="INVALID_APPLICATION_STATIC_FIELD_ENUM_FOUND"/>
+      <xs:enumeration value="INVALID_COMPONENT_STATIC_FIELD_ENUM_FOUND"/>
+      <xs:enumeration value="INVALID_COMPONENTUSE_STATIC_FIELD_ENUM_FOUND"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_NAME_VERSION"/>
+      <xs:enumeration value="NO_EMPTY_COMPONENT_NAME_VERSION"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_ATTACHMENT_ID"/>
+      <xs:enumeration value="NO_EMPTY_COMPONENT_ATTACHMENT_ID"/>
+      <xs:enumeration value="NO_NULL_APPROVAL_STATUS"/>
+      <xs:enumeration value="NO_EMPTY_TRANSITION_NAME"/>
+      <xs:enumeration value="NO_GLOBAL_APPROVAL_CRITERIA_ID_FOUND"/>
+      <xs:enumeration value="NO_GLOBAL_APPROVAL_CRITERIA_FOUND_FOR_COMPONENT_APPROVAL"/>
+      <xs:enumeration value="NO_TANSITION_NAME_FOUND"/>
+      <xs:enumeration value="NO_NULL_TASKINSTANCE_ID"/>
+      <xs:enumeration value="NO_NULL_PASSWORD"/>
+      <xs:enumeration value="NO_EMPTY_PASSWORD"/>
+      <xs:enumeration value="NO_NULL_USER_NAME"/>
+      <xs:enumeration value="NO_NULL_NAME_FOR_CLONE_APPLICATION"/>
+      <xs:enumeration value="NO_NULL_VERSION_FOR_CLONE_APPLICATION"/>
+      <xs:enumeration value="NO_NULL_APPROVAL_NAME"/>
+      <xs:enumeration value="ERROR_READING_INPUT_FILE_STREAM"/>
+      <xs:enumeration value="NO_BOARD_ID_FOUND"/>
+      <xs:enumeration value="NO_BOARD_NAME_FOUND"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_VERSION"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_NAME"/>
+      <xs:enumeration value="NO_NULL_APPLICATION_VERSION"/>
+      <xs:enumeration value="NO_NULL_APPLICATION_NAME"/>
+      <xs:enumeration value="NO_LATEST_WORKFLOW_VERSION"/>
+      <xs:enumeration value="NO_ATTACHMENT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="APPLICATION_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="APPLICATION_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="APPROVAL_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="COMPONENT_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="COMPONENT_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="COMPONENT_ATTACHMENT_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUEST_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUEST_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUEST_ALREADY_SUBMITTED"/>
+      <xs:enumeration value="USER_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="USER_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUIRED_ATTRIBUTE_ID_NOT_FOUND"/>
+      <xs:enumeration value="REQUIRED_ATTRIBUTE_VALUE_EMPTY"/>
+      <xs:enumeration value="NO_VALID_ATTRIBUTE_GROUP_TYPE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_CRITERIA_ID_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_CRITERIA_FOUND_FOR_REQUEST_APPROVAL"/>
+      <xs:enumeration value="NO_NULL_TASK_INSTANCE_ID"/>
+      <xs:enumeration value="NO_ATTACHMENT_FOUND_WITH_ID"/>
+      <xs:enumeration value="ATTACHMENT_IO_ERROR"/>
+      <xs:enumeration value="ATTACHMENT_SQL_ERROR"/>
+      <xs:enumeration value="NOT_A_DEVELOPER_USER"/>
+      <xs:enumeration value="NO_APPEAL_ACTION_FOUND_FOR_REQUEST"/>
+      <xs:enumeration value="ATTRIBUTE_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="ATTRIBUTE_NAME_FOUND_WITH_NULL"/>
+      <xs:enumeration value="ATTRIBUTE_TYPE_FOUND_WITH_NULL"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_NAME_FOUND_NULL"/>
+      <xs:enumeration value="NO_VULNERABILITY_STATUS_ID_FOUND"/>
+      <xs:enumeration value="NO_VULNERABILITY_ID_FOUND"/>
+      <xs:enumeration value="NO_VULNERABILITY_STATUS_NAME_FOUND"/>
+      <xs:enumeration value="NO_VULNERABILITY_NAME_FOUND"/>
+      <xs:enumeration value="APPLICATION_ATTACHMENT_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="PROTEX_SUB_PROJECT_FOUND"/>
+      <xs:enumeration value="ROLE_NOT_ASSIGNED_FOR_IMPORTING_APPLICATION"/>
+      <xs:enumeration value="NOT_AN_APPLICATION_ROLE"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_NAME_FOUND_NULL"/>
+      <xs:enumeration value="NOT_A_VALID_ROLE_ASSIGNMENT_FOR_APPLICATION"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_UPDATE_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_TYPE_NULL"/>
+      <xs:enumeration value="ATTACHMENT_FILE_SIZE_ZERO"/>
+      <xs:enumeration value="ATTACHMENT_FILE_SIZE_MAX"/>
+      <xs:enumeration value="NOT_A_VALID_APPROVER_FOR_APPROVAL"/>
+      <xs:enumeration value="GLOBAL_WORKFLOW_CAN_NOT_BE_USED_IN_APPLICATION"/>
+      <xs:enumeration value="KNOWLEDGE_BASE_VERSION_NOT_SUPPORTED_FOR_IMPORT"/>
+      <xs:enumeration value="CAN_NOT_IMPORT_VALIDATE_WHEN_UNRESOLVED_CONFLICTS"/>
+      <xs:enumeration value="VALIDATE_UNSUPPORTED_SERVER_UNSYNCHRONIZED"/>
+      <xs:enumeration value="KNOWLEDGE_BASE_VERSION_NOT_SUPPORTED_FOR_VALIDATE"/>
+      <xs:enumeration value="APPLICATION_NAME_ALREADY_EXIST"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_NAME_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_VERSION_FOUND"/>
+      <xs:enumeration value="CAN_NOT_ADD_USER_TO_LOCKED_APPLICATION_TEAM"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_ADDED_IN_APPLICATION_TEAM"/>
+      <xs:enumeration value="CAN_NOT_REMOVE_USER_TO_LOCKED_APPLICATION_TEAM"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_OWNER_OF_IMPORT_APPLICATION"/>
+      <xs:enumeration value="INVALID_COMPONENTUSE_USAGE_VALUE"/>
+      <xs:enumeration value="ATTRIBUTE_OPTION_VALUE_FOUND_WITH_NULL"/>
+      <xs:enumeration value="NO_COMMENT_FOUND_FOR_SEND_BACK"/>
+      <xs:enumeration value="APPLICATION_NAME_VERSION_ALREADY_EXIST"/>
+      <xs:enumeration value="CANNOT_DELETE_UPDATE_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CANNOT_DELETE_USER_IF_APPLICATION_OWNER"/>
+      <xs:enumeration value="COMPONENT_ALREADY_EXISTS"/>
+      <xs:enumeration value="COMPONENT_ALREADY_EXISTS_IN_REQUEST"/>
+      <xs:enumeration value="CANNOT_DELETE_APPLICATION_PUBLISHED_AS_COMPONENT"/>
+      <xs:enumeration value="ATTRIBUTE_NAME_ALREADY_EXISTS"/>
+      <xs:enumeration value="ATTRIBUTE_VALUES_CANNOT_BE_EMPTY"/>
+      <xs:enumeration value="ATTRIBUTE_FORMAT_VALUE_FIELD_DATE"/>
+      <xs:enumeration value="ATTRIBUTE_FORMAT_FIELD_NUMBER"/>
+      <xs:enumeration value="ATTRIBUTE_FORMAT_FIELD_URL"/>
+      <xs:enumeration value="USER_ALREADY_EXIST"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_SET_AS_OWNER_FOR_APPLICATION"/>
+      <xs:enumeration value="COMPONENT_WITH_SAME_NAME_VER_IN_KB"/>
+      <xs:enumeration value="COMPONENT_WITH_SAME_NAME_IN_KB"/>
+      <xs:enumeration value="COMPONENT_IN_USE"/>
+      <xs:enumeration value="ATTRIBUTE_ASSOCIATION_EXISTS"/>
+      <xs:enumeration value="ATTRIBUTE_ASSOCIATION_EXISTS_AND_IN_USE"/>
+      <xs:enumeration value="WORKFLOW_CLONE_APPLICATION_WORKFLOW_NOEXIST"/>
+      <xs:enumeration value="DUPLICATE_OBJECT_CANNOT_BE_CREATED_UPDATED"/>
+      <xs:enumeration value="CAN_NOT_CREATE_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_UPDATE_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_DELETE_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="USER_NAME_CAN_NOT_EMPTY_OR_WHITESPACE"/>
+      <xs:enumeration value="USER_EMAIL_ADDRESS_NOT_VALID"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_ALREADY_EXISTS"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_CONFIGURATION_ERROR"/>
+      <xs:enumeration value="REQUEST_WITH_SEND_BACK_REQUESTER_STATUS"/>
+      <xs:enumeration value="REQUEST_WITH_SEND_BACK_REQUESTER_FOR_APPLICATION_STATUS"/>
+      <xs:enumeration value="CAN_NOT_RESET_WORKFLOW_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_ADD_DEVELOPERS_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_REMOVE_DEVELOPERS_APPLICATION_LOCKED"/>
+      <xs:enumeration value="REQUEST_COMPLETION_FAILURE"/>
+      <xs:enumeration value="REQUEST_WITH_SEND_BACK_REQUESTER_FOR_APPLICATIONREQUEST_STATUS"/>
+      <xs:enumeration value="COMPONENT_TYPE_NOT_VALID"/>
+      <xs:enumeration value="COMPONENT_ADDITIONAL_INFORMATION_NOT_VALID"/>
+      <xs:enumeration value="REQUEST_NOT_IN_PENDING_STATE"/>
+      <xs:enumeration value="NO_REQUEST_FOUND_FOR_COMPONENT"/>
+      <xs:enumeration value="PREVIOUS_NODE_REJECTED"/>
+      <xs:enumeration value="NO_EXTERNAL_NAMESPACE_REQUEST"/>
+      <xs:enumeration value="EXTERNAL_NAMESPACE_NAME_TOO_LONG"/>
+      <xs:enumeration value="DUPLICATE_EXTERNAL_NAMESPACE_KEY"/>
+      <xs:enumeration value="NO_EXTERNAL_NAMESPACE_UPDATE_REQUEST"/>
+      <xs:enumeration value="EXTERNAL_NAMESPACE_NOT_FOUND"/>
+      <xs:enumeration value="NO_EXTERNAL_NAMESPACE_KEY"/>
+      <xs:enumeration value="NO_EXTERNAL_ID_INFO"/>
+      <xs:enumeration value="NO_EXTERNAL_ID"/>
+      <xs:enumeration value="NO_KB_RELEASE_ID"/>
+      <xs:enumeration value="EXTERNAL_ID_MAPPING_FOR_OBJECT_NOT_FOUND"/>
+      <xs:enumeration value="EXTERNAL_ID_MAPPING_FOR_EXTERNAL_ID_NOT_FOUND"/>
+      <xs:enumeration value="EXTERNAL_NAMESPACE_NOTNULL_OR_EMPTY_NAME_OR_NAMESPACE"/>
+      <xs:enumeration value="NO_CODE_CENTER_OBJECT_ID"/>
+      <xs:enumeration value="NO_CODE_CENTER_OBJECT_KEY"/>
+      <xs:enumeration value="DUPLICATE_EXTERNAL_ID_MAPPING"/>
+      <xs:enumeration value="NO_CODE_CENTER_OBJECT_TYPE"/>
+      <xs:enumeration value="CONFLICTING_CODE_CENTER_OBJECT_TYPES"/>
+      <xs:enumeration value="NO_EXTERNAL_ID_MAPPING"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_NAME_ALREADY_EXISTS"/>
+      <xs:enumeration value="SORT_COLUMN_NOT_SUPPORTED"/>
+      <xs:enumeration value="SETTINGS_RESCHEDULE_ALREADY_RUNNING"/>
+      <xs:enumeration value="SETTINGS_RESCHEDULE_STOPPED"/>
+      <xs:enumeration value="DECLARED_LICENSE_CANNOT_BE_MORE_THAN_MAX_LENGH"/>
+      <xs:enumeration value="ATTRIBUTE_ID_OR_NAME_CAN_NOT_NULL"/>
+      <xs:enumeration value="APPROVER_SELECT_AT_REQUEST_TIME_IS_NOT_ENABLED"/>
+      <xs:enumeration value="APPROVER_NOT_AVAILABLE_FOR_ALL_APPROVAL_SELECT_AT_REQUEST_TIME"/>
+      <xs:enumeration value="VALIDATION_APPROVAL_NOT_IN_WF_OR_NO_REQUEST_APPROVER_SELECTION_OPTION"/>
+      <xs:enumeration value="CAN_NOT_CREATE_COMPONENT_WITH_NAME_VERSION_MIMATCH_FOR_RELEASE"/>
+      <xs:enumeration value="CAN_NOT_CREATE_COMPONENT_WITH_NAME_MISMATCH_FORGENERIC"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_USED"/>
+      <xs:enumeration value="REQUEST_NOT_SUBMITTED"/>
+      <xs:enumeration value="APPLICATION_LOCKED"/>
+      <xs:enumeration value="NOT_VALID_LIST_OF_ROLES"/>
+      <xs:enumeration value="USER_NAME_ID_CAN_NOT_EMPTY_OR_WHITESPACE"/>
+      <xs:enumeration value="BOARD_NAME_ID_CAN_NOT_EMPTY"/>
+      <xs:enumeration value="USER_ROLE_ASSIGNMENT_NULL"/>
+      <xs:enumeration value="INVALID_BOARD_ROLE"/>
+      <xs:enumeration value="INVALID_USER_ROLE"/>
+      <xs:enumeration value="INVALID_OVERALL_ROLE"/>
+      <xs:enumeration value="NO_LDAP_AUTHENTICATION_TYPE"/>
+      <xs:enumeration value="LDAP_GROUP_NAME_ID_CAN_NOT_EMPTY"/>
+      <xs:enumeration value="NOT_VALID_LIST_OF_LDAP_GROUP_ROLES"/>
+      <xs:enumeration value="LDAP_GROUP_NOT_FOUND"/>
+      <xs:enumeration value="NO_LDAP_GROUPROLE_FOR_OVERALL"/>
+      <xs:enumeration value="NO_LDAP_GROUPROLE_FOR_BOARD"/>
+      <xs:enumeration value="NO_LDAP_GROUPROLE_FOR_APPLICATION"/>
+      <xs:enumeration value="REQUEST_PREVIOUS_NODE_INCOMPLETE"/>
+      <xs:enumeration value="NO_NODE_ID_FOUND"/>
+      <xs:enumeration value="INVALID_DECISION_NODE_ID"/>
+      <xs:enumeration value="INVALID_DECISION_NODE_NAME"/>
+      <xs:enumeration value="NO_VALID_WORKFLOW"/>
+      <xs:enumeration value="NO_DATA_FOUND"/>
+      <xs:enumeration value="NOT_RELEASE_COMPONENT"/>
+      <xs:enumeration value="RELEASEID_CAN_NOT_NULL"/>
+      <xs:enumeration value="LICENSEORFAMILYID_CAN_NOT_NULL"/>
+      <xs:enumeration value="PAGEFILTER_CAN_NOT_NULL"/>
+      <xs:enumeration value="RELEASE_ID_AND_SCAN_ID_CAN_NOT_NULL"/>
+      <xs:enumeration value="PAGENO_AND_PAGESIZE_CAN_NOT_NULL"/>
+      <xs:enumeration value="FAMILY_ID_NULL"/>
+      <xs:enumeration value="LICENSE_ID_NULL"/>
+      <xs:enumeration value="FILEID_NOT_NULL"/>
+      <xs:enumeration value="FILEID_AND_SCAN_ID_NOT_NULL"/>
+      <xs:enumeration value="NOT_FOUND_EXCEPTION"/>
+      <xs:enumeration value="NO_RELEASE_ID_NULL"/>
+      <xs:enumeration value="AUTHENTICATION_FAILED_EXCEPTION"/>
+      <xs:enumeration value="NO_DATA_FOUND_EXCEPTION"/>
+      <xs:enumeration value="UNABLE_DISPLAY_DATA_FAMILY"/>
+      <xs:enumeration value="UNABLE_DISPLAY_DATA_LICENSE"/>
+      <xs:enumeration value="DEEPLICENCE_SERVER_NOT_REACHABLE"/>
+      <xs:enumeration value="DEPRECATED_KBCOMPONENTRELEASE_COMPONENT_FOUND"/>
+      <xs:enumeration value="DEPRECATED_COMPONENT_FOUND"/>
+      <xs:enumeration value="VALIDATION_USER_NO_DELETE_ATTRIBUTE"/>
+      <xs:enumeration value="VALIDATION_USER_NO_UPDATE_INACTIVE"/>
+      <xs:enumeration value="ATTRIBUTE_USER_SUGGESTION_BOX_NOTSUPPORTED"/>
+      <xs:enumeration value="CREDENTIAL_VALIDATION_REMOTE_EXCEPTION"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_BOARD_RULE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_TASK_ASSIGNEE_RULE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_TASK_GROUP_RULE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_APPROVER_RULE_FOUND"/>
+      <xs:enumeration value="NO_PERMISSION_TO_UPDATE_RULES"/>
+      <xs:enumeration value="NO_RULE_TO_CONFIGURE"/>
+      <xs:enumeration value="WRONG_SELECTION_TYPE_FOR_APPROVAL"/>
+      <xs:enumeration value="APPROVAL_EXISTING_RULES_CANNOT_BE_REMOVED"/>
+      <xs:enumeration value="APPROVAL_ALREADY_EXISTS"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_BEAN_NULL"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_NAME_ALREADY_EXIST"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_NAME_NOT_EMPTY"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_SERVICEURL_NOT_EMPTY"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_REQUESTMETHOD_NOT_EMPTY"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_REQUESTMETHOD_NOT_VALID"/>
+      <xs:enumeration value="NO_WORKFLOWWEBRESOURCE_ID_FOUND"/>
+      <xs:enumeration value="NO_WORKFLOWWEBRESOURCE_NAME_FOUND"/>
+      <xs:enumeration value="WEB_RESOURCE_TRANSITION_NOT_EXISTS"/>
+      <xs:enumeration value="WEB_RESOURCE_TRANSITION_NULL"/>
+      <xs:enumeration value="COMMENT_NOT_FOUND"/>
+      <xs:enumeration value="WEB_RESOURCE_NULL"/>
+      <xs:enumeration value="WEB_RESOURCE_TASK_ALREADY_COMPLETED"/>
+      <xs:enumeration value="WEB_RESOURCE_DEF_NOT_FOUND"/>
+      <xs:enumeration value="WEB_RESOURCE_APPLICATION_LOCKED"/>
+      <xs:enumeration value="WEB_RESOURCE_CANNOT_RESET"/>
+      <xs:enumeration value="WEB_RESOURCE_EXECUTION_ERROR"/>
+      <xs:enumeration value="WEB_RESOURCE_WITHWORKFLOWREFERENCE_CANNOT_BE_DELETED"/>
+      <xs:enumeration value="NO_NULL_DOWNLOADHASHTYPE_ALLOWED"/>
+      <xs:enumeration value="NO_NULL_KB_COMPONENT_RELEASE_ID_ALLOWED"/>
+      <xs:enumeration value="NO_NULL_OR_EMPTY_HASH_ALLOWED"/>
+      <xs:enumeration value="ROLE_ALREADY_PRESENT"/>
+      <xs:enumeration value="PERMISSION_NOT_PRESENT"/>
+      <xs:enumeration value="ROLE_LOCKED"/>
+      <xs:enumeration value="ROLE_GENERIC_VALIDATION_EXCEPTION"/>
+      <xs:enumeration value="ROLE_CANNOT_BE_NULL"/>
+      <xs:enumeration value="ROLE_NAME_CANNOT_BE_NULL_OR_EMPTY"/>
+      <xs:enumeration value="ROLE_TYPE_ENUM_CANNOT_BE_NULL"/>
+      <xs:enumeration value="ROLE_IN_USE"/>
+      <xs:enumeration value="NO_TASK_PRESENT"/>
+      <xs:enumeration value="INVALID_ORDER_FIELD"/>
+      <xs:enumeration value="ENUM_CANNOT_BE_NULL"/>
+      <xs:enumeration value="REPORT_ID_NULL"/>
+      <xs:enumeration value="INVALID_MAIN_REPORT"/>
+      <xs:enumeration value="INVALID_APPLICATION_REPORT"/>
+      <xs:enumeration value="INVALID_COMPONENT_REPORT"/>
+      <xs:enumeration value="NO_REPORT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="NO_REPORT_FOUND_WITH_ID"/>
+      <xs:enumeration value="REPORT_PARAMETER_VALIDATION_ERROR"/>
+      <xs:enumeration value="REPORT_PARAMETER_VALIDATION_INVALID_VALUE"/>
+      <xs:enumeration value="REPORT_PARAMETER_VALIDATION_INVALID_TYPE"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_NULL"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_FUTURE"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_DIFFERENCE"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_INVALID"/>
+      <xs:enumeration value="STARTDATE_CANNOT_BE_GREATER_THAN_ENDDATE"/>
+      <xs:enumeration value="VALIDATION_WORKFLOW_LATEST_NOTEXIST"/>
+      <xs:enumeration value="REQUEST_VULNE_UPDATE_NULL"/>
+      <xs:enumeration value="REQUEST_VULNE_NOT_FOUND"/>
+      <xs:enumeration value="SEARCH_BEAN_CANNOT_BE_NULL"/>
+      <xs:enumeration value="ONLY_ONE_VALUE_ALLOWED"/>
+      <xs:enumeration value="SEARCH_USING_INVALID_OPERATOR_FOR_ATTRIBUTE"/>
+      <xs:enumeration value="INVALID_RELEASE_DATE"/>
+      <xs:enumeration value="INVALID_ATTRIBUTE_NOT_INCLUDE_IN_SEARCH_INDEX"/>
+      <xs:enumeration value="INVALID_ATTRIBUTE_VALUE"/>
+      <xs:enumeration value="NO_SEARCH_FIELD_OPERATOR_VALUES_SET"/>
+      <xs:enumeration value="ATTACHMENT_NAME_TOO_LONG"/>
+      <xs:enumeration value="CANNOT_UPDATE_APPROVAl_CRITERIA"/>
+      <xs:enumeration value="CANNOT_UPDATE_TASK"/>
+      <xs:enumeration value="CANNOT_UPDATE_REQUEST_MOREINFO"/>
+      <xs:enumeration value="GENERIC_CUSTOMCOMPONENTNAMEORIDTOKEN_CANNOT_NULL"/>
+      <xs:enumeration value="NO_GENRIC_COMPONENT_FOUND_WITH_ID"/>
+      <xs:enumeration value="NO_GENERIC_COMPONENT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="MULTIPLE_PARENT_COMPONENT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="WRONG_GENERICCOMPONENT_ID_PASSED"/>
+      <xs:enumeration value="GENERICCOMPONENT_PASSED_MISMATCHED"/>
+      <xs:enumeration value="VALIDATION_USER_SSO_ENABLED"/>
+      <xs:enumeration value="CREDENTIAL_VALIDATION_SSO_ENABLED_SERVER"/>
+      <xs:enumeration value="GENERIC_CUSTOMCOMPONENTIDTOKEN_IS_NULL"/>
+      <xs:enumeration value="GENERIC_CUSTOMCOMPONENTNAMETOKEN_IS_NULL"/>
+      <xs:enumeration value="GENERIC_COMPONENT_CANNOT_BE_UPDATED"/>
+      <xs:enumeration value="COMPONENT_WHERE_USED_IN_APPLICATION"/>
+      <xs:enumeration value="GENERIC_COMPONENT_FILED_EMPTY"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:ns4="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:ns5="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:ns6="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data"/>
+<xs:import namespace="http://www.w3.org/2005/05/xmlmime"/>
+  <xs:complexType name="nameDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="attributeValue">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attributeId" type="ns1:attributeNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="pageFilter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="firstRowIndex" type="xs:int"/>
+      <xs:element minOccurs="0" name="lastRowIndex" type="xs:int"/>
+      <xs:element minOccurs="0" name="sortAscending" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="userRolePageFilter">
+    <xs:complexContent>
+      <xs:extension base="tns:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:userRoleColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="attachment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="contentType" type="xs:string"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="fileName" type="xs:string"/>
+      <xs:element minOccurs="0" name="filesize" type="xs:string"/>
+      <xs:element name="filesizeBytes" type="xs:long"/>
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+      <xs:element minOccurs="0" name="timeUploaded" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="userUploaded" type="ns2:userIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="attachmentCreate">
+    <xs:complexContent>
+      <xs:extension base="tns:attachmentContent">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element minOccurs="0" name="fileName" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="attachmentContent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentContent" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="taskInstance">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns3:applicationIdToken"/>
+      <xs:element minOccurs="0" name="applicationName" type="ns3:applicationNameVersionToken"/>
+      <xs:element minOccurs="0" name="approvalCriteriaId" type="xs:string"/>
+      <xs:element minOccurs="0" name="approvalDefinitionName" type="ns4:approvalNameToken"/>
+      <xs:element minOccurs="0" name="boardName" type="ns4:boardNameToken"/>
+      <xs:element minOccurs="0" name="componentIdToken" type="ns5:componentIdToken"/>
+      <xs:element minOccurs="0" name="componentLicenseId" type="ns5:licenseIdToken"/>
+      <xs:element minOccurs="0" name="componentName" type="ns5:componentNameVersionToken"/>
+      <xs:element minOccurs="0" name="componentTypeColumn" type="ns5:componentType"/>
+      <xs:element minOccurs="0" name="creationDate" type="xs:dateTime"/>
+      <xs:element name="daysPassed" type="xs:int"/>
+      <xs:element minOccurs="0" name="globalApprovalCriteriaId" type="xs:string"/>
+      <xs:element minOccurs="0" name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="requestId" type="ns6:requestIdToken"/>
+      <xs:element minOccurs="0" name="taskName" type="ns4:taskNameToken"/>
+      <xs:element minOccurs="0" name="taskType" type="ns4:taskTypeEnum"/>
+      <xs:element minOccurs="0" name="workflowName" type="ns4:workflowNameToken"/>
+      <xs:element minOccurs="0" name="workflowVersion" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="attachmentPageFilter">
+    <xs:complexContent>
+      <xs:extension base="tns:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:attachmentColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:simpleType name="approvalStatusEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ALL"/>
+      <xs:enumeration value="PENDING"/>
+      <xs:enumeration value="CANCELED"/>
+      <xs:enumeration value="APPROVED"/>
+      <xs:enumeration value="DEFERRED"/>
+      <xs:enumeration value="REJECTED"/>
+      <xs:enumeration value="APPEALED"/>
+      <xs:enumeration value="NOTSUBMITTED"/>
+      <xs:enumeration value="MOREINFO"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="userRoleColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="USER_NAME"/>
+      <xs:enumeration value="USER_ROLE"/>
+      <xs:enumeration value="USER_EMAIL"/>
+      <xs:enumeration value="USER_PHONE"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="attachmentColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ATTACHMENT_FILE_NAME"/>
+      <xs:enumeration value="ATTACHMENT_DESCRIPTION"/>
+      <xs:enumeration value="ATTACHMENT_UPLOADED_BY"/>
+      <xs:enumeration value="ATTACHMENT_TIMESTAMP"/>
+      <xs:enumeration value="ATTACHMENT_CONTENT_TYPE"/>
+      <xs:enumeration value="ATTACHMENT_FILE_SIZE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:application="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:approval="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" version="1.0">
+<xs:complexType abstract="true" name="componentNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="componentIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:componentNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="componentNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:componentNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="licenseSummary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="tns:licenseIdToken"/>
+      <xs:element minOccurs="0" name="nameToken" type="tns:licenseNameToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="licenseIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:licenseNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="licenseNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="licenseNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:licenseNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:simpleType name="componentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="STANDARD_MODIFIED"/>
+      <xs:enumeration value="APPLICATION_COMPONENT"/>
+      <xs:enumeration value="KB_DEPRECATED"/>
+      <xs:enumeration value="STANDARD"/>
+      <xs:enumeration value="CUSTOM"/>
+      <xs:enumeration value="KB_DEPRECATED_MODIFIED"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" version="1.0">
+<xs:complexType abstract="true" name="attributeNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="attributeNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="attributeIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" version="1.0">
+<xs:complexType abstract="true" name="workflowNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="workflowIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:workflowNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="workflowNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:workflowNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="boardIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:boardNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="boardNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="boardNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:boardNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="approvalNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:approvalNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="approvalNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="approvalIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:approvalNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:taskNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="taskNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="taskIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:taskNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:simpleType name="taskTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Approval"/>
+      <xs:enumeration value="Generic"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns4="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:ns5="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:ns6="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:ns7="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:ns8="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" xmlns:ns9="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:applicationApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:applicationApi" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data"/>
+<xs:element name="addUserToApplicationTeam" type="tns:addUserToApplicationTeam"/>
+<xs:element name="addUserToApplicationTeamResponse" type="tns:addUserToApplicationTeamResponse"/>
+<xs:element name="associateProtexProject" type="tns:associateProtexProject"/>
+<xs:element name="associateProtexProjectResponse" type="tns:associateProtexProjectResponse"/>
+<xs:element name="clone" type="tns:clone"/>
+<xs:element name="cloneResponse" type="tns:cloneResponse"/>
+<xs:element name="createApplication" type="tns:createApplication"/>
+<xs:element name="createApplicationAttachment" type="tns:createApplicationAttachment"/>
+<xs:element name="createApplicationAttachmentResponse" type="tns:createApplicationAttachmentResponse"/>
+<xs:element name="createApplicationResponse" type="tns:createApplicationResponse"/>
+<xs:element name="createComponentFromApplication" type="tns:createComponentFromApplication"/>
+<xs:element name="createComponentFromApplicationResponse" type="tns:createComponentFromApplicationResponse"/>
+<xs:element name="deleteApplication" type="tns:deleteApplication"/>
+<xs:element name="deleteApplicationAttachment" type="tns:deleteApplicationAttachment"/>
+<xs:element name="deleteApplicationAttachmentResponse" type="tns:deleteApplicationAttachmentResponse"/>
+<xs:element name="deleteApplicationResponse" type="tns:deleteApplicationResponse"/>
+<xs:element name="disassociateProtexProject" type="tns:disassociateProtexProject"/>
+<xs:element name="disassociateProtexProjectResponse" type="tns:disassociateProtexProjectResponse"/>
+<xs:element name="exportCodeCenterOnlyComponentsFromLastValidation" type="tns:exportCodeCenterOnlyComponentsFromLastValidation"/>
+<xs:element name="exportCodeCenterOnlyComponentsFromLastValidationResponse" type="tns:exportCodeCenterOnlyComponentsFromLastValidationResponse"/>
+<xs:element name="getApplication" type="tns:getApplication"/>
+<xs:element name="getApplicationAttachmentContent" type="tns:getApplicationAttachmentContent"/>
+<xs:element name="getApplicationAttachmentContentResponse" type="tns:getApplicationAttachmentContentResponse"/>
+<xs:element name="getApplicationAttachmentDetails" type="tns:getApplicationAttachmentDetails"/>
+<xs:element name="getApplicationAttachmentDetailsResponse" type="tns:getApplicationAttachmentDetailsResponse"/>
+<xs:element name="getApplicationResponse" type="tns:getApplicationResponse"/>
+<xs:element name="getAssociatedApplication" type="tns:getAssociatedApplication"/>
+<xs:element name="getAssociatedApplicationResponse" type="tns:getAssociatedApplicationResponse"/>
+<xs:element name="getAssociatedProtexProject" type="tns:getAssociatedProtexProject"/>
+<xs:element name="getAssociatedProtexProjectResponse" type="tns:getAssociatedProtexProjectResponse"/>
+<xs:element name="getCodeCenterOnlyComponentsFromLastValidation" type="tns:getCodeCenterOnlyComponentsFromLastValidation"/>
+<xs:element name="getCodeCenterOnlyComponentsFromLastValidationResponse" type="tns:getCodeCenterOnlyComponentsFromLastValidationResponse"/>
+<xs:element name="getCommonComponentsFromLastValidation" type="tns:getCommonComponentsFromLastValidation"/>
+<xs:element name="getCommonComponentsFromLastValidationResponse" type="tns:getCommonComponentsFromLastValidationResponse"/>
+<xs:element name="getProtexOnlyComponentsFromLastValidation" type="tns:getProtexOnlyComponentsFromLastValidation"/>
+<xs:element name="getProtexOnlyComponentsFromLastValidationResponse" type="tns:getProtexOnlyComponentsFromLastValidationResponse"/>
+<xs:element name="getTaskListForApplication" type="tns:getTaskListForApplication"/>
+<xs:element name="getTaskListForApplicationResponse" type="tns:getTaskListForApplicationResponse"/>
+<xs:element name="importProtexProject" type="tns:importProtexProject"/>
+<xs:element name="importProtexProjectResponse" type="tns:importProtexProjectResponse"/>
+<xs:element name="lockApplication" type="tns:lockApplication"/>
+<xs:element name="lockApplicationResponse" type="tns:lockApplicationResponse"/>
+<xs:element name="removeUserInApplicationTeam" type="tns:removeUserInApplicationTeam"/>
+<xs:element name="removeUserInApplicationTeamResponse" type="tns:removeUserInApplicationTeamResponse"/>
+<xs:element name="searchApplicationAttachments" type="tns:searchApplicationAttachments"/>
+<xs:element name="searchApplicationAttachmentsResponse" type="tns:searchApplicationAttachmentsResponse"/>
+<xs:element name="searchApplicationRequests" type="tns:searchApplicationRequests"/>
+<xs:element name="searchApplicationRequestsResponse" type="tns:searchApplicationRequestsResponse"/>
+<xs:element name="searchApplications" type="tns:searchApplications"/>
+<xs:element name="searchApplicationsByVulnerability" type="tns:searchApplicationsByVulnerability"/>
+<xs:element name="searchApplicationsByVulnerabilityResponse" type="tns:searchApplicationsByVulnerabilityResponse"/>
+<xs:element name="searchApplicationsResponse" type="tns:searchApplicationsResponse"/>
+<xs:element name="searchUserInApplicationTeam" type="tns:searchUserInApplicationTeam"/>
+<xs:element name="searchUserInApplicationTeamResponse" type="tns:searchUserInApplicationTeamResponse"/>
+<xs:element name="updateApplication" type="tns:updateApplication"/>
+<xs:element name="updateApplicationAttachmentDescription" type="tns:updateApplicationAttachmentDescription"/>
+<xs:element name="updateApplicationAttachmentDescriptionResponse" type="tns:updateApplicationAttachmentDescriptionResponse"/>
+<xs:element name="updateApplicationResponse" type="tns:updateApplicationResponse"/>
+<xs:element name="validate" type="tns:validate"/>
+<xs:element name="validateResponse" type="tns:validateResponse"/>
+<xs:complexType name="getCodeCenterOnlyComponentsFromLastValidation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCodeCenterOnlyComponentsFromLastValidationResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:requestSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteApplicationResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getAssociatedApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="projectId" type="ns1:projectNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getAssociatedApplicationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:application"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="validate">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+      <xs:element name="sendApprovalToProtex" type="xs:boolean"/>
+      <xs:element name="sendLienseToPRotex" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="validateResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="lockApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+      <xs:element name="lock" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="lockApplicationResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="searchApplicationsByVulnerability">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="vulnerabilityID" type="ns8:vulnerabilityNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchApplicationsByVulnerabilityResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:application"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteApplicationAttachment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentId" type="ns1:applicationAttachmentToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteApplicationAttachmentResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="removeUserInApplicationTeam">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="userId" type="ns6:userNameOrIdToken"/>
+      <xs:element minOccurs="0" name="roleId" type="ns9:roleNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="removeUserInApplicationTeamResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="searchApplications">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:applicationPageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchApplicationsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:application"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createComponentFromApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationComponentBean" type="ns1:applicationComponentCreate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createComponentFromApplicationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns4:componentIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="clone">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="appClone" type="ns1:applicationClone"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="cloneResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:applicationIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchUserInApplicationTeam">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns3:userRolePageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchUserInApplicationTeamResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns9:applicationRoleAssignment"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApplicationAttachmentDetails">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentId" type="ns1:applicationAttachmentToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApplicationAttachmentDetailsResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:applicationAttachment"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createApplicationAttachment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentCreateBean" type="ns1:applicationAttachmentCreate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createApplicationAttachmentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="addUserToApplicationTeam">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="userIds" type="ns6:userNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="applicationRoleIds" type="ns9:roleNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="addUserToApplicationTeamResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="searchApplicationRequests">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns2:requestPageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchApplicationRequestsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:requestSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getTaskListForApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns2:taskInstancePageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getTaskListForApplicationResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns3:taskInstance"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationUpdateBean" type="ns1:applicationUpdate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateApplicationResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="associateProtexProject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="protexProjectId" type="ns1:projectNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="associateProtexProjectResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="disassociateProtexProject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="disassociateProtexProjectResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getAssociatedProtexProject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getAssociatedProtexProjectResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:project"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchApplicationAttachments">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns3:attachmentPageFilter"/>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchApplicationAttachmentsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:applicationAttachment"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationCreateBean" type="ns1:applicationCreate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createApplicationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:applicationIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getProtexOnlyComponentsFromLastValidation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getProtexOnlyComponentsFromLastValidationResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:protexRequest"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCommonComponentsFromLastValidation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCommonComponentsFromLastValidationResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:requestSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApplicationAttachmentContent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentId" type="ns1:applicationAttachmentToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApplicationAttachmentContentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns3:attachmentContent"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApplication">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApplicationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:application"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="importProtexProject">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="protexProjectId" type="ns1:projectNameOrIdToken"/>
+      <xs:element minOccurs="0" name="ownerId" type="ns6:userNameOrIdToken"/>
+      <xs:element minOccurs="0" name="ownerRoleId" type="ns9:roleNameOrIdToken"/>
+      <xs:element minOccurs="0" name="workflowId" type="ns7:workflowNameOrIdToken"/>
+      <xs:element name="arg4" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="importProtexProjectResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:applicationIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="exportCodeCenterOnlyComponentsFromLastValidation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="ns1:applicationNameVersionOrIdToken"/>
+      <xs:element name="autoid" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="exportCodeCenterOnlyComponentsFromLastValidationResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:componentExportStatusEnum"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateApplicationAttachmentDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentId" type="ns1:applicationAttachmentToken"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateApplicationAttachmentDescriptionResponse">
+    <xs:sequence/>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data" xmlns:ns4="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data"/>
+<xs:complexType abstract="true" name="applicationNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="applicationNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:applicationNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="applicationIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:applicationNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="projectNameOrIdToken">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="serverId" type="administration:serverNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="projectNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:projectNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="projectIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:projectNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="application">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="applicationComponentId" type="cola:componentIdToken"/>
+          <xs:element minOccurs="0" name="approvalStatus" type="common:approvalStatusEnum"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="common:attributeValue"/>
+          <xs:element minOccurs="0" name="id" type="tns:applicationIdToken"/>
+          <xs:element minOccurs="0" name="lastValidationDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="licenseId" type="cola:licenseNameOrIdToken"/>
+          <xs:element name="locked" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="nameVersion" type="tns:applicationNameVersionToken"/>
+          <xs:element name="obligationFulFillment" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="ownerId" type="ns1:userIdToken"/>
+          <xs:element name="useProtexstatus" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="validationStatus" type="tns:validationStatusEnum"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+          <xs:element minOccurs="0" name="workflowId" type="ns2:workflowNameOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="applicationAttachmentToken">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="tns:applicationNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="fileName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="applicationPageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:applicationColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="applicationComponentCreate">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="tns:applicationNameVersionOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="common:attributeValue"/>
+      <xs:element minOccurs="0" name="categories" type="xs:string"/>
+      <xs:element minOccurs="0" name="dbEnvironments" type="xs:string"/>
+      <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+      <xs:element minOccurs="0" name="intendedAudiences" type="xs:string"/>
+      <xs:element minOccurs="0" name="numberContributors" type="xs:int"/>
+      <xs:element minOccurs="0" name="operatingSystems" type="xs:string"/>
+      <xs:element minOccurs="0" name="programmingLanguages" type="xs:string"/>
+      <xs:element minOccurs="0" name="projectMaturity" type="xs:string"/>
+      <xs:element minOccurs="0" name="releaseDate" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="userInterfaces" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="applicationClone">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="applicationId" type="tns:applicationNameVersionOrIdToken"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="common:attributeValue"/>
+          <xs:element minOccurs="0" name="inheritApprovalsType" type="tns:inheritApprovalsTypeEnum"/>
+          <xs:element name="inheritAttachments" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="inheritVulnInfo" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="licenseId" type="cola:licenseNameOrIdToken"/>
+          <xs:element name="obligationFulFillment" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="ownerId" type="ns1:userNameOrIdToken"/>
+          <xs:element minOccurs="0" name="ownerRoleId" type="ns3:roleNameOrIdToken"/>
+          <xs:element name="reevaluateDecisionRules" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="submitRequests" type="xs:boolean"/>
+          <xs:element name="useProtexstatus" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+          <xs:element minOccurs="0" name="workflowId" type="ns2:workflowNameOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="applicationAttachment">
+    <xs:complexContent>
+      <xs:extension base="common:attachment">
+        <xs:sequence/>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="applicationAttachmentCreate">
+    <xs:complexContent>
+      <xs:extension base="common:attachmentCreate">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="applicationId" type="tns:applicationNameVersionOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="applicationUpdate">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="common:attributeValue"/>
+          <xs:element minOccurs="0" name="id" type="tns:applicationNameVersionOrIdToken"/>
+          <xs:element minOccurs="0" name="licenseId" type="cola:licenseNameOrIdToken"/>
+          <xs:element name="obligationFulFillment" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="ownerId" type="ns1:userNameOrIdToken"/>
+          <xs:element minOccurs="0" name="ownerRoleId" type="ns3:roleNameOrIdToken"/>
+          <xs:element minOccurs="0" name="useProtexstatus" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+          <xs:element minOccurs="0" name="workflowId" type="ns2:workflowNameOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="project">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="tns:applicationIdToken"/>
+      <xs:element minOccurs="0" name="id" type="tns:projectIdToken"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="applicationCreate">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="common:attributeValue"/>
+          <xs:element minOccurs="0" name="licenseId" type="cola:licenseNameOrIdToken"/>
+          <xs:element name="obligationFulFillment" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="ownerId" type="ns1:userNameOrIdToken"/>
+          <xs:element minOccurs="0" name="ownerRoleId" type="ns3:roleNameOrIdToken"/>
+          <xs:element name="useProtexstatus" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+          <xs:element minOccurs="0" name="workflowId" type="ns2:workflowNameOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="protexRequest">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationId" type="tns:applicationIdToken"/>
+      <xs:element minOccurs="0" name="componentId" type="cola:componentIdToken"/>
+      <xs:element minOccurs="0" name="licenseInfo" type="cola:licenseSummary"/>
+      <xs:element minOccurs="0" name="protexComment" type="xs:string"/>
+      <xs:element minOccurs="0" name="protexComponentUsage" type="ns4:componentUsageEnum"/>
+      <xs:element minOccurs="0" name="protexLicenseConflictStatus" type="xs:string"/>
+      <xs:element minOccurs="0" name="protexNumberOfDependencies" type="xs:string"/>
+      <xs:element minOccurs="0" name="protexNumberOfIdentifiedFile" type="xs:string"/>
+      <xs:element minOccurs="0" name="protexNumberOfSearchMatches" type="xs:string"/>
+      <xs:element minOccurs="0" name="protexShipStatus" type="ns4:shippingStatusEnum"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:simpleType name="validationStatusEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PASSED"/>
+      <xs:enumeration value="WARNING"/>
+      <xs:enumeration value="FAILED"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="applicationColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="APPLICATION_NAME"/>
+      <xs:enumeration value="APPLICATION_VERSION"/>
+      <xs:enumeration value="APPLICATION_DESCRIPTION"/>
+      <xs:enumeration value="APPLICATION_LICENSE_NAME"/>
+      <xs:enumeration value="APPLICATION_SUB"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="inheritApprovalsTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DO_NOT_INHERIT"/>
+      <xs:enumeration value="INHERIT_EXISTING_REQUEST_WORKFLOW_VERSION"/>
+      <xs:enumeration value="INHERIT_LATEST_WORKFLOW_VERSION"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="componentExportStatusEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="SUCCESS"/>
+      <xs:enumeration value="CATALOG_COMPONENT_NOT_IN_USE"/>
+      <xs:enumeration value="SERVER_NOT_FOUND"/>
+      <xs:enumeration value="USER_NOT_ASSIGNED_TO_PROJECT"/>
+      <xs:enumeration value="ERROR"/>
+      <xs:enumeration value="CATALOG_COMPONENT_EXPORT_DISABLED"/>
+      <xs:enumeration value="COMPONENT_NOT_FOUND_IN_PROTEX"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common" xmlns:fault="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" version="1.0">
+<xs:complexType abstract="true" name="serverNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="serverNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:serverNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="serverIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:serverNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="cloneResponse">
+    <wsdl:part name="parameters" element="tns:cloneResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createApplicationAttachmentResponse">
+    <wsdl:part name="parameters" element="tns:createApplicationAttachmentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteApplication">
+    <wsdl:part name="parameters" element="tns:deleteApplication">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAssociatedApplication">
+    <wsdl:part name="parameters" element="tns:getAssociatedApplication">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validate">
+    <wsdl:part name="parameters" element="tns:validate">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchApplicationsByVulnerability">
+    <wsdl:part name="parameters" element="tns:searchApplicationsByVulnerability">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteApplicationResponse">
+    <wsdl:part name="parameters" element="tns:deleteApplicationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteApplicationAttachment">
+    <wsdl:part name="parameters" element="tns:deleteApplicationAttachment">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApplicationAttachmentDetailsResponse">
+    <wsdl:part name="parameters" element="tns:getApplicationAttachmentDetailsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createComponentFromApplicationResponse">
+    <wsdl:part name="parameters" element="tns:createComponentFromApplicationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAssociatedProtexProjectResponse">
+    <wsdl:part name="parameters" element="tns:getAssociatedProtexProjectResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchApplications">
+    <wsdl:part name="parameters" element="tns:searchApplications">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateApplicationResponse">
+    <wsdl:part name="parameters" element="tns:updateApplicationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApplicationAttachmentContentResponse">
+    <wsdl:part name="parameters" element="tns:getApplicationAttachmentContentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="clone">
+    <wsdl:part name="parameters" element="tns:clone">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchApplicationAttachmentsResponse">
+    <wsdl:part name="parameters" element="tns:searchApplicationAttachmentsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="importProtexProjectResponse">
+    <wsdl:part name="parameters" element="tns:importProtexProjectResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateApplication">
+    <wsdl:part name="parameters" element="tns:updateApplication">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="associateProtexProject">
+    <wsdl:part name="parameters" element="tns:associateProtexProject">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="associateProtexProjectResponse">
+    <wsdl:part name="parameters" element="tns:associateProtexProjectResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createApplication">
+    <wsdl:part name="parameters" element="tns:createApplication">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addUserToApplicationTeamResponse">
+    <wsdl:part name="parameters" element="tns:addUserToApplicationTeamResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="removeUserInApplicationTeamResponse">
+    <wsdl:part name="parameters" element="tns:removeUserInApplicationTeamResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProtexOnlyComponentsFromLastValidationResponse">
+    <wsdl:part name="parameters" element="tns:getProtexOnlyComponentsFromLastValidationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteApplicationAttachmentResponse">
+    <wsdl:part name="parameters" element="tns:deleteApplicationAttachmentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApplication">
+    <wsdl:part name="parameters" element="tns:getApplication">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="validateResponse">
+    <wsdl:part name="parameters" element="tns:validateResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateApplicationAttachmentDescription">
+    <wsdl:part name="parameters" element="tns:updateApplicationAttachmentDescription">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCodeCenterOnlyComponentsFromLastValidation">
+    <wsdl:part name="parameters" element="tns:getCodeCenterOnlyComponentsFromLastValidation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAssociatedApplicationResponse">
+    <wsdl:part name="parameters" element="tns:getAssociatedApplicationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchApplicationsResponse">
+    <wsdl:part name="parameters" element="tns:searchApplicationsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="exportCodeCenterOnlyComponentsFromLastValidationResponse">
+    <wsdl:part name="parameters" element="tns:exportCodeCenterOnlyComponentsFromLastValidationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="lockApplication">
+    <wsdl:part name="parameters" element="tns:lockApplication">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchUserInApplicationTeamResponse">
+    <wsdl:part name="parameters" element="tns:searchUserInApplicationTeamResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApplicationResponse">
+    <wsdl:part name="parameters" element="tns:getApplicationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCodeCenterOnlyComponentsFromLastValidationResponse">
+    <wsdl:part name="parameters" element="tns:getCodeCenterOnlyComponentsFromLastValidationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchApplicationRequestsResponse">
+    <wsdl:part name="parameters" element="tns:searchApplicationRequestsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="removeUserInApplicationTeam">
+    <wsdl:part name="parameters" element="tns:removeUserInApplicationTeam">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="disassociateProtexProjectResponse">
+    <wsdl:part name="parameters" element="tns:disassociateProtexProjectResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createComponentFromApplication">
+    <wsdl:part name="parameters" element="tns:createComponentFromApplication">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchUserInApplicationTeam">
+    <wsdl:part name="parameters" element="tns:searchUserInApplicationTeam">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApplicationAttachmentDetails">
+    <wsdl:part name="parameters" element="tns:getApplicationAttachmentDetails">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCommonComponentsFromLastValidationResponse">
+    <wsdl:part name="parameters" element="tns:getCommonComponentsFromLastValidationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createApplicationAttachment">
+    <wsdl:part name="parameters" element="tns:createApplicationAttachment">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="addUserToApplicationTeam">
+    <wsdl:part name="parameters" element="tns:addUserToApplicationTeam">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchApplicationRequests">
+    <wsdl:part name="parameters" element="tns:searchApplicationRequests">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTaskListForApplication">
+    <wsdl:part name="parameters" element="tns:getTaskListForApplication">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getTaskListForApplicationResponse">
+    <wsdl:part name="parameters" element="tns:getTaskListForApplicationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="disassociateProtexProject">
+    <wsdl:part name="parameters" element="tns:disassociateProtexProject">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getAssociatedProtexProject">
+    <wsdl:part name="parameters" element="tns:getAssociatedProtexProject">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchApplicationAttachments">
+    <wsdl:part name="parameters" element="tns:searchApplicationAttachments">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchApplicationsByVulnerabilityResponse">
+    <wsdl:part name="parameters" element="tns:searchApplicationsByVulnerabilityResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createApplicationResponse">
+    <wsdl:part name="parameters" element="tns:createApplicationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getProtexOnlyComponentsFromLastValidation">
+    <wsdl:part name="parameters" element="tns:getProtexOnlyComponentsFromLastValidation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCommonComponentsFromLastValidation">
+    <wsdl:part name="parameters" element="tns:getCommonComponentsFromLastValidation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getApplicationAttachmentContent">
+    <wsdl:part name="parameters" element="tns:getApplicationAttachmentContent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="lockApplicationResponse">
+    <wsdl:part name="parameters" element="tns:lockApplicationResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="importProtexProject">
+    <wsdl:part name="parameters" element="tns:importProtexProject">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="exportCodeCenterOnlyComponentsFromLastValidation">
+    <wsdl:part name="parameters" element="tns:exportCodeCenterOnlyComponentsFromLastValidation">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateApplicationAttachmentDescriptionResponse">
+    <wsdl:part name="parameters" element="tns:updateApplicationAttachmentDescriptionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SdkFault">
+    <wsdl:part name="SdkFault" element="ns1:SdkFault">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ApplicationApi">
+    <wsdl:operation name="getCodeCenterOnlyComponentsFromLastValidation">
+      <wsdl:input name="getCodeCenterOnlyComponentsFromLastValidation" message="tns:getCodeCenterOnlyComponentsFromLastValidation">
+    </wsdl:input>
+      <wsdl:output name="getCodeCenterOnlyComponentsFromLastValidationResponse" message="tns:getCodeCenterOnlyComponentsFromLastValidationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteApplication">
+      <wsdl:input name="deleteApplication" message="tns:deleteApplication">
+    </wsdl:input>
+      <wsdl:output name="deleteApplicationResponse" message="tns:deleteApplicationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAssociatedApplication">
+      <wsdl:input name="getAssociatedApplication" message="tns:getAssociatedApplication">
+    </wsdl:input>
+      <wsdl:output name="getAssociatedApplicationResponse" message="tns:getAssociatedApplicationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="validate">
+      <wsdl:input name="validate" message="tns:validate">
+    </wsdl:input>
+      <wsdl:output name="validateResponse" message="tns:validateResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="lockApplication">
+      <wsdl:input name="lockApplication" message="tns:lockApplication">
+    </wsdl:input>
+      <wsdl:output name="lockApplicationResponse" message="tns:lockApplicationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchApplicationsByVulnerability">
+      <wsdl:input name="searchApplicationsByVulnerability" message="tns:searchApplicationsByVulnerability">
+    </wsdl:input>
+      <wsdl:output name="searchApplicationsByVulnerabilityResponse" message="tns:searchApplicationsByVulnerabilityResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteApplicationAttachment">
+      <wsdl:input name="deleteApplicationAttachment" message="tns:deleteApplicationAttachment">
+    </wsdl:input>
+      <wsdl:output name="deleteApplicationAttachmentResponse" message="tns:deleteApplicationAttachmentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="removeUserInApplicationTeam">
+      <wsdl:input name="removeUserInApplicationTeam" message="tns:removeUserInApplicationTeam">
+    </wsdl:input>
+      <wsdl:output name="removeUserInApplicationTeamResponse" message="tns:removeUserInApplicationTeamResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchApplications">
+      <wsdl:input name="searchApplications" message="tns:searchApplications">
+    </wsdl:input>
+      <wsdl:output name="searchApplicationsResponse" message="tns:searchApplicationsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createComponentFromApplication">
+      <wsdl:input name="createComponentFromApplication" message="tns:createComponentFromApplication">
+    </wsdl:input>
+      <wsdl:output name="createComponentFromApplicationResponse" message="tns:createComponentFromApplicationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="clone">
+      <wsdl:input name="clone" message="tns:clone">
+    </wsdl:input>
+      <wsdl:output name="cloneResponse" message="tns:cloneResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchUserInApplicationTeam">
+      <wsdl:input name="searchUserInApplicationTeam" message="tns:searchUserInApplicationTeam">
+    </wsdl:input>
+      <wsdl:output name="searchUserInApplicationTeamResponse" message="tns:searchUserInApplicationTeamResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApplicationAttachmentDetails">
+      <wsdl:input name="getApplicationAttachmentDetails" message="tns:getApplicationAttachmentDetails">
+    </wsdl:input>
+      <wsdl:output name="getApplicationAttachmentDetailsResponse" message="tns:getApplicationAttachmentDetailsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createApplicationAttachment">
+      <wsdl:input name="createApplicationAttachment" message="tns:createApplicationAttachment">
+    </wsdl:input>
+      <wsdl:output name="createApplicationAttachmentResponse" message="tns:createApplicationAttachmentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="addUserToApplicationTeam">
+      <wsdl:input name="addUserToApplicationTeam" message="tns:addUserToApplicationTeam">
+    </wsdl:input>
+      <wsdl:output name="addUserToApplicationTeamResponse" message="tns:addUserToApplicationTeamResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchApplicationRequests">
+      <wsdl:input name="searchApplicationRequests" message="tns:searchApplicationRequests">
+    </wsdl:input>
+      <wsdl:output name="searchApplicationRequestsResponse" message="tns:searchApplicationRequestsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTaskListForApplication">
+      <wsdl:input name="getTaskListForApplication" message="tns:getTaskListForApplication">
+    </wsdl:input>
+      <wsdl:output name="getTaskListForApplicationResponse" message="tns:getTaskListForApplicationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateApplication">
+      <wsdl:input name="updateApplication" message="tns:updateApplication">
+    </wsdl:input>
+      <wsdl:output name="updateApplicationResponse" message="tns:updateApplicationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="associateProtexProject">
+      <wsdl:input name="associateProtexProject" message="tns:associateProtexProject">
+    </wsdl:input>
+      <wsdl:output name="associateProtexProjectResponse" message="tns:associateProtexProjectResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="disassociateProtexProject">
+      <wsdl:input name="disassociateProtexProject" message="tns:disassociateProtexProject">
+    </wsdl:input>
+      <wsdl:output name="disassociateProtexProjectResponse" message="tns:disassociateProtexProjectResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAssociatedProtexProject">
+      <wsdl:input name="getAssociatedProtexProject" message="tns:getAssociatedProtexProject">
+    </wsdl:input>
+      <wsdl:output name="getAssociatedProtexProjectResponse" message="tns:getAssociatedProtexProjectResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchApplicationAttachments">
+      <wsdl:input name="searchApplicationAttachments" message="tns:searchApplicationAttachments">
+    </wsdl:input>
+      <wsdl:output name="searchApplicationAttachmentsResponse" message="tns:searchApplicationAttachmentsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createApplication">
+      <wsdl:input name="createApplication" message="tns:createApplication">
+    </wsdl:input>
+      <wsdl:output name="createApplicationResponse" message="tns:createApplicationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getProtexOnlyComponentsFromLastValidation">
+      <wsdl:input name="getProtexOnlyComponentsFromLastValidation" message="tns:getProtexOnlyComponentsFromLastValidation">
+    </wsdl:input>
+      <wsdl:output name="getProtexOnlyComponentsFromLastValidationResponse" message="tns:getProtexOnlyComponentsFromLastValidationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCommonComponentsFromLastValidation">
+      <wsdl:input name="getCommonComponentsFromLastValidation" message="tns:getCommonComponentsFromLastValidation">
+    </wsdl:input>
+      <wsdl:output name="getCommonComponentsFromLastValidationResponse" message="tns:getCommonComponentsFromLastValidationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApplicationAttachmentContent">
+      <wsdl:input name="getApplicationAttachmentContent" message="tns:getApplicationAttachmentContent">
+    </wsdl:input>
+      <wsdl:output name="getApplicationAttachmentContentResponse" message="tns:getApplicationAttachmentContentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApplication">
+      <wsdl:input name="getApplication" message="tns:getApplication">
+    </wsdl:input>
+      <wsdl:output name="getApplicationResponse" message="tns:getApplicationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="importProtexProject">
+      <wsdl:input name="importProtexProject" message="tns:importProtexProject">
+    </wsdl:input>
+      <wsdl:output name="importProtexProjectResponse" message="tns:importProtexProjectResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="exportCodeCenterOnlyComponentsFromLastValidation">
+      <wsdl:input name="exportCodeCenterOnlyComponentsFromLastValidation" message="tns:exportCodeCenterOnlyComponentsFromLastValidation">
+    </wsdl:input>
+      <wsdl:output name="exportCodeCenterOnlyComponentsFromLastValidationResponse" message="tns:exportCodeCenterOnlyComponentsFromLastValidationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateApplicationAttachmentDescription">
+      <wsdl:input name="updateApplicationAttachmentDescription" message="tns:updateApplicationAttachmentDescription">
+    </wsdl:input>
+      <wsdl:output name="updateApplicationAttachmentDescriptionResponse" message="tns:updateApplicationAttachmentDescriptionResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ApplicationApiServiceSoapBinding" type="tns:ApplicationApi">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="getCodeCenterOnlyComponentsFromLastValidation">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCodeCenterOnlyComponentsFromLastValidation">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCodeCenterOnlyComponentsFromLastValidationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAssociatedApplication">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getAssociatedApplication">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAssociatedApplicationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteApplication">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteApplication">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteApplicationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="validate">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="validate">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="validateResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchApplicationsByVulnerability">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchApplicationsByVulnerability">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchApplicationsByVulnerabilityResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="lockApplication">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="lockApplication">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="lockApplicationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteApplicationAttachment">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteApplicationAttachment">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteApplicationAttachmentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="removeUserInApplicationTeam">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="removeUserInApplicationTeam">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="removeUserInApplicationTeamResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchApplications">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchApplications">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchApplicationsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createComponentFromApplication">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createComponentFromApplication">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createComponentFromApplicationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="clone">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="clone">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="cloneResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchUserInApplicationTeam">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchUserInApplicationTeam">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchUserInApplicationTeamResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApplicationAttachmentDetails">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getApplicationAttachmentDetails">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getApplicationAttachmentDetailsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createApplicationAttachment">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createApplicationAttachment">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createApplicationAttachmentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="addUserToApplicationTeam">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="addUserToApplicationTeam">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="addUserToApplicationTeamResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchApplicationRequests">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchApplicationRequests">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchApplicationRequestsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getTaskListForApplication">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getTaskListForApplication">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getTaskListForApplicationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateApplication">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateApplication">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateApplicationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="associateProtexProject">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="associateProtexProject">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="associateProtexProjectResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="disassociateProtexProject">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="disassociateProtexProject">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="disassociateProtexProjectResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getAssociatedProtexProject">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getAssociatedProtexProject">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getAssociatedProtexProjectResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchApplicationAttachments">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchApplicationAttachments">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchApplicationAttachmentsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createApplication">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createApplication">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createApplicationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getProtexOnlyComponentsFromLastValidation">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getProtexOnlyComponentsFromLastValidation">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getProtexOnlyComponentsFromLastValidationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCommonComponentsFromLastValidation">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCommonComponentsFromLastValidation">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCommonComponentsFromLastValidationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApplicationAttachmentContent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getApplicationAttachmentContent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getApplicationAttachmentContentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApplication">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getApplication">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getApplicationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="importProtexProject">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="importProtexProject">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="importProtexProjectResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="exportCodeCenterOnlyComponentsFromLastValidation">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="exportCodeCenterOnlyComponentsFromLastValidation">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="exportCodeCenterOnlyComponentsFromLastValidationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateApplicationAttachmentDescription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateApplicationAttachmentDescription">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateApplicationAttachmentDescriptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ApplicationApiService">
+    <wsdl:port name="ApplicationApiPort" binding="tns:ApplicationApiServiceSoapBinding">
+      <soap:address location="http://localhost:9090/ApplicationApiPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

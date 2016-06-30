@@ -1,0 +1,3339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="ColaApiService" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:colaApi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:colaApi" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+  <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:request="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" version="1.0">
+<xs:complexType name="vulnerabilityInfo">
+    <xs:sequence>
+      <xs:element name="highPriorityCount" type="xs:int"/>
+      <xs:element name="lowPriorityCount" type="xs:int"/>
+      <xs:element name="mediumPriorityCount" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" version="1.0">
+<xs:complexType name="userIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:userNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="userNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="userNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:userNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:application="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:complexType abstract="true" name="nodeNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="nodeNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:nodeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="nodeIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:nodeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="requestSummary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationComponentToken" type="tns:requestApplicationComponentToken"/>
+      <xs:element minOccurs="0" name="approvalStatus" type="common:approvalStatusEnum"/>
+      <xs:element minOccurs="0" name="componentId" type="cola:componentIdToken"/>
+      <xs:element minOccurs="0" name="id" type="tns:requestIdToken"/>
+      <xs:element name="inUse" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="licenseInfo" type="cola:licenseSummary"/>
+      <xs:element minOccurs="0" name="timeCreated" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="timeSubmitted" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="usage" type="tns:componentUsageEnum"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="requestApplicationComponentToken">
+    <xs:complexContent>
+      <xs:extension base="tns:requestApplicationComponentOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="applicationId" type="application:applicationNameVersionOrIdToken"/>
+          <xs:element minOccurs="0" name="componentId" type="cola:componentNameVersionOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="requestApplicationComponentOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="requestIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:requestApplicationComponentOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:simpleType name="componentUsageEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="IMPLEMENTATION_OF_STANDARD"/>
+      <xs:enumeration value="SNIPPET"/>
+      <xs:enumeration value="FILE"/>
+      <xs:enumeration value="COMPONENT"/>
+      <xs:enumeration value="COMPONENT_MODULE"/>
+      <xs:enumeration value="COMPONENT_DYNAMIC_LIBRARY"/>
+      <xs:enumeration value="COMPONENT_SEPARATE_WORK"/>
+      <xs:enumeration value="COMPONENT_MERELY_AGGREGATED"/>
+      <xs:enumeration value="PREREQUISITE"/>
+      <xs:enumeration value="PREREQUISITE_MODULE"/>
+      <xs:enumeration value="PREREQUISITE_DYNAMIC_LIBRARY"/>
+      <xs:enumeration value="PREREQUISITE_SEPARATE_WORK"/>
+      <xs:enumeration value="PREREQUISITE_MERLY_AGGREGATED"/>
+      <xs:enumeration value="PREREQUISITE_SERVICE"/>
+      <xs:enumeration value="DEVELOPMENT_TOOL"/>
+      <xs:enumeration value="NULLIFY"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault">
+  <xs:element name="sdkFaultDetails" type="tns:sdkFaultDetails"/>
+  <xs:complexType name="sdkFaultDetails">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="causedByErrors" nillable="true" type="tns:sdkError"/>
+      <xs:element minOccurs="0" name="errorCode" type="tns:errorCode"/>
+      <xs:element minOccurs="0" name="message" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType final="extension restriction" name="sdkError">
+    <xs:sequence/>
+  </xs:complexType>
+  <xs:simpleType name="errorCode">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="NO_COMPONENT_ID_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_NAMEVERSION_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENT_ID_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENT_NAME_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_ID_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_NAME_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_RELEASE_ID_FOUND"/>
+      <xs:enumeration value="NO_COMPONENT_FOR_KBCOMPONENT_RELEASE_NAMEVERSION_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_ID_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_NAMEVERSION_FOUND"/>
+      <xs:enumeration value="NO_KB_COMPONENT_FOUND"/>
+      <xs:enumeration value="NO_APPLICATION_ID_FOUND"/>
+      <xs:enumeration value="NO_APPLICATION_NAMEVERISON_FOUND"/>
+      <xs:enumeration value="APPLICATION_CREATE_NONAME"/>
+      <xs:enumeration value="APPLICATION_CREATE_NOVERSION"/>
+      <xs:enumeration value="APPLICATION_UPDATE_NONAME"/>
+      <xs:enumeration value="APPLICATION_UPDATE_NOVERSION"/>
+      <xs:enumeration value="APPLICATION_CREATE_INVALID_ROLE"/>
+      <xs:enumeration value="APPLICATION_UPDATE_INVALID_ROLE"/>
+      <xs:enumeration value="APPLICATION_UPDATE_OWNER_ROLE_REQUIRED"/>
+      <xs:enumeration value="DATE_CANNOT_BE_NULL"/>
+      <xs:enumeration value="NO_USER_NAME_FOUND"/>
+      <xs:enumeration value="NO_USER_ID_FOUND"/>
+      <xs:enumeration value="NO_USER_ID_OR_USERNAME_FOUND"/>
+      <xs:enumeration value="APPLICATION_NAME_TOO_LONG"/>
+      <xs:enumeration value="NO_WORKFLOW_NAME_FOUND"/>
+      <xs:enumeration value="NO_WORKFLOW_ID_FOUND"/>
+      <xs:enumeration value="NO_ROLE_NAME_FOUND"/>
+      <xs:enumeration value="NO_ROLE_ID_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTE_NAME_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTE_VALUE_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTE_ID_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTEGROUP_NAME_FOUND"/>
+      <xs:enumeration value="NO_ATTRIBUTEGROUP_ID_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_ATTRIBUTEGROUP_NAME_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_ATTRIBUTEGROUP_ID_FOUND"/>
+      <xs:enumeration value="NO_REQUEST_FOUND"/>
+      <xs:enumeration value="NO_REQUEST_ID_FOUND"/>
+      <xs:enumeration value="NO_REQUEST_LICENSE_FOUND"/>
+      <xs:enumeration value="METHOD_NOT_YET_IMPLEMENTED"/>
+      <xs:enumeration value="INVALID_CREDENTIALS"/>
+      <xs:enumeration value="INSUFFICIENT_PERMISSION"/>
+      <xs:enumeration value="SDK_LICENSE_UNAVAILABLE"/>
+      <xs:enumeration value="SDK_LICENSE_EXPIRED"/>
+      <xs:enumeration value="UNKNOWN_ERROR"/>
+      <xs:enumeration value="GENERIC_ERROR"/>
+      <xs:enumeration value="TASK_NOT_PRESENT"/>
+      <xs:enumeration value="NO_PERMISSION_UPDATE_REQUEST_LICENSE"/>
+      <xs:enumeration value="TODO_CONVERT_EXCEPTION"/>
+      <xs:enumeration value="INVALID_SORT_KEY"/>
+      <xs:enumeration value="UNEXPECTED_EXCEPTION_ERROR"/>
+      <xs:enumeration value="CLIENT_WRITING_ERROR"/>
+      <xs:enumeration value="PAGE_FILTER_NULL"/>
+      <xs:enumeration value="PAGE_FILTER_INVALID_FIRSTROW"/>
+      <xs:enumeration value="PAGE_FILTER_INVALID_LASTROW"/>
+      <xs:enumeration value="PAGE_FILTER_INVALID_RANGE"/>
+      <xs:enumeration value="PROTEX_SERVER_USER_ASSOCIATED"/>
+      <xs:enumeration value="PROTEX_SERVER_CREDENTIALS_ASSOCIATED"/>
+      <xs:enumeration value="APPROVAL_RULE_NOT_VALID_ATTRIBUTE"/>
+      <xs:enumeration value="APPROVAL_RULE_NOT_VALID_ATTRIBUTE_TYPE"/>
+      <xs:enumeration value="APPROVAL_RULE_NOT_VALID"/>
+      <xs:enumeration value="NO_LICENSE_ID_FOUND"/>
+      <xs:enumeration value="NO_LICENSE_NAME_FOUND"/>
+      <xs:enumeration value="NO_SERVER_ID_FOUND"/>
+      <xs:enumeration value="NO_SERVER_NAME_FOUND"/>
+      <xs:enumeration value="NO_PROTEX_PROJECT_ASSOCIATED"/>
+      <xs:enumeration value="NO_PROJECT_ID_FOUND"/>
+      <xs:enumeration value="NO_PROJECT_NAME_FOUND"/>
+      <xs:enumeration value="NO_CREDENTIALS_FOUND"/>
+      <xs:enumeration value="PROTEX_SERVER_NOT_REACHABLE"/>
+      <xs:enumeration value="NO_PROTEX_PROJECT_FOUND"/>
+      <xs:enumeration value="PROJECT_ALREADY_ASSOCIATED"/>
+      <xs:enumeration value="APPLICATION_ALREADY_ASSOCIATED"/>
+      <xs:enumeration value="PROTEX_SDK_FAULT"/>
+      <xs:enumeration value="WEBSERVICE_EXCEPTION"/>
+      <xs:enumeration value="NO_APPLICATION_WITH_ASSOCIATED_PROTEX_PROJECT_FOUND"/>
+      <xs:enumeration value="APPLICATION_NOT_ASSOCIATED_WITH_PROTEX_PROJECT"/>
+      <xs:enumeration value="NO_APPLICATION_ASSOCIATED_TO_PROTEX_PROJECT"/>
+      <xs:enumeration value="NO_PROTEX_SERVER_ASSOCIATED_WITH_APPLICATION_FOUND"/>
+      <xs:enumeration value="INVALID_PROTEX_CREDENTIALS_FOR_SUB_PROJECTS_FOUND"/>
+      <xs:enumeration value="APPLICATIN_NO_VALIDATION"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_ID_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_NAME_FOUND"/>
+      <xs:enumeration value="NO_TASK_DEFINITION_ID_FOUND"/>
+      <xs:enumeration value="NO_TASK_DEFINITION_NAME_FOUND"/>
+      <xs:enumeration value="INVALID_APPLICATION_STATIC_FIELD_ENUM_FOUND"/>
+      <xs:enumeration value="INVALID_COMPONENT_STATIC_FIELD_ENUM_FOUND"/>
+      <xs:enumeration value="INVALID_COMPONENTUSE_STATIC_FIELD_ENUM_FOUND"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_NAME_VERSION"/>
+      <xs:enumeration value="NO_EMPTY_COMPONENT_NAME_VERSION"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_ATTACHMENT_ID"/>
+      <xs:enumeration value="NO_EMPTY_COMPONENT_ATTACHMENT_ID"/>
+      <xs:enumeration value="NO_NULL_APPROVAL_STATUS"/>
+      <xs:enumeration value="NO_EMPTY_TRANSITION_NAME"/>
+      <xs:enumeration value="NO_GLOBAL_APPROVAL_CRITERIA_ID_FOUND"/>
+      <xs:enumeration value="NO_GLOBAL_APPROVAL_CRITERIA_FOUND_FOR_COMPONENT_APPROVAL"/>
+      <xs:enumeration value="NO_TANSITION_NAME_FOUND"/>
+      <xs:enumeration value="NO_NULL_TASKINSTANCE_ID"/>
+      <xs:enumeration value="NO_NULL_PASSWORD"/>
+      <xs:enumeration value="NO_EMPTY_PASSWORD"/>
+      <xs:enumeration value="NO_NULL_USER_NAME"/>
+      <xs:enumeration value="NO_NULL_NAME_FOR_CLONE_APPLICATION"/>
+      <xs:enumeration value="NO_NULL_VERSION_FOR_CLONE_APPLICATION"/>
+      <xs:enumeration value="NO_NULL_APPROVAL_NAME"/>
+      <xs:enumeration value="ERROR_READING_INPUT_FILE_STREAM"/>
+      <xs:enumeration value="NO_BOARD_ID_FOUND"/>
+      <xs:enumeration value="NO_BOARD_NAME_FOUND"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_VERSION"/>
+      <xs:enumeration value="NO_NULL_COMPONENT_NAME"/>
+      <xs:enumeration value="NO_NULL_APPLICATION_VERSION"/>
+      <xs:enumeration value="NO_NULL_APPLICATION_NAME"/>
+      <xs:enumeration value="NO_LATEST_WORKFLOW_VERSION"/>
+      <xs:enumeration value="NO_ATTACHMENT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="APPLICATION_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="APPLICATION_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="APPROVAL_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="COMPONENT_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="COMPONENT_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="COMPONENT_ATTACHMENT_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUEST_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUEST_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUEST_ALREADY_SUBMITTED"/>
+      <xs:enumeration value="USER_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="USER_UPDATE_BEAN_NULL"/>
+      <xs:enumeration value="REQUIRED_ATTRIBUTE_ID_NOT_FOUND"/>
+      <xs:enumeration value="REQUIRED_ATTRIBUTE_VALUE_EMPTY"/>
+      <xs:enumeration value="NO_VALID_ATTRIBUTE_GROUP_TYPE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_CRITERIA_ID_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_CRITERIA_FOUND_FOR_REQUEST_APPROVAL"/>
+      <xs:enumeration value="NO_NULL_TASK_INSTANCE_ID"/>
+      <xs:enumeration value="NO_ATTACHMENT_FOUND_WITH_ID"/>
+      <xs:enumeration value="ATTACHMENT_IO_ERROR"/>
+      <xs:enumeration value="ATTACHMENT_SQL_ERROR"/>
+      <xs:enumeration value="NOT_A_DEVELOPER_USER"/>
+      <xs:enumeration value="NO_APPEAL_ACTION_FOUND_FOR_REQUEST"/>
+      <xs:enumeration value="ATTRIBUTE_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="ATTRIBUTE_NAME_FOUND_WITH_NULL"/>
+      <xs:enumeration value="ATTRIBUTE_TYPE_FOUND_WITH_NULL"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_NAME_FOUND_NULL"/>
+      <xs:enumeration value="NO_VULNERABILITY_STATUS_ID_FOUND"/>
+      <xs:enumeration value="NO_VULNERABILITY_ID_FOUND"/>
+      <xs:enumeration value="NO_VULNERABILITY_STATUS_NAME_FOUND"/>
+      <xs:enumeration value="NO_VULNERABILITY_NAME_FOUND"/>
+      <xs:enumeration value="APPLICATION_ATTACHMENT_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="PROTEX_SUB_PROJECT_FOUND"/>
+      <xs:enumeration value="ROLE_NOT_ASSIGNED_FOR_IMPORTING_APPLICATION"/>
+      <xs:enumeration value="NOT_AN_APPLICATION_ROLE"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_NAME_FOUND_NULL"/>
+      <xs:enumeration value="NOT_A_VALID_ROLE_ASSIGNMENT_FOR_APPLICATION"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_UPDATE_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_TYPE_NULL"/>
+      <xs:enumeration value="ATTACHMENT_FILE_SIZE_ZERO"/>
+      <xs:enumeration value="ATTACHMENT_FILE_SIZE_MAX"/>
+      <xs:enumeration value="NOT_A_VALID_APPROVER_FOR_APPROVAL"/>
+      <xs:enumeration value="GLOBAL_WORKFLOW_CAN_NOT_BE_USED_IN_APPLICATION"/>
+      <xs:enumeration value="KNOWLEDGE_BASE_VERSION_NOT_SUPPORTED_FOR_IMPORT"/>
+      <xs:enumeration value="CAN_NOT_IMPORT_VALIDATE_WHEN_UNRESOLVED_CONFLICTS"/>
+      <xs:enumeration value="VALIDATE_UNSUPPORTED_SERVER_UNSYNCHRONIZED"/>
+      <xs:enumeration value="KNOWLEDGE_BASE_VERSION_NOT_SUPPORTED_FOR_VALIDATE"/>
+      <xs:enumeration value="APPLICATION_NAME_ALREADY_EXIST"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_NAME_FOUND"/>
+      <xs:enumeration value="NO_KBCOMPONENTRELEASE_VERSION_FOUND"/>
+      <xs:enumeration value="CAN_NOT_ADD_USER_TO_LOCKED_APPLICATION_TEAM"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_ADDED_IN_APPLICATION_TEAM"/>
+      <xs:enumeration value="CAN_NOT_REMOVE_USER_TO_LOCKED_APPLICATION_TEAM"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_OWNER_OF_IMPORT_APPLICATION"/>
+      <xs:enumeration value="INVALID_COMPONENTUSE_USAGE_VALUE"/>
+      <xs:enumeration value="ATTRIBUTE_OPTION_VALUE_FOUND_WITH_NULL"/>
+      <xs:enumeration value="NO_COMMENT_FOUND_FOR_SEND_BACK"/>
+      <xs:enumeration value="APPLICATION_NAME_VERSION_ALREADY_EXIST"/>
+      <xs:enumeration value="CANNOT_DELETE_UPDATE_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CANNOT_DELETE_USER_IF_APPLICATION_OWNER"/>
+      <xs:enumeration value="COMPONENT_ALREADY_EXISTS"/>
+      <xs:enumeration value="COMPONENT_ALREADY_EXISTS_IN_REQUEST"/>
+      <xs:enumeration value="CANNOT_DELETE_APPLICATION_PUBLISHED_AS_COMPONENT"/>
+      <xs:enumeration value="ATTRIBUTE_NAME_ALREADY_EXISTS"/>
+      <xs:enumeration value="ATTRIBUTE_VALUES_CANNOT_BE_EMPTY"/>
+      <xs:enumeration value="ATTRIBUTE_FORMAT_VALUE_FIELD_DATE"/>
+      <xs:enumeration value="ATTRIBUTE_FORMAT_FIELD_NUMBER"/>
+      <xs:enumeration value="ATTRIBUTE_FORMAT_FIELD_URL"/>
+      <xs:enumeration value="USER_ALREADY_EXIST"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_SET_AS_OWNER_FOR_APPLICATION"/>
+      <xs:enumeration value="COMPONENT_WITH_SAME_NAME_VER_IN_KB"/>
+      <xs:enumeration value="COMPONENT_WITH_SAME_NAME_IN_KB"/>
+      <xs:enumeration value="COMPONENT_IN_USE"/>
+      <xs:enumeration value="ATTRIBUTE_ASSOCIATION_EXISTS"/>
+      <xs:enumeration value="ATTRIBUTE_ASSOCIATION_EXISTS_AND_IN_USE"/>
+      <xs:enumeration value="WORKFLOW_CLONE_APPLICATION_WORKFLOW_NOEXIST"/>
+      <xs:enumeration value="DUPLICATE_OBJECT_CANNOT_BE_CREATED_UPDATED"/>
+      <xs:enumeration value="CAN_NOT_CREATE_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_UPDATE_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_DELETE_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="USER_NAME_CAN_NOT_EMPTY_OR_WHITESPACE"/>
+      <xs:enumeration value="USER_EMAIL_ADDRESS_NOT_VALID"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_ALREADY_EXISTS"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_CONFIGURATION_ERROR"/>
+      <xs:enumeration value="REQUEST_WITH_SEND_BACK_REQUESTER_STATUS"/>
+      <xs:enumeration value="REQUEST_WITH_SEND_BACK_REQUESTER_FOR_APPLICATION_STATUS"/>
+      <xs:enumeration value="CAN_NOT_RESET_WORKFLOW_REQUEST_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_ADD_DEVELOPERS_APPLICATION_LOCKED"/>
+      <xs:enumeration value="CAN_NOT_REMOVE_DEVELOPERS_APPLICATION_LOCKED"/>
+      <xs:enumeration value="REQUEST_COMPLETION_FAILURE"/>
+      <xs:enumeration value="REQUEST_WITH_SEND_BACK_REQUESTER_FOR_APPLICATIONREQUEST_STATUS"/>
+      <xs:enumeration value="COMPONENT_TYPE_NOT_VALID"/>
+      <xs:enumeration value="COMPONENT_ADDITIONAL_INFORMATION_NOT_VALID"/>
+      <xs:enumeration value="REQUEST_NOT_IN_PENDING_STATE"/>
+      <xs:enumeration value="NO_REQUEST_FOUND_FOR_COMPONENT"/>
+      <xs:enumeration value="PREVIOUS_NODE_REJECTED"/>
+      <xs:enumeration value="NO_EXTERNAL_NAMESPACE_REQUEST"/>
+      <xs:enumeration value="EXTERNAL_NAMESPACE_NAME_TOO_LONG"/>
+      <xs:enumeration value="DUPLICATE_EXTERNAL_NAMESPACE_KEY"/>
+      <xs:enumeration value="NO_EXTERNAL_NAMESPACE_UPDATE_REQUEST"/>
+      <xs:enumeration value="EXTERNAL_NAMESPACE_NOT_FOUND"/>
+      <xs:enumeration value="NO_EXTERNAL_NAMESPACE_KEY"/>
+      <xs:enumeration value="NO_EXTERNAL_ID_INFO"/>
+      <xs:enumeration value="NO_EXTERNAL_ID"/>
+      <xs:enumeration value="NO_KB_RELEASE_ID"/>
+      <xs:enumeration value="EXTERNAL_ID_MAPPING_FOR_OBJECT_NOT_FOUND"/>
+      <xs:enumeration value="EXTERNAL_ID_MAPPING_FOR_EXTERNAL_ID_NOT_FOUND"/>
+      <xs:enumeration value="EXTERNAL_NAMESPACE_NOTNULL_OR_EMPTY_NAME_OR_NAMESPACE"/>
+      <xs:enumeration value="NO_CODE_CENTER_OBJECT_ID"/>
+      <xs:enumeration value="NO_CODE_CENTER_OBJECT_KEY"/>
+      <xs:enumeration value="DUPLICATE_EXTERNAL_ID_MAPPING"/>
+      <xs:enumeration value="NO_CODE_CENTER_OBJECT_TYPE"/>
+      <xs:enumeration value="CONFLICTING_CODE_CENTER_OBJECT_TYPES"/>
+      <xs:enumeration value="NO_EXTERNAL_ID_MAPPING"/>
+      <xs:enumeration value="ATTRIBUTE_GROUP_NAME_ALREADY_EXISTS"/>
+      <xs:enumeration value="SORT_COLUMN_NOT_SUPPORTED"/>
+      <xs:enumeration value="SETTINGS_RESCHEDULE_ALREADY_RUNNING"/>
+      <xs:enumeration value="SETTINGS_RESCHEDULE_STOPPED"/>
+      <xs:enumeration value="DECLARED_LICENSE_CANNOT_BE_MORE_THAN_MAX_LENGH"/>
+      <xs:enumeration value="ATTRIBUTE_ID_OR_NAME_CAN_NOT_NULL"/>
+      <xs:enumeration value="APPROVER_SELECT_AT_REQUEST_TIME_IS_NOT_ENABLED"/>
+      <xs:enumeration value="APPROVER_NOT_AVAILABLE_FOR_ALL_APPROVAL_SELECT_AT_REQUEST_TIME"/>
+      <xs:enumeration value="VALIDATION_APPROVAL_NOT_IN_WF_OR_NO_REQUEST_APPROVER_SELECTION_OPTION"/>
+      <xs:enumeration value="CAN_NOT_CREATE_COMPONENT_WITH_NAME_VERSION_MIMATCH_FOR_RELEASE"/>
+      <xs:enumeration value="CAN_NOT_CREATE_COMPONENT_WITH_NAME_MISMATCH_FORGENERIC"/>
+      <xs:enumeration value="IN_ACTIVE_USER_CAN_NOT_BE_USED"/>
+      <xs:enumeration value="REQUEST_NOT_SUBMITTED"/>
+      <xs:enumeration value="APPLICATION_LOCKED"/>
+      <xs:enumeration value="NOT_VALID_LIST_OF_ROLES"/>
+      <xs:enumeration value="USER_NAME_ID_CAN_NOT_EMPTY_OR_WHITESPACE"/>
+      <xs:enumeration value="BOARD_NAME_ID_CAN_NOT_EMPTY"/>
+      <xs:enumeration value="USER_ROLE_ASSIGNMENT_NULL"/>
+      <xs:enumeration value="INVALID_BOARD_ROLE"/>
+      <xs:enumeration value="INVALID_USER_ROLE"/>
+      <xs:enumeration value="INVALID_OVERALL_ROLE"/>
+      <xs:enumeration value="NO_LDAP_AUTHENTICATION_TYPE"/>
+      <xs:enumeration value="LDAP_GROUP_NAME_ID_CAN_NOT_EMPTY"/>
+      <xs:enumeration value="NOT_VALID_LIST_OF_LDAP_GROUP_ROLES"/>
+      <xs:enumeration value="LDAP_GROUP_NOT_FOUND"/>
+      <xs:enumeration value="NO_LDAP_GROUPROLE_FOR_OVERALL"/>
+      <xs:enumeration value="NO_LDAP_GROUPROLE_FOR_BOARD"/>
+      <xs:enumeration value="NO_LDAP_GROUPROLE_FOR_APPLICATION"/>
+      <xs:enumeration value="REQUEST_PREVIOUS_NODE_INCOMPLETE"/>
+      <xs:enumeration value="NO_NODE_ID_FOUND"/>
+      <xs:enumeration value="INVALID_DECISION_NODE_ID"/>
+      <xs:enumeration value="INVALID_DECISION_NODE_NAME"/>
+      <xs:enumeration value="NO_VALID_WORKFLOW"/>
+      <xs:enumeration value="NO_DATA_FOUND"/>
+      <xs:enumeration value="NOT_RELEASE_COMPONENT"/>
+      <xs:enumeration value="RELEASEID_CAN_NOT_NULL"/>
+      <xs:enumeration value="LICENSEORFAMILYID_CAN_NOT_NULL"/>
+      <xs:enumeration value="PAGEFILTER_CAN_NOT_NULL"/>
+      <xs:enumeration value="RELEASE_ID_AND_SCAN_ID_CAN_NOT_NULL"/>
+      <xs:enumeration value="PAGENO_AND_PAGESIZE_CAN_NOT_NULL"/>
+      <xs:enumeration value="FAMILY_ID_NULL"/>
+      <xs:enumeration value="LICENSE_ID_NULL"/>
+      <xs:enumeration value="FILEID_NOT_NULL"/>
+      <xs:enumeration value="FILEID_AND_SCAN_ID_NOT_NULL"/>
+      <xs:enumeration value="NOT_FOUND_EXCEPTION"/>
+      <xs:enumeration value="NO_RELEASE_ID_NULL"/>
+      <xs:enumeration value="AUTHENTICATION_FAILED_EXCEPTION"/>
+      <xs:enumeration value="NO_DATA_FOUND_EXCEPTION"/>
+      <xs:enumeration value="UNABLE_DISPLAY_DATA_FAMILY"/>
+      <xs:enumeration value="UNABLE_DISPLAY_DATA_LICENSE"/>
+      <xs:enumeration value="DEEPLICENCE_SERVER_NOT_REACHABLE"/>
+      <xs:enumeration value="DEPRECATED_KBCOMPONENTRELEASE_COMPONENT_FOUND"/>
+      <xs:enumeration value="DEPRECATED_COMPONENT_FOUND"/>
+      <xs:enumeration value="VALIDATION_USER_NO_DELETE_ATTRIBUTE"/>
+      <xs:enumeration value="VALIDATION_USER_NO_UPDATE_INACTIVE"/>
+      <xs:enumeration value="ATTRIBUTE_USER_SUGGESTION_BOX_NOTSUPPORTED"/>
+      <xs:enumeration value="CREDENTIAL_VALIDATION_REMOTE_EXCEPTION"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_BOARD_RULE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_TASK_ASSIGNEE_RULE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_TASK_GROUP_RULE_FOUND"/>
+      <xs:enumeration value="NO_APPROVAL_DEFINITION_APPROVER_RULE_FOUND"/>
+      <xs:enumeration value="NO_PERMISSION_TO_UPDATE_RULES"/>
+      <xs:enumeration value="NO_RULE_TO_CONFIGURE"/>
+      <xs:enumeration value="WRONG_SELECTION_TYPE_FOR_APPROVAL"/>
+      <xs:enumeration value="APPROVAL_EXISTING_RULES_CANNOT_BE_REMOVED"/>
+      <xs:enumeration value="APPROVAL_ALREADY_EXISTS"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_BEAN_NULL"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_NAME_ALREADY_EXIST"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_NAME_NOT_EMPTY"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_SERVICEURL_NOT_EMPTY"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_REQUESTMETHOD_NOT_EMPTY"/>
+      <xs:enumeration value="WORKFLOWWEBRESOURCE_REQUESTMETHOD_NOT_VALID"/>
+      <xs:enumeration value="NO_WORKFLOWWEBRESOURCE_ID_FOUND"/>
+      <xs:enumeration value="NO_WORKFLOWWEBRESOURCE_NAME_FOUND"/>
+      <xs:enumeration value="WEB_RESOURCE_TRANSITION_NOT_EXISTS"/>
+      <xs:enumeration value="WEB_RESOURCE_TRANSITION_NULL"/>
+      <xs:enumeration value="COMMENT_NOT_FOUND"/>
+      <xs:enumeration value="WEB_RESOURCE_NULL"/>
+      <xs:enumeration value="WEB_RESOURCE_TASK_ALREADY_COMPLETED"/>
+      <xs:enumeration value="WEB_RESOURCE_DEF_NOT_FOUND"/>
+      <xs:enumeration value="WEB_RESOURCE_APPLICATION_LOCKED"/>
+      <xs:enumeration value="WEB_RESOURCE_CANNOT_RESET"/>
+      <xs:enumeration value="WEB_RESOURCE_EXECUTION_ERROR"/>
+      <xs:enumeration value="WEB_RESOURCE_WITHWORKFLOWREFERENCE_CANNOT_BE_DELETED"/>
+      <xs:enumeration value="NO_NULL_DOWNLOADHASHTYPE_ALLOWED"/>
+      <xs:enumeration value="NO_NULL_KB_COMPONENT_RELEASE_ID_ALLOWED"/>
+      <xs:enumeration value="NO_NULL_OR_EMPTY_HASH_ALLOWED"/>
+      <xs:enumeration value="ROLE_ALREADY_PRESENT"/>
+      <xs:enumeration value="PERMISSION_NOT_PRESENT"/>
+      <xs:enumeration value="ROLE_LOCKED"/>
+      <xs:enumeration value="ROLE_GENERIC_VALIDATION_EXCEPTION"/>
+      <xs:enumeration value="ROLE_CANNOT_BE_NULL"/>
+      <xs:enumeration value="ROLE_NAME_CANNOT_BE_NULL_OR_EMPTY"/>
+      <xs:enumeration value="ROLE_TYPE_ENUM_CANNOT_BE_NULL"/>
+      <xs:enumeration value="ROLE_IN_USE"/>
+      <xs:enumeration value="NO_TASK_PRESENT"/>
+      <xs:enumeration value="INVALID_ORDER_FIELD"/>
+      <xs:enumeration value="ENUM_CANNOT_BE_NULL"/>
+      <xs:enumeration value="REPORT_ID_NULL"/>
+      <xs:enumeration value="INVALID_MAIN_REPORT"/>
+      <xs:enumeration value="INVALID_APPLICATION_REPORT"/>
+      <xs:enumeration value="INVALID_COMPONENT_REPORT"/>
+      <xs:enumeration value="NO_REPORT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="NO_REPORT_FOUND_WITH_ID"/>
+      <xs:enumeration value="REPORT_PARAMETER_VALIDATION_ERROR"/>
+      <xs:enumeration value="REPORT_PARAMETER_VALIDATION_INVALID_VALUE"/>
+      <xs:enumeration value="REPORT_PARAMETER_VALIDATION_INVALID_TYPE"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_NULL"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_FUTURE"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_DIFFERENCE"/>
+      <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_INVALID"/>
+      <xs:enumeration value="STARTDATE_CANNOT_BE_GREATER_THAN_ENDDATE"/>
+      <xs:enumeration value="VALIDATION_WORKFLOW_LATEST_NOTEXIST"/>
+      <xs:enumeration value="REQUEST_VULNE_UPDATE_NULL"/>
+      <xs:enumeration value="REQUEST_VULNE_NOT_FOUND"/>
+      <xs:enumeration value="SEARCH_BEAN_CANNOT_BE_NULL"/>
+      <xs:enumeration value="ONLY_ONE_VALUE_ALLOWED"/>
+      <xs:enumeration value="SEARCH_USING_INVALID_OPERATOR_FOR_ATTRIBUTE"/>
+      <xs:enumeration value="INVALID_RELEASE_DATE"/>
+      <xs:enumeration value="INVALID_ATTRIBUTE_NOT_INCLUDE_IN_SEARCH_INDEX"/>
+      <xs:enumeration value="INVALID_ATTRIBUTE_VALUE"/>
+      <xs:enumeration value="NO_SEARCH_FIELD_OPERATOR_VALUES_SET"/>
+      <xs:enumeration value="ATTACHMENT_NAME_TOO_LONG"/>
+      <xs:enumeration value="CANNOT_UPDATE_APPROVAl_CRITERIA"/>
+      <xs:enumeration value="CANNOT_UPDATE_TASK"/>
+      <xs:enumeration value="CANNOT_UPDATE_REQUEST_MOREINFO"/>
+      <xs:enumeration value="GENERIC_CUSTOMCOMPONENTNAMEORIDTOKEN_CANNOT_NULL"/>
+      <xs:enumeration value="NO_GENRIC_COMPONENT_FOUND_WITH_ID"/>
+      <xs:enumeration value="NO_GENERIC_COMPONENT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="MULTIPLE_PARENT_COMPONENT_FOUND_WITH_NAME"/>
+      <xs:enumeration value="WRONG_GENERICCOMPONENT_ID_PASSED"/>
+      <xs:enumeration value="GENERICCOMPONENT_PASSED_MISMATCHED"/>
+      <xs:enumeration value="VALIDATION_USER_SSO_ENABLED"/>
+      <xs:enumeration value="CREDENTIAL_VALIDATION_SSO_ENABLED_SERVER"/>
+      <xs:enumeration value="GENERIC_CUSTOMCOMPONENTIDTOKEN_IS_NULL"/>
+      <xs:enumeration value="GENERIC_CUSTOMCOMPONENTNAMETOKEN_IS_NULL"/>
+      <xs:enumeration value="GENERIC_COMPONENT_CANNOT_BE_UPDATED"/>
+      <xs:enumeration value="COMPONENT_WHERE_USED_IN_APPLICATION"/>
+      <xs:enumeration value="GENERIC_COMPONENT_FILED_EMPTY"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:xmime="http://www.w3.org/2005/05/xmlmime" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data"/>
+<xs:import namespace="http://www.w3.org/2005/05/xmlmime"/>
+  <xs:complexType name="nameDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="attributeValue">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attributeId" type="ns1:attributeNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="attachmentContent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentContent" type="xs:base64Binary" xmime:expectedContentTypes="application/octet-stream"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="pageFilter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="firstRowIndex" type="xs:int"/>
+      <xs:element minOccurs="0" name="lastRowIndex" type="xs:int"/>
+      <xs:element minOccurs="0" name="sortAscending" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="attachmentCreate">
+    <xs:complexContent>
+      <xs:extension base="tns:attachmentContent">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="description" type="xs:string"/>
+          <xs:element minOccurs="0" name="fileName" type="xs:string"/>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="attachment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="contentType" type="xs:string"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="fileName" type="xs:string"/>
+      <xs:element minOccurs="0" name="filesize" type="xs:string"/>
+      <xs:element name="filesizeBytes" type="xs:long"/>
+      <xs:element minOccurs="0" name="id" type="xs:string"/>
+      <xs:element minOccurs="0" name="timeUploaded" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="userUploaded" type="ns2:userIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="attachmentPageFilter">
+    <xs:complexContent>
+      <xs:extension base="tns:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:attachmentColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="node">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="approvalNode">
+    <xs:complexContent>
+      <xs:extension base="tns:node">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="approvalRule" type="xs:string"/>
+          <xs:element minOccurs="0" name="approvalStatus" type="tns:approvalStatusEnum"/>
+          <xs:element minOccurs="0" name="approvalTime" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="approverRule" type="xs:string"/>
+          <xs:element minOccurs="0" name="assignType" type="ns3:assignmentTypeEnum"/>
+          <xs:element minOccurs="0" name="assignedTo" type="ns2:userIdToken"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValueList" nillable="true" type="tns:attributeValue"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="availableActions" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="boardId" type="ns3:boardIdToken"/>
+          <xs:element minOccurs="0" name="boardRule" type="xs:string"/>
+          <xs:element name="canceled" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="completedBy" type="ns2:userIdToken"/>
+          <xs:element minOccurs="0" name="createdTime" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="id" type="ns3:approvalIdToken"/>
+          <xs:element minOccurs="0" name="nodeName" type="xs:string"/>
+          <xs:element minOccurs="0" name="resetComment" type="xs:string"/>
+          <xs:element name="setByRule" type="xs:boolean"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="decisionNode">
+    <xs:complexContent>
+      <xs:extension base="tns:node">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="componentId" type="xs:string"/>
+          <xs:element minOccurs="0" name="componentUseId" type="xs:string"/>
+          <xs:element minOccurs="0" name="dateTransition" type="xs:dateTime"/>
+          <xs:element name="defaultPath" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="id" type="xs:long"/>
+          <xs:element minOccurs="0" name="nodeName" type="xs:string"/>
+          <xs:element minOccurs="0" name="ruleExpression" type="xs:string"/>
+          <xs:element minOccurs="0" name="transitionName" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskNode">
+    <xs:complexContent>
+      <xs:extension base="tns:node">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="assignType" type="ns3:assignmentTypeEnum"/>
+          <xs:element minOccurs="0" name="assignedTo" type="ns2:userIdToken"/>
+          <xs:element minOccurs="0" name="assigneeRule" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValueList" nillable="true" type="tns:attributeValue"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="availableTransitions" nillable="true" type="xs:string"/>
+          <xs:element name="canceled" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="createdTime" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="displayAssigneeRule" type="xs:string"/>
+          <xs:element minOccurs="0" name="displayTaskGroupRule" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="ns3:taskIdToken"/>
+          <xs:element minOccurs="0" name="nodeName" type="xs:string"/>
+          <xs:element minOccurs="0" name="resetComment" type="xs:string"/>
+          <xs:element minOccurs="0" name="taskGroupId" type="ns3:taskGroupIdToken"/>
+          <xs:element minOccurs="0" name="taskGroupRule" type="xs:string"/>
+          <xs:element minOccurs="0" name="transitionBy" type="ns2:userIdToken"/>
+          <xs:element minOccurs="0" name="transitionId" type="xs:long"/>
+          <xs:element minOccurs="0" name="transitionName" type="xs:string"/>
+          <xs:element minOccurs="0" name="transitionTime" type="xs:dateTime"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="webResourceNode">
+    <xs:complexContent>
+      <xs:extension base="tns:node">
+        <xs:sequence>
+          <xs:element name="cancelled" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="cancelledDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="comment" type="xs:string"/>
+          <xs:element minOccurs="0" name="createdDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="executionStatus" type="xs:string"/>
+          <xs:element minOccurs="0" name="lastExecutionDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="methodType" type="xs:string"/>
+          <xs:element minOccurs="0" name="resetDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="resetcomment" type="xs:string"/>
+          <xs:element minOccurs="0" name="url" type="xs:string"/>
+          <xs:element minOccurs="0" name="webResourceDefinitionNameToken" type="ns3:webResourceNameToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:simpleType name="approvalStatusEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ALL"/>
+      <xs:enumeration value="PENDING"/>
+      <xs:enumeration value="CANCELED"/>
+      <xs:enumeration value="APPROVED"/>
+      <xs:enumeration value="DEFERRED"/>
+      <xs:enumeration value="REJECTED"/>
+      <xs:enumeration value="APPEALED"/>
+      <xs:enumeration value="NOTSUBMITTED"/>
+      <xs:enumeration value="MOREINFO"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="attachmentColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ATTACHMENT_FILE_NAME"/>
+      <xs:enumeration value="ATTACHMENT_DESCRIPTION"/>
+      <xs:enumeration value="ATTACHMENT_UPLOADED_BY"/>
+      <xs:enumeration value="ATTACHMENT_TIMESTAMP"/>
+      <xs:enumeration value="ATTACHMENT_CONTENT_TYPE"/>
+      <xs:enumeration value="ATTACHMENT_FILE_SIZE"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="approvalStatusFilterEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ALL"/>
+      <xs:enumeration value="PENDING_APPROVAL_TASKS"/>
+      <xs:enumeration value="ALL_APPROVALS"/>
+      <xs:enumeration value="ALL_DECISIONS"/>
+      <xs:enumeration value="ALL_TASKS"/>
+      <xs:enumeration value="ALL_DECISION_TASKS"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:ns4="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns5="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:ns6="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" xmlns:ns7="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:colaApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:colaApi" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:element name="completeComponentApproval" type="tns:completeComponentApproval"/>
+<xs:element name="completeComponentApprovalResponse" type="tns:completeComponentApprovalResponse"/>
+<xs:element name="completeComponentTask" type="tns:completeComponentTask"/>
+<xs:element name="completeComponentTaskResponse" type="tns:completeComponentTaskResponse"/>
+<xs:element name="completeWebResourceTask" type="tns:completeWebResourceTask"/>
+<xs:element name="completeWebResourceTaskResponse" type="tns:completeWebResourceTaskResponse"/>
+<xs:element name="createCatalogComponent" type="tns:createCatalogComponent"/>
+<xs:element name="createCatalogComponentFromGenericKBComponent" type="tns:createCatalogComponentFromGenericKBComponent"/>
+<xs:element name="createCatalogComponentFromGenericKBComponentResponse" type="tns:createCatalogComponentFromGenericKBComponentResponse"/>
+<xs:element name="createCatalogComponentFromKb" type="tns:createCatalogComponentFromKb"/>
+<xs:element name="createCatalogComponentFromKbResponse" type="tns:createCatalogComponentFromKbResponse"/>
+<xs:element name="createCatalogComponentRelease" type="tns:createCatalogComponentRelease"/>
+<xs:element name="createCatalogComponentReleaseResponse" type="tns:createCatalogComponentReleaseResponse"/>
+<xs:element name="createCatalogComponentResponse" type="tns:createCatalogComponentResponse"/>
+<xs:element name="createComponentAttachment" type="tns:createComponentAttachment"/>
+<xs:element name="createComponentAttachmentResponse" type="tns:createComponentAttachmentResponse"/>
+<xs:element name="deleteCatalogComponent" type="tns:deleteCatalogComponent"/>
+<xs:element name="deleteCatalogComponentResponse" type="tns:deleteCatalogComponentResponse"/>
+<xs:element name="deleteComponentAttachment" type="tns:deleteComponentAttachment"/>
+<xs:element name="deleteComponentAttachmentResponse" type="tns:deleteComponentAttachmentResponse"/>
+<xs:element name="deleteGenericCustomComponent" type="tns:deleteGenericCustomComponent"/>
+<xs:element name="deleteGenericCustomComponentResponse" type="tns:deleteGenericCustomComponentResponse"/>
+<xs:element name="getCatalogComponent" type="tns:getCatalogComponent"/>
+<xs:element name="getCatalogComponentByKbComponentRelease" type="tns:getCatalogComponentByKbComponentRelease"/>
+<xs:element name="getCatalogComponentByKbComponentReleaseResponse" type="tns:getCatalogComponentByKbComponentReleaseResponse"/>
+<xs:element name="getCatalogComponentRelease" type="tns:getCatalogComponentRelease"/>
+<xs:element name="getCatalogComponentReleaseResponse" type="tns:getCatalogComponentReleaseResponse"/>
+<xs:element name="getCatalogComponentResponse" type="tns:getCatalogComponentResponse"/>
+<xs:element name="getCatalogComponentsByKbComponent" type="tns:getCatalogComponentsByKbComponent"/>
+<xs:element name="getCatalogComponentsByKbComponentResponse" type="tns:getCatalogComponentsByKbComponentResponse"/>
+<xs:element name="getComponentAttachmentContent" type="tns:getComponentAttachmentContent"/>
+<xs:element name="getComponentAttachmentContentResponse" type="tns:getComponentAttachmentContentResponse"/>
+<xs:element name="getComponentAttachmentDetails" type="tns:getComponentAttachmentDetails"/>
+<xs:element name="getComponentAttachmentDetailsResponse" type="tns:getComponentAttachmentDetailsResponse"/>
+<xs:element name="getComponentWorkflowNodes" type="tns:getComponentWorkflowNodes"/>
+<xs:element name="getComponentWorkflowNodesResponse" type="tns:getComponentWorkflowNodesResponse"/>
+<xs:element name="getCustomComponentReleases" type="tns:getCustomComponentReleases"/>
+<xs:element name="getCustomComponentReleasesResponse" type="tns:getCustomComponentReleasesResponse"/>
+<xs:element name="getGenericCustomComponent" type="tns:getGenericCustomComponent"/>
+<xs:element name="getGenericCustomComponentResponse" type="tns:getGenericCustomComponentResponse"/>
+<xs:element name="getHashesByKbComponent" type="tns:getHashesByKbComponent"/>
+<xs:element name="getHashesByKbComponentResponse" type="tns:getHashesByKbComponentResponse"/>
+<xs:element name="getKbComponent" type="tns:getKbComponent"/>
+<xs:element name="getKbComponentRelease" type="tns:getKbComponentRelease"/>
+<xs:element name="getKbComponentReleaseResponse" type="tns:getKbComponentReleaseResponse"/>
+<xs:element name="getKbComponentReleases" type="tns:getKbComponentReleases"/>
+<xs:element name="getKbComponentReleasesByHash" type="tns:getKbComponentReleasesByHash"/>
+<xs:element name="getKbComponentReleasesByHashResponse" type="tns:getKbComponentReleasesByHashResponse"/>
+<xs:element name="getKbComponentReleasesResponse" type="tns:getKbComponentReleasesResponse"/>
+<xs:element name="getKbComponentResponse" type="tns:getKbComponentResponse"/>
+<xs:element name="getLatestComponentWorkflow" type="tns:getLatestComponentWorkflow"/>
+<xs:element name="getLatestComponentWorkflowResponse" type="tns:getLatestComponentWorkflowResponse"/>
+<xs:element name="getLicense" type="tns:getLicense"/>
+<xs:element name="getLicenseResponse" type="tns:getLicenseResponse"/>
+<xs:element name="reExecuteWebResourcetask" type="tns:reExecuteWebResourcetask"/>
+<xs:element name="reExecuteWebResourcetaskResponse" type="tns:reExecuteWebResourcetaskResponse"/>
+<xs:element name="resetComponentApproval" type="tns:resetComponentApproval"/>
+<xs:element name="resetComponentApprovalResponse" type="tns:resetComponentApprovalResponse"/>
+<xs:element name="resetComponentTask" type="tns:resetComponentTask"/>
+<xs:element name="resetComponentTaskResponse" type="tns:resetComponentTaskResponse"/>
+<xs:element name="resetDecision" type="tns:resetDecision"/>
+<xs:element name="resetDecisionResponse" type="tns:resetDecisionResponse"/>
+<xs:element name="resetWebResourceTask" type="tns:resetWebResourceTask"/>
+<xs:element name="resetWebResourceTaskResponse" type="tns:resetWebResourceTaskResponse"/>
+<xs:element name="saveComponentApproval" type="tns:saveComponentApproval"/>
+<xs:element name="saveComponentApprovalResponse" type="tns:saveComponentApprovalResponse"/>
+<xs:element name="saveComponentTask" type="tns:saveComponentTask"/>
+<xs:element name="saveComponentTaskResponse" type="tns:saveComponentTaskResponse"/>
+<xs:element name="saveWebResourceTask" type="tns:saveWebResourceTask"/>
+<xs:element name="saveWebResourceTaskResponse" type="tns:saveWebResourceTaskResponse"/>
+<xs:element name="searchAllIndexedCatalogComponents" type="tns:searchAllIndexedCatalogComponents"/>
+<xs:element name="searchAllIndexedCatalogComponentsAdvanced" type="tns:searchAllIndexedCatalogComponentsAdvanced"/>
+<xs:element name="searchAllIndexedCatalogComponentsAdvancedResponse" type="tns:searchAllIndexedCatalogComponentsAdvancedResponse"/>
+<xs:element name="searchAllIndexedCatalogComponentsResponse" type="tns:searchAllIndexedCatalogComponentsResponse"/>
+<xs:element name="searchCatalogComponents" type="tns:searchCatalogComponents"/>
+<xs:element name="searchCatalogComponentsResponse" type="tns:searchCatalogComponentsResponse"/>
+<xs:element name="searchComponentAttachments" type="tns:searchComponentAttachments"/>
+<xs:element name="searchComponentAttachmentsResponse" type="tns:searchComponentAttachmentsResponse"/>
+<xs:element name="searchComponentWhereUsedByApprovalStatus" type="tns:searchComponentWhereUsedByApprovalStatus"/>
+<xs:element name="searchComponentWhereUsedByApprovalStatusResponse" type="tns:searchComponentWhereUsedByApprovalStatusResponse"/>
+<xs:element name="searchIndexedCatalogComponents" type="tns:searchIndexedCatalogComponents"/>
+<xs:element name="searchIndexedCatalogComponentsAdvanced" type="tns:searchIndexedCatalogComponentsAdvanced"/>
+<xs:element name="searchIndexedCatalogComponentsAdvancedResponse" type="tns:searchIndexedCatalogComponentsAdvancedResponse"/>
+<xs:element name="searchIndexedCatalogComponentsResponse" type="tns:searchIndexedCatalogComponentsResponse"/>
+<xs:element name="searchIndexedKbComponents" type="tns:searchIndexedKbComponents"/>
+<xs:element name="searchIndexedKbComponentsAdvanced" type="tns:searchIndexedKbComponentsAdvanced"/>
+<xs:element name="searchIndexedKbComponentsAdvancedResponse" type="tns:searchIndexedKbComponentsAdvancedResponse"/>
+<xs:element name="searchIndexedKbComponentsResponse" type="tns:searchIndexedKbComponentsResponse"/>
+<xs:element name="searchLicenses" type="tns:searchLicenses"/>
+<xs:element name="searchLicensesResponse" type="tns:searchLicensesResponse"/>
+<xs:element name="updateCatalogComponent" type="tns:updateCatalogComponent"/>
+<xs:element name="updateCatalogComponentResponse" type="tns:updateCatalogComponentResponse"/>
+<xs:element name="updateComponentAttachmentDescription" type="tns:updateComponentAttachmentDescription"/>
+<xs:element name="updateComponentAttachmentDescriptionResponse" type="tns:updateComponentAttachmentDescriptionResponse"/>
+<xs:element name="updateGenericCustomComponent" type="tns:updateGenericCustomComponent"/>
+<xs:element name="updateGenericCustomComponentResponse" type="tns:updateGenericCustomComponentResponse"/>
+<xs:complexType name="deleteComponentAttachment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentId" type="ns1:componentAttachmentToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteComponentAttachmentResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getKbComponentRelease">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="kbReleaseId" type="ns1:kbComponentReleaseNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getKbComponentReleaseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:kbComponentRelease"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCatalogComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentId" type="ns1:componentNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCatalogComponentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:component"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getComponentAttachmentContent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentId" type="ns1:componentAttachmentToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getComponentAttachmentContentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns4:attachmentContent"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resetComponentTask">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="taskInstanceId" type="ns1:componentTaskNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resetComponentTaskResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="createCatalogComponentRelease">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentCreateBean" type="ns1:componentReleaseCreate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createCatalogComponentReleaseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:componentIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resetDecision">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="nodeId" type="ns6:nodeNameOrIdToken"/>
+      <xs:element minOccurs="0" name="componentId" type="ns1:componentNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resetDecisionResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getGenericCustomComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="genericCustomComponentNameOrIdToken" type="ns1:genericCustomComponentNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getGenericCustomComponentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:genericCustomComponent"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteCatalogComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentId" type="ns1:componentNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteCatalogComponentResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="reExecuteWebResourcetask">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="webResourceNameOrIdToken" type="ns1:componentWebResourceNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="reExecuteWebResourcetaskResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="createCatalogComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentCreateBean" type="ns1:componentCreate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createCatalogComponentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:componentIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchIndexedCatalogComponents">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchterm" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:componentPageFilter"/>
+      <xs:element name="includeVulnerabilityInfo" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchIndexedCatalogComponentsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:componentSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createComponentAttachment">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentCreateBean" type="ns1:componentAttachmentCreate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createComponentAttachmentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCatalogComponentByKbComponentRelease">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="kbReleaseId" type="ns1:kbComponentReleaseNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCatalogComponentByKbComponentReleaseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:component"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="completeComponentTask">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="ns1:componentTaskNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="arg1" type="ns4:attributeValue"/>
+      <xs:element minOccurs="0" name="arg2" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="completeComponentTaskResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="updateCatalogComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentUpdateBean" type="ns1:componentUpdate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateCatalogComponentResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getKbComponentReleases">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="kbComponentId" type="ns1:kbComponentNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getKbComponentReleasesResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:kbComponentRelease"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getKbComponentReleasesByHash">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="downloadHashType" type="ns1:downloadHashType"/>
+      <xs:element minOccurs="0" name="hash" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getKbComponentReleasesByHashResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:kbComponentRelease"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateComponentAttachmentDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentId" type="ns1:componentAttachmentToken"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateComponentAttachmentDescriptionResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="resetComponentApproval">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentApprovalId" type="ns1:componentApprovalNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resetComponentApprovalResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="resetWebResourceTask">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="webResourceNameOrIdToken" type="ns1:componentWebResourceNameOrIdToken"/>
+      <xs:element minOccurs="0" name="resetComment" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resetWebResourceTaskResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getComponentAttachmentDetails">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attachmentId" type="ns1:componentAttachmentToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getComponentAttachmentDetailsResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:componentAttachment"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchIndexedKbComponentsAdvanced">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="kbComponentAdvanceSearch" type="ns1:kbComponentAdvanceSearch"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:kbComponentPageFilter"/>
+      <xs:element name="includeVulnerabilityInfo" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchIndexedKbComponentsAdvancedResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:kbComponentSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="saveComponentApproval">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentApprovalId" type="ns1:componentApprovalNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValueBeans" type="ns4:attributeValue"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="saveComponentApprovalResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="searchCatalogComponents">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:componentPageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchCatalogComponentsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:component"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createCatalogComponentFromGenericKBComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="component" type="ns1:kbComponentNameOrIdToken"/>
+      <xs:element minOccurs="0" name="version" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" type="ns4:attributeValue"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createCatalogComponentFromGenericKBComponentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:componentIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchAllIndexedCatalogComponentsAdvanced">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentAdvanceSearch" type="ns1:componentAdvanceSearch"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:componentPageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchAllIndexedCatalogComponentsAdvancedResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:catalogComponentSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchComponentWhereUsedByApprovalStatus">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="componentId" type="ns1:componentNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="approvalStatus" type="ns4:approvalStatusEnum"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:componentUsePageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchComponentWhereUsedByApprovalStatusResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns6:requestSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCustomComponentReleases">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="genericCustomComponentNameOrIdToken" type="ns1:genericCustomComponentNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCustomComponentReleasesResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:customComponentRelease"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="saveWebResourceTask">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="webResourceNameOrIdToken" type="ns1:componentWebResourceNameOrIdToken"/>
+      <xs:element minOccurs="0" name="resetComment" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="saveWebResourceTaskResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getLatestComponentWorkflow">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="ns1:componentNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getLatestComponentWorkflowResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="searchComponentAttachments">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns4:attachmentPageFilter"/>
+      <xs:element minOccurs="0" name="componentId" type="ns1:componentNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchComponentAttachmentsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:componentAttachment"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="saveComponentTask">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentTaskId" type="ns1:componentTaskNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValueBeans" type="ns4:attributeValue"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="saveComponentTaskResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getLicense">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="ns1:licenseNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getLicenseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:license"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getHashesByKbComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="downloadHashType" type="ns1:downloadHashType"/>
+      <xs:element minOccurs="0" name="kbComponentReleaseId" type="ns1:kbComponentReleaseNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getHashesByKbComponentResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchLicenses">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:licensePageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchLicensesResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:licenseSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getComponentWorkflowNodes">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="ns1:componentNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="arg1" type="ns4:approvalStatusFilterEnum"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getComponentWorkflowNodesResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns4:node"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCatalogComponentsByKbComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="kbComponentId" type="ns1:kbComponentNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCatalogComponentsByKbComponentResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:component"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCatalogComponentRelease">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentNameVersionOrIdToken" type="ns1:componentNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getCatalogComponentReleaseResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:customComponentRelease"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getKbComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="kbComponentId" type="ns1:kbComponentNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getKbComponentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:kbComponent"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteGenericCustomComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="genericCustomComponentNameOrIdToken" type="ns1:genericCustomComponentNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="deleteGenericCustomComponentResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="completeWebResourceTask">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="webResourceNameOrIdToken" type="ns1:componentWebResourceNameOrIdToken"/>
+      <xs:element minOccurs="0" name="transitionName" type="xs:string"/>
+      <xs:element minOccurs="0" name="comment" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="completeWebResourceTaskResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="searchAllIndexedCatalogComponents">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchterm" type="xs:string"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:componentPageFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchAllIndexedCatalogComponentsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:catalogComponentSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createCatalogComponentFromKb">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="kbReleaseId" type="ns1:kbComponentReleaseNameVersionOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" type="ns4:attributeValue"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createCatalogComponentFromKbResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:componentIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchIndexedKbComponents">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
+      <xs:element minOccurs="0" name="includeDescription" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:kbComponentPageFilter"/>
+      <xs:element name="includeVulnerabilityInfo" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchIndexedKbComponentsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:kbComponentSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchIndexedCatalogComponentsAdvanced">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentAdvanceSearch" type="ns1:componentAdvanceSearch"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns1:componentPageFilter"/>
+      <xs:element name="includeVulnerabilityInfo" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchIndexedCatalogComponentsAdvancedResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:componentSummary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateGenericCustomComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="genericCustomComponentUpdate" type="ns1:genericCustomComponentUpdate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="updateGenericCustomComponentResponse">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="completeComponentApproval">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentApprovalId" type="ns1:componentApprovalNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValueBeans" type="ns4:attributeValue"/>
+      <xs:element minOccurs="0" name="newStatus" type="ns1:componentApprovalActionEnum"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="completeComponentApprovalResponse">
+    <xs:sequence/>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:application="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:approval="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data"/>
+<xs:complexType name="componentAttachmentToken">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentId" type="tns:componentNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="fileName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="componentNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="componentIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:componentNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="componentNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:componentNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="kbComponentReleaseNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="kbComponentReleaseIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponentReleaseNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponentRelease">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="categories" type="xs:string"/>
+          <xs:element minOccurs="0" name="componentHomepage" type="xs:string"/>
+          <xs:element minOccurs="0" name="componentId" type="tns:kbComponentIdToken"/>
+          <xs:element minOccurs="0" name="dbEnvironments" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="declaredLicenses" nillable="true" type="tns:kbLicenseSummary"/>
+          <xs:element name="deprecated" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="tns:kbComponentReleaseIdToken"/>
+          <xs:element minOccurs="0" name="intendedAudiences" type="xs:string"/>
+          <xs:element minOccurs="0" name="numberContributors" type="xs:int"/>
+          <xs:element minOccurs="0" name="operatingSystems" type="xs:string"/>
+          <xs:element minOccurs="0" name="programmingLanguages" type="xs:string"/>
+          <xs:element minOccurs="0" name="projectMaturity" type="xs:string"/>
+          <xs:element minOccurs="0" name="releaseDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="userInterfaces" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+          <xs:element minOccurs="0" name="vulnerabilityInfo" type="ns1:vulnerabilityInfo"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponentIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="kbComponentNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="kbComponentNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbLicenseSummary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="tns:licenseIdToken"/>
+      <xs:element minOccurs="0" name="nameToken" type="tns:licenseNameToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="licenseIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:licenseNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="licenseNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="licenseNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:licenseNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="component">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element name="applicationComponent" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="applicationId" type="application:applicationIdToken"/>
+          <xs:element minOccurs="0" name="approvalStatus" type="common:approvalStatusEnum"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="common:attributeValue"/>
+          <xs:element minOccurs="0" name="categories" type="xs:string"/>
+          <xs:element minOccurs="0" name="dbEnvironments" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="declaredLicenses" nillable="true" type="tns:licenseSummary"/>
+          <xs:element name="deprecated" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="tns:componentIdToken"/>
+          <xs:element minOccurs="0" name="intendedAudiences" type="xs:string"/>
+          <xs:element minOccurs="0" name="kbComponentId" type="tns:kbComponentIdToken"/>
+          <xs:element minOccurs="0" name="kbReleaseId" type="tns:kbComponentReleaseIdToken"/>
+          <xs:element minOccurs="0" name="nameVersion" type="tns:componentNameVersionToken"/>
+          <xs:element minOccurs="0" name="numberContributors" type="xs:int"/>
+          <xs:element minOccurs="0" name="operatingSystems" type="xs:string"/>
+          <xs:element minOccurs="0" name="programmingLanguages" type="xs:string"/>
+          <xs:element minOccurs="0" name="projectMaturity" type="xs:string"/>
+          <xs:element minOccurs="0" name="releaseDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="userInterfaces" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+          <xs:element minOccurs="0" name="vulnerabilityInfo" type="ns1:vulnerabilityInfo"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="licenseSummary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="tns:licenseIdToken"/>
+      <xs:element minOccurs="0" name="nameToken" type="tns:licenseNameToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="componentTaskNameOrIdToken">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentId" type="tns:componentNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="taskId" type="approval:taskNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="componentReleaseCreate">
+    <xs:complexContent>
+      <xs:extension base="tns:componentCreate">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="genericCustomComponentNameOrIdToken" type="tns:genericCustomComponentNameOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="componentCreate">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="common:attributeValue"/>
+          <xs:element minOccurs="0" name="categories" type="xs:string"/>
+          <xs:element minOccurs="0" name="dbEnvironments" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="declaredLicenses" nillable="true" type="tns:licenseNameOrIdToken"/>
+          <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+          <xs:element minOccurs="0" name="intendedAudiences" type="xs:string"/>
+          <xs:element minOccurs="0" name="numberContributors" type="xs:int"/>
+          <xs:element minOccurs="0" name="operatingSystems" type="xs:string"/>
+          <xs:element minOccurs="0" name="programmingLanguages" type="xs:string"/>
+          <xs:element minOccurs="0" name="projectMaturity" type="xs:string"/>
+          <xs:element minOccurs="0" name="releaseDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="userInterfaces" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="genericCustomComponentNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="genericCustomComponentIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:genericCustomComponentNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="genericCustomComponentId" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="genericCustomComponentNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:genericCustomComponentNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="genericCustomComponentName" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="genericCustomComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="categories" type="xs:string"/>
+      <xs:element minOccurs="0" name="dbEnvironments" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="declaredLicenses" nillable="true" type="tns:licenseSummary"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+      <xs:element minOccurs="0" name="idToken" type="tns:genericCustomComponentIdToken"/>
+      <xs:element minOccurs="0" name="intendedAudiences" type="xs:string"/>
+      <xs:element minOccurs="0" name="nameToken" type="tns:genericCustomComponentNameToken"/>
+      <xs:element minOccurs="0" name="numberContributors" type="xs:int"/>
+      <xs:element minOccurs="0" name="operatingSystems" type="xs:string"/>
+      <xs:element minOccurs="0" name="programmingLanguages" type="xs:string"/>
+      <xs:element minOccurs="0" name="projectMaturity" type="xs:string"/>
+      <xs:element minOccurs="0" name="pxName" type="xs:string"/>
+      <xs:element minOccurs="0" name="userInterfaces" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="componentWebResourceNameOrIdToken">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="componentId" type="tns:componentNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="workflowWebResourceDefinitionNameOrIdToken" type="approval:webResourceNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="componentPageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="componentType" type="tns:componentSearchTypeEnum"/>
+          <xs:element name="includeDeprecated" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:componentColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="componentSummary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalStatusValue" type="common:approvalStatusEnum"/>
+      <xs:element minOccurs="0" name="approvalTime" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="catalogComponentType" type="tns:componentType"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="declaredLicenseList" nillable="true" type="tns:licenseSummary"/>
+      <xs:element name="deprecated" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element name="hasVulnerablity" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+      <xs:element minOccurs="0" name="id" type="tns:componentIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="kbReleaseDate" nillable="true" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="licenseId" type="xs:string"/>
+      <xs:element minOccurs="0" name="licenseName" type="xs:string"/>
+      <xs:element minOccurs="0" name="mavenId" type="xs:string"/>
+      <xs:element minOccurs="0" name="mergedVersionCount" type="xs:int"/>
+      <xs:element minOccurs="0" name="nameVersion" type="tns:componentNameVersionToken"/>
+      <xs:element minOccurs="0" name="programmingLanguage" type="xs:string"/>
+      <xs:element name="score" type="xs:int"/>
+      <xs:element minOccurs="0" name="versionName" type="xs:string"/>
+      <xs:element minOccurs="0" name="vulnerabilityInfo" type="ns1:vulnerabilityInfo"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="componentAttachmentCreate">
+    <xs:complexContent>
+      <xs:extension base="common:attachmentCreate">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="componentId" type="tns:componentNameVersionOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="componentUpdate">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="common:attributeValue"/>
+          <xs:element minOccurs="0" name="categories" type="xs:string"/>
+          <xs:element minOccurs="0" name="dbEnvironments" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="declaredLicenses" nillable="true" type="tns:licenseNameOrIdToken"/>
+          <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="tns:componentNameVersionOrIdToken"/>
+          <xs:element minOccurs="0" name="intendedAudiences" type="xs:string"/>
+          <xs:element minOccurs="0" name="numberContributors" type="xs:int"/>
+          <xs:element minOccurs="0" name="operatingSystems" type="xs:string"/>
+          <xs:element minOccurs="0" name="programmingLanguages" type="xs:string"/>
+          <xs:element minOccurs="0" name="projectMaturity" type="xs:string"/>
+          <xs:element minOccurs="0" name="releaseDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="userInterfaces" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="componentApprovalNameOrIdToken">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="approvalId" type="approval:approvalNameOrIdToken"/>
+      <xs:element minOccurs="0" name="componentId" type="tns:componentNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="componentAttachment">
+    <xs:complexContent>
+      <xs:extension base="common:attachment">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="componentId" type="tns:componentIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponentAdvanceSearch">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="staticFields" nillable="true" type="tns:staticFieldSearchTerm"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="staticFieldSearchTerm">
+    <xs:complexContent>
+      <xs:extension base="tns:searchTerm">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="field" type="tns:staticField"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="searchTerm">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="operator" type="approval:operatorEnum"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="kbComponentPageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element name="includeDeprecated" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:kbComponentColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponentSummary">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponent">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="programmingLanguage" type="xs:string"/>
+          <xs:element minOccurs="0" name="versionCount" type="xs:int"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponent">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="declaredLicenses" nillable="true" type="tns:kbLicenseSummary"/>
+          <xs:element name="deprecated" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="tns:kbComponentIdToken"/>
+          <xs:element name="score" type="xs:int"/>
+          <xs:element minOccurs="0" name="vulnerabilityInfo" type="ns1:vulnerabilityInfo"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="componentAdvanceSearch">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentAdvanceSearch">
+        <xs:sequence>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="dynamicFields" nillable="true" type="tns:dynamicFieldSearchTerm"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="dynamicFieldSearchTerm">
+    <xs:complexContent>
+      <xs:extension base="tns:searchTerm">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="attribute:attributeNameOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="catalogComponentSummary">
+    <xs:complexContent>
+      <xs:extension base="tns:componentSummary">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="genericCustomComponentIdToken" type="tns:genericCustomComponentIdToken"/>
+          <xs:element minOccurs="0" name="genericCustomComponentNameToken" type="tns:genericCustomComponentNameToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="componentUsePageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:componentUseColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="customComponentRelease">
+    <xs:complexContent>
+      <xs:extension base="tns:component">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="genericCustomComponentIdToken" type="tns:genericCustomComponentIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="license">
+    <xs:complexContent>
+      <xs:extension base="tns:licenseSummary">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="text" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="licensePageFilter">
+    <xs:complexContent>
+      <xs:extension base="common:pageFilter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="sortedColumn" type="tns:licenseColumn"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="genericCustomComponentUpdate">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="categories" type="xs:string"/>
+          <xs:element minOccurs="0" name="dbEnvironments" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="declaredLicenses" nillable="true" type="tns:licenseNameOrIdToken"/>
+          <xs:element minOccurs="0" name="genericCustomComponentIdToken" type="tns:genericCustomComponentIdToken"/>
+          <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+          <xs:element minOccurs="0" name="intendedAudiences" type="xs:string"/>
+          <xs:element minOccurs="0" name="numberContributors" type="xs:int"/>
+          <xs:element minOccurs="0" name="operatingSystems" type="xs:string"/>
+          <xs:element minOccurs="0" name="programmingLanguages" type="xs:string"/>
+          <xs:element minOccurs="0" name="projectMaturity" type="xs:string"/>
+          <xs:element minOccurs="0" name="releaseDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="userInterfaces" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:simpleType name="componentSearchTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="STANDARD"/>
+      <xs:enumeration value="MODIFIED"/>
+      <xs:enumeration value="CUSTOM"/>
+      <xs:enumeration value="ALL"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="componentColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="COMPONENT_NAME"/>
+      <xs:enumeration value="COMPONENT_APPROVAL_STATUS"/>
+      <xs:enumeration value="COMPONENT_VERSION"/>
+      <xs:enumeration value="COMPONENT_DESCRIPTION"/>
+      <xs:enumeration value="COMPONENT_LICENSE_NAME"/>
+      <xs:enumeration value="COMPONENT_PROGRAMMING_LANGUAGE"/>
+      <xs:enumeration value="COMPONENT_SCORE"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="componentType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="STANDARD_MODIFIED"/>
+      <xs:enumeration value="APPLICATION_COMPONENT"/>
+      <xs:enumeration value="KB_DEPRECATED"/>
+      <xs:enumeration value="STANDARD"/>
+      <xs:enumeration value="CUSTOM"/>
+      <xs:enumeration value="KB_DEPRECATED_MODIFIED"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="downloadHashType">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MD5"/>
+      <xs:enumeration value="SHA1"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="staticField">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DESCRIPTION"/>
+      <xs:enumeration value="LICENSE"/>
+      <xs:enumeration value="HOMEPAGE"/>
+      <xs:enumeration value="NAME"/>
+      <xs:enumeration value="VERSION_LABEL"/>
+      <xs:enumeration value="RELEASE_DATE"/>
+      <xs:enumeration value="PROGRAMMING_LANGUAGE"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="kbComponentColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="KB_COMPONENT_NAME"/>
+      <xs:enumeration value="KB_COMPONENT_Description"/>
+      <xs:enumeration value="KB_COMPONENT_DECLARED_LICENSE_NAME"/>
+      <xs:enumeration value="KB_COMPONENT_RELEASE_DATE"/>
+      <xs:enumeration value="KB_COMPONENT_SCORE"/>
+      <xs:enumeration value="KB_COMPONENT_VERSION"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="componentUseColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="COMPONENT_NAME"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="licenseColumn">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="LICENSE_NAME"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="componentApprovalActionEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="APPROVED"/>
+      <xs:enumeration value="DEFERRED"/>
+      <xs:enumeration value="REJECTED"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" version="1.0">
+<xs:complexType abstract="true" name="attributeNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="attributeNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="attributeIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" version="1.0">
+<xs:complexType abstract="true" name="taskNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="taskNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:taskNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:taskNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="webResourceNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="webResourceNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:webResourceNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="webResourceIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:webResourceNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="approvalNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="approvalNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:approvalNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="approvalIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:approvalNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="boardIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:boardNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="boardNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="boardNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:boardNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="taskGroupIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:taskGroupNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="taskGroupNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="taskGroupNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:taskGroupNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:simpleType name="operatorEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Contains"/>
+      <xs:enumeration value="DoesNotContain"/>
+      <xs:enumeration value="Equals"/>
+      <xs:enumeration value="DoesNotEqual"/>
+    </xs:restriction>
+  </xs:simpleType>
+<xs:simpleType name="assignmentTypeEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="DEFAULT"/>
+      <xs:enumeration value="BOARD_BY_RULE"/>
+      <xs:enumeration value="APPROVER_BY_RULE"/>
+      <xs:enumeration value="SELECT_AT_REQUEST"/>
+      <xs:enumeration value="TASKGROUP_BY_RULE"/>
+      <xs:enumeration value="ASSIGNEE_BY_RULE"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" version="1.0">
+<xs:complexType name="applicationIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:applicationNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="applicationNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="applicationNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:applicationNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+  </wsdl:types>
+  <wsdl:message name="deleteComponentAttachment">
+    <wsdl:part name="parameters" element="tns:deleteComponentAttachment">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCatalogComponentByKbComponentReleaseResponse">
+    <wsdl:part name="parameters" element="tns:getCatalogComponentByKbComponentReleaseResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createCatalogComponentReleaseResponse">
+    <wsdl:part name="parameters" element="tns:createCatalogComponentReleaseResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCatalogComponentsByKbComponentResponse">
+    <wsdl:part name="parameters" element="tns:getCatalogComponentsByKbComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchIndexedKbComponentsResponse">
+    <wsdl:part name="parameters" element="tns:searchIndexedKbComponentsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCatalogComponent">
+    <wsdl:part name="parameters" element="tns:getCatalogComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getComponentAttachmentContentResponse">
+    <wsdl:part name="parameters" element="tns:getComponentAttachmentContentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createCatalogComponentRelease">
+    <wsdl:part name="parameters" element="tns:createCatalogComponentRelease">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createCatalogComponent">
+    <wsdl:part name="parameters" element="tns:createCatalogComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createCatalogComponentFromKbResponse">
+    <wsdl:part name="parameters" element="tns:createCatalogComponentFromKbResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getKbComponentResponse">
+    <wsdl:part name="parameters" element="tns:getKbComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCatalogComponentByKbComponentRelease">
+    <wsdl:part name="parameters" element="tns:getCatalogComponentByKbComponentRelease">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchComponentWhereUsedByApprovalStatusResponse">
+    <wsdl:part name="parameters" element="tns:searchComponentWhereUsedByApprovalStatusResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="completeComponentTask">
+    <wsdl:part name="parameters" element="tns:completeComponentTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveWebResourceTaskResponse">
+    <wsdl:part name="parameters" element="tns:saveWebResourceTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateComponentAttachmentDescription">
+    <wsdl:part name="parameters" element="tns:updateComponentAttachmentDescription">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resetComponentApproval">
+    <wsdl:part name="parameters" element="tns:resetComponentApproval">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCustomComponentReleasesResponse">
+    <wsdl:part name="parameters" element="tns:getCustomComponentReleasesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="completeComponentTaskResponse">
+    <wsdl:part name="parameters" element="tns:completeComponentTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchLicensesResponse">
+    <wsdl:part name="parameters" element="tns:searchLicensesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getKbComponentReleasesByHashResponse">
+    <wsdl:part name="parameters" element="tns:getKbComponentReleasesByHashResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCatalogComponentReleaseResponse">
+    <wsdl:part name="parameters" element="tns:getCatalogComponentReleaseResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="completeWebResourceTaskResponse">
+    <wsdl:part name="parameters" element="tns:completeWebResourceTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchIndexedCatalogComponentsAdvancedResponse">
+    <wsdl:part name="parameters" element="tns:searchIndexedCatalogComponentsAdvancedResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateCatalogComponentResponse">
+    <wsdl:part name="parameters" element="tns:updateCatalogComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createCatalogComponentFromGenericKBComponent">
+    <wsdl:part name="parameters" element="tns:createCatalogComponentFromGenericKBComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchComponentWhereUsedByApprovalStatus">
+    <wsdl:part name="parameters" element="tns:searchComponentWhereUsedByApprovalStatus">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveComponentTaskResponse">
+    <wsdl:part name="parameters" element="tns:saveComponentTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveWebResourceTask">
+    <wsdl:part name="parameters" element="tns:saveWebResourceTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchComponentAttachments">
+    <wsdl:part name="parameters" element="tns:searchComponentAttachments">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createCatalogComponentFromGenericKBComponentResponse">
+    <wsdl:part name="parameters" element="tns:createCatalogComponentFromGenericKBComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveComponentTask">
+    <wsdl:part name="parameters" element="tns:saveComponentTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createCatalogComponentResponse">
+    <wsdl:part name="parameters" element="tns:createCatalogComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getHashesByKbComponent">
+    <wsdl:part name="parameters" element="tns:getHashesByKbComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCatalogComponentsByKbComponent">
+    <wsdl:part name="parameters" element="tns:getCatalogComponentsByKbComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchIndexedKbComponentsAdvancedResponse">
+    <wsdl:part name="parameters" element="tns:searchIndexedKbComponentsAdvancedResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveComponentApprovalResponse">
+    <wsdl:part name="parameters" element="tns:saveComponentApprovalResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteGenericCustomComponent">
+    <wsdl:part name="parameters" element="tns:deleteGenericCustomComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCatalogComponentResponse">
+    <wsdl:part name="parameters" element="tns:getCatalogComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchCatalogComponentsResponse">
+    <wsdl:part name="parameters" element="tns:searchCatalogComponentsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLatestComponentWorkflowResponse">
+    <wsdl:part name="parameters" element="tns:getLatestComponentWorkflowResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteGenericCustomComponentResponse">
+    <wsdl:part name="parameters" element="tns:deleteGenericCustomComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createCatalogComponentFromKb">
+    <wsdl:part name="parameters" element="tns:createCatalogComponentFromKb">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchIndexedCatalogComponentsResponse">
+    <wsdl:part name="parameters" element="tns:searchIndexedCatalogComponentsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLicenseResponse">
+    <wsdl:part name="parameters" element="tns:getLicenseResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createComponentAttachmentResponse">
+    <wsdl:part name="parameters" element="tns:createComponentAttachmentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getKbComponentRelease">
+    <wsdl:part name="parameters" element="tns:getKbComponentRelease">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resetWebResourceTaskResponse">
+    <wsdl:part name="parameters" element="tns:resetWebResourceTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getComponentAttachmentContent">
+    <wsdl:part name="parameters" element="tns:getComponentAttachmentContent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resetDecisionResponse">
+    <wsdl:part name="parameters" element="tns:resetDecisionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resetComponentTask">
+    <wsdl:part name="parameters" element="tns:resetComponentTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resetDecision">
+    <wsdl:part name="parameters" element="tns:resetDecision">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getGenericCustomComponent">
+    <wsdl:part name="parameters" element="tns:getGenericCustomComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchAllIndexedCatalogComponentsResponse">
+    <wsdl:part name="parameters" element="tns:searchAllIndexedCatalogComponentsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getHashesByKbComponentResponse">
+    <wsdl:part name="parameters" element="tns:getHashesByKbComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteCatalogComponent">
+    <wsdl:part name="parameters" element="tns:deleteCatalogComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="reExecuteWebResourcetask">
+    <wsdl:part name="parameters" element="tns:reExecuteWebResourcetask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteCatalogComponentResponse">
+    <wsdl:part name="parameters" element="tns:deleteCatalogComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="deleteComponentAttachmentResponse">
+    <wsdl:part name="parameters" element="tns:deleteComponentAttachmentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="completeComponentApprovalResponse">
+    <wsdl:part name="parameters" element="tns:completeComponentApprovalResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchIndexedCatalogComponents">
+    <wsdl:part name="parameters" element="tns:searchIndexedCatalogComponents">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateGenericCustomComponentResponse">
+    <wsdl:part name="parameters" element="tns:updateGenericCustomComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createComponentAttachment">
+    <wsdl:part name="parameters" element="tns:createComponentAttachment">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="reExecuteWebResourcetaskResponse">
+    <wsdl:part name="parameters" element="tns:reExecuteWebResourcetaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateCatalogComponent">
+    <wsdl:part name="parameters" element="tns:updateCatalogComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getKbComponentReleases">
+    <wsdl:part name="parameters" element="tns:getKbComponentReleases">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getKbComponentReleasesResponse">
+    <wsdl:part name="parameters" element="tns:getKbComponentReleasesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getKbComponentReleasesByHash">
+    <wsdl:part name="parameters" element="tns:getKbComponentReleasesByHash">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resetWebResourceTask">
+    <wsdl:part name="parameters" element="tns:resetWebResourceTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getComponentAttachmentDetails">
+    <wsdl:part name="parameters" element="tns:getComponentAttachmentDetails">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getComponentAttachmentDetailsResponse">
+    <wsdl:part name="parameters" element="tns:getComponentAttachmentDetailsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateComponentAttachmentDescriptionResponse">
+    <wsdl:part name="parameters" element="tns:updateComponentAttachmentDescriptionResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchIndexedKbComponentsAdvanced">
+    <wsdl:part name="parameters" element="tns:searchIndexedKbComponentsAdvanced">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="saveComponentApproval">
+    <wsdl:part name="parameters" element="tns:saveComponentApproval">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="SdkFault">
+    <wsdl:part name="SdkFault" element="ns1:SdkFault">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchCatalogComponents">
+    <wsdl:part name="parameters" element="tns:searchCatalogComponents">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resetComponentApprovalResponse">
+    <wsdl:part name="parameters" element="tns:resetComponentApprovalResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchAllIndexedCatalogComponentsAdvanced">
+    <wsdl:part name="parameters" element="tns:searchAllIndexedCatalogComponentsAdvanced">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCustomComponentReleases">
+    <wsdl:part name="parameters" element="tns:getCustomComponentReleases">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLatestComponentWorkflow">
+    <wsdl:part name="parameters" element="tns:getLatestComponentWorkflow">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getComponentWorkflowNodesResponse">
+    <wsdl:part name="parameters" element="tns:getComponentWorkflowNodesResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLicense">
+    <wsdl:part name="parameters" element="tns:getLicense">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchLicenses">
+    <wsdl:part name="parameters" element="tns:searchLicenses">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchComponentAttachmentsResponse">
+    <wsdl:part name="parameters" element="tns:searchComponentAttachmentsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getComponentWorkflowNodes">
+    <wsdl:part name="parameters" element="tns:getComponentWorkflowNodes">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getKbComponentReleaseResponse">
+    <wsdl:part name="parameters" element="tns:getKbComponentReleaseResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getCatalogComponentRelease">
+    <wsdl:part name="parameters" element="tns:getCatalogComponentRelease">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchAllIndexedCatalogComponentsAdvancedResponse">
+    <wsdl:part name="parameters" element="tns:searchAllIndexedCatalogComponentsAdvancedResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getKbComponent">
+    <wsdl:part name="parameters" element="tns:getKbComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resetComponentTaskResponse">
+    <wsdl:part name="parameters" element="tns:resetComponentTaskResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="completeWebResourceTask">
+    <wsdl:part name="parameters" element="tns:completeWebResourceTask">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchAllIndexedCatalogComponents">
+    <wsdl:part name="parameters" element="tns:searchAllIndexedCatalogComponents">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getGenericCustomComponentResponse">
+    <wsdl:part name="parameters" element="tns:getGenericCustomComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchIndexedKbComponents">
+    <wsdl:part name="parameters" element="tns:searchIndexedKbComponents">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchIndexedCatalogComponentsAdvanced">
+    <wsdl:part name="parameters" element="tns:searchIndexedCatalogComponentsAdvanced">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="updateGenericCustomComponent">
+    <wsdl:part name="parameters" element="tns:updateGenericCustomComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="completeComponentApproval">
+    <wsdl:part name="parameters" element="tns:completeComponentApproval">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:portType name="ColaApi">
+    <wsdl:operation name="deleteComponentAttachment">
+      <wsdl:input name="deleteComponentAttachment" message="tns:deleteComponentAttachment">
+    </wsdl:input>
+      <wsdl:output name="deleteComponentAttachmentResponse" message="tns:deleteComponentAttachmentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getKbComponentRelease">
+      <wsdl:input name="getKbComponentRelease" message="tns:getKbComponentRelease">
+    </wsdl:input>
+      <wsdl:output name="getKbComponentReleaseResponse" message="tns:getKbComponentReleaseResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogComponent">
+      <wsdl:input name="getCatalogComponent" message="tns:getCatalogComponent">
+    </wsdl:input>
+      <wsdl:output name="getCatalogComponentResponse" message="tns:getCatalogComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getComponentAttachmentContent">
+      <wsdl:input name="getComponentAttachmentContent" message="tns:getComponentAttachmentContent">
+    </wsdl:input>
+      <wsdl:output name="getComponentAttachmentContentResponse" message="tns:getComponentAttachmentContentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="resetComponentTask">
+      <wsdl:input name="resetComponentTask" message="tns:resetComponentTask">
+    </wsdl:input>
+      <wsdl:output name="resetComponentTaskResponse" message="tns:resetComponentTaskResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createCatalogComponentRelease">
+      <wsdl:input name="createCatalogComponentRelease" message="tns:createCatalogComponentRelease">
+    </wsdl:input>
+      <wsdl:output name="createCatalogComponentReleaseResponse" message="tns:createCatalogComponentReleaseResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="resetDecision">
+      <wsdl:input name="resetDecision" message="tns:resetDecision">
+    </wsdl:input>
+      <wsdl:output name="resetDecisionResponse" message="tns:resetDecisionResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getGenericCustomComponent">
+      <wsdl:input name="getGenericCustomComponent" message="tns:getGenericCustomComponent">
+    </wsdl:input>
+      <wsdl:output name="getGenericCustomComponentResponse" message="tns:getGenericCustomComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteCatalogComponent">
+      <wsdl:input name="deleteCatalogComponent" message="tns:deleteCatalogComponent">
+    </wsdl:input>
+      <wsdl:output name="deleteCatalogComponentResponse" message="tns:deleteCatalogComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="reExecuteWebResourcetask">
+      <wsdl:input name="reExecuteWebResourcetask" message="tns:reExecuteWebResourcetask">
+    </wsdl:input>
+      <wsdl:output name="reExecuteWebResourcetaskResponse" message="tns:reExecuteWebResourcetaskResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createCatalogComponent">
+      <wsdl:input name="createCatalogComponent" message="tns:createCatalogComponent">
+    </wsdl:input>
+      <wsdl:output name="createCatalogComponentResponse" message="tns:createCatalogComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchIndexedCatalogComponents">
+      <wsdl:input name="searchIndexedCatalogComponents" message="tns:searchIndexedCatalogComponents">
+    </wsdl:input>
+      <wsdl:output name="searchIndexedCatalogComponentsResponse" message="tns:searchIndexedCatalogComponentsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createComponentAttachment">
+      <wsdl:input name="createComponentAttachment" message="tns:createComponentAttachment">
+    </wsdl:input>
+      <wsdl:output name="createComponentAttachmentResponse" message="tns:createComponentAttachmentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogComponentByKbComponentRelease">
+      <wsdl:input name="getCatalogComponentByKbComponentRelease" message="tns:getCatalogComponentByKbComponentRelease">
+    </wsdl:input>
+      <wsdl:output name="getCatalogComponentByKbComponentReleaseResponse" message="tns:getCatalogComponentByKbComponentReleaseResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="completeComponentTask">
+      <wsdl:input name="completeComponentTask" message="tns:completeComponentTask">
+    </wsdl:input>
+      <wsdl:output name="completeComponentTaskResponse" message="tns:completeComponentTaskResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateCatalogComponent">
+      <wsdl:input name="updateCatalogComponent" message="tns:updateCatalogComponent">
+    </wsdl:input>
+      <wsdl:output name="updateCatalogComponentResponse" message="tns:updateCatalogComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getKbComponentReleases">
+      <wsdl:input name="getKbComponentReleases" message="tns:getKbComponentReleases">
+    </wsdl:input>
+      <wsdl:output name="getKbComponentReleasesResponse" message="tns:getKbComponentReleasesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getKbComponentReleasesByHash">
+      <wsdl:input name="getKbComponentReleasesByHash" message="tns:getKbComponentReleasesByHash">
+    </wsdl:input>
+      <wsdl:output name="getKbComponentReleasesByHashResponse" message="tns:getKbComponentReleasesByHashResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateComponentAttachmentDescription">
+      <wsdl:input name="updateComponentAttachmentDescription" message="tns:updateComponentAttachmentDescription">
+    </wsdl:input>
+      <wsdl:output name="updateComponentAttachmentDescriptionResponse" message="tns:updateComponentAttachmentDescriptionResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="resetComponentApproval">
+      <wsdl:input name="resetComponentApproval" message="tns:resetComponentApproval">
+    </wsdl:input>
+      <wsdl:output name="resetComponentApprovalResponse" message="tns:resetComponentApprovalResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="resetWebResourceTask">
+      <wsdl:input name="resetWebResourceTask" message="tns:resetWebResourceTask">
+    </wsdl:input>
+      <wsdl:output name="resetWebResourceTaskResponse" message="tns:resetWebResourceTaskResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getComponentAttachmentDetails">
+      <wsdl:input name="getComponentAttachmentDetails" message="tns:getComponentAttachmentDetails">
+    </wsdl:input>
+      <wsdl:output name="getComponentAttachmentDetailsResponse" message="tns:getComponentAttachmentDetailsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchIndexedKbComponentsAdvanced">
+      <wsdl:input name="searchIndexedKbComponentsAdvanced" message="tns:searchIndexedKbComponentsAdvanced">
+    </wsdl:input>
+      <wsdl:output name="searchIndexedKbComponentsAdvancedResponse" message="tns:searchIndexedKbComponentsAdvancedResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="saveComponentApproval">
+      <wsdl:input name="saveComponentApproval" message="tns:saveComponentApproval">
+    </wsdl:input>
+      <wsdl:output name="saveComponentApprovalResponse" message="tns:saveComponentApprovalResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchCatalogComponents">
+      <wsdl:input name="searchCatalogComponents" message="tns:searchCatalogComponents">
+    </wsdl:input>
+      <wsdl:output name="searchCatalogComponentsResponse" message="tns:searchCatalogComponentsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createCatalogComponentFromGenericKBComponent">
+      <wsdl:input name="createCatalogComponentFromGenericKBComponent" message="tns:createCatalogComponentFromGenericKBComponent">
+    </wsdl:input>
+      <wsdl:output name="createCatalogComponentFromGenericKBComponentResponse" message="tns:createCatalogComponentFromGenericKBComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchAllIndexedCatalogComponentsAdvanced">
+      <wsdl:input name="searchAllIndexedCatalogComponentsAdvanced" message="tns:searchAllIndexedCatalogComponentsAdvanced">
+    </wsdl:input>
+      <wsdl:output name="searchAllIndexedCatalogComponentsAdvancedResponse" message="tns:searchAllIndexedCatalogComponentsAdvancedResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchComponentWhereUsedByApprovalStatus">
+      <wsdl:input name="searchComponentWhereUsedByApprovalStatus" message="tns:searchComponentWhereUsedByApprovalStatus">
+    </wsdl:input>
+      <wsdl:output name="searchComponentWhereUsedByApprovalStatusResponse" message="tns:searchComponentWhereUsedByApprovalStatusResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCustomComponentReleases">
+      <wsdl:input name="getCustomComponentReleases" message="tns:getCustomComponentReleases">
+    </wsdl:input>
+      <wsdl:output name="getCustomComponentReleasesResponse" message="tns:getCustomComponentReleasesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="saveWebResourceTask">
+      <wsdl:input name="saveWebResourceTask" message="tns:saveWebResourceTask">
+    </wsdl:input>
+      <wsdl:output name="saveWebResourceTaskResponse" message="tns:saveWebResourceTaskResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getLatestComponentWorkflow">
+      <wsdl:input name="getLatestComponentWorkflow" message="tns:getLatestComponentWorkflow">
+    </wsdl:input>
+      <wsdl:output name="getLatestComponentWorkflowResponse" message="tns:getLatestComponentWorkflowResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchComponentAttachments">
+      <wsdl:input name="searchComponentAttachments" message="tns:searchComponentAttachments">
+    </wsdl:input>
+      <wsdl:output name="searchComponentAttachmentsResponse" message="tns:searchComponentAttachmentsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="saveComponentTask">
+      <wsdl:input name="saveComponentTask" message="tns:saveComponentTask">
+    </wsdl:input>
+      <wsdl:output name="saveComponentTaskResponse" message="tns:saveComponentTaskResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getLicense">
+      <wsdl:input name="getLicense" message="tns:getLicense">
+    </wsdl:input>
+      <wsdl:output name="getLicenseResponse" message="tns:getLicenseResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getHashesByKbComponent">
+      <wsdl:input name="getHashesByKbComponent" message="tns:getHashesByKbComponent">
+    </wsdl:input>
+      <wsdl:output name="getHashesByKbComponentResponse" message="tns:getHashesByKbComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchLicenses">
+      <wsdl:input name="searchLicenses" message="tns:searchLicenses">
+    </wsdl:input>
+      <wsdl:output name="searchLicensesResponse" message="tns:searchLicensesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getComponentWorkflowNodes">
+      <wsdl:input name="getComponentWorkflowNodes" message="tns:getComponentWorkflowNodes">
+    </wsdl:input>
+      <wsdl:output name="getComponentWorkflowNodesResponse" message="tns:getComponentWorkflowNodesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogComponentsByKbComponent">
+      <wsdl:input name="getCatalogComponentsByKbComponent" message="tns:getCatalogComponentsByKbComponent">
+    </wsdl:input>
+      <wsdl:output name="getCatalogComponentsByKbComponentResponse" message="tns:getCatalogComponentsByKbComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogComponentRelease">
+      <wsdl:input name="getCatalogComponentRelease" message="tns:getCatalogComponentRelease">
+    </wsdl:input>
+      <wsdl:output name="getCatalogComponentReleaseResponse" message="tns:getCatalogComponentReleaseResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getKbComponent">
+      <wsdl:input name="getKbComponent" message="tns:getKbComponent">
+    </wsdl:input>
+      <wsdl:output name="getKbComponentResponse" message="tns:getKbComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteGenericCustomComponent">
+      <wsdl:input name="deleteGenericCustomComponent" message="tns:deleteGenericCustomComponent">
+    </wsdl:input>
+      <wsdl:output name="deleteGenericCustomComponentResponse" message="tns:deleteGenericCustomComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="completeWebResourceTask">
+      <wsdl:input name="completeWebResourceTask" message="tns:completeWebResourceTask">
+    </wsdl:input>
+      <wsdl:output name="completeWebResourceTaskResponse" message="tns:completeWebResourceTaskResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchAllIndexedCatalogComponents">
+      <wsdl:input name="searchAllIndexedCatalogComponents" message="tns:searchAllIndexedCatalogComponents">
+    </wsdl:input>
+      <wsdl:output name="searchAllIndexedCatalogComponentsResponse" message="tns:searchAllIndexedCatalogComponentsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createCatalogComponentFromKb">
+      <wsdl:input name="createCatalogComponentFromKb" message="tns:createCatalogComponentFromKb">
+    </wsdl:input>
+      <wsdl:output name="createCatalogComponentFromKbResponse" message="tns:createCatalogComponentFromKbResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchIndexedKbComponents">
+      <wsdl:input name="searchIndexedKbComponents" message="tns:searchIndexedKbComponents">
+    </wsdl:input>
+      <wsdl:output name="searchIndexedKbComponentsResponse" message="tns:searchIndexedKbComponentsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchIndexedCatalogComponentsAdvanced">
+      <wsdl:input name="searchIndexedCatalogComponentsAdvanced" message="tns:searchIndexedCatalogComponentsAdvanced">
+    </wsdl:input>
+      <wsdl:output name="searchIndexedCatalogComponentsAdvancedResponse" message="tns:searchIndexedCatalogComponentsAdvancedResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateGenericCustomComponent">
+      <wsdl:input name="updateGenericCustomComponent" message="tns:updateGenericCustomComponent">
+    </wsdl:input>
+      <wsdl:output name="updateGenericCustomComponentResponse" message="tns:updateGenericCustomComponentResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="completeComponentApproval">
+      <wsdl:input name="completeComponentApproval" message="tns:completeComponentApproval">
+    </wsdl:input>
+      <wsdl:output name="completeComponentApprovalResponse" message="tns:completeComponentApprovalResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ColaApiServiceSoapBinding" type="tns:ColaApi">
+    <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="deleteComponentAttachment">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteComponentAttachment">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteComponentAttachmentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getKbComponentRelease">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getKbComponentRelease">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getKbComponentReleaseResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCatalogComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCatalogComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getComponentAttachmentContent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getComponentAttachmentContent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getComponentAttachmentContentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="resetComponentTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="resetComponentTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="resetComponentTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createCatalogComponentRelease">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createCatalogComponentRelease">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createCatalogComponentReleaseResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="resetDecision">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="resetDecision">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="resetDecisionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getGenericCustomComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getGenericCustomComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getGenericCustomComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="reExecuteWebResourcetask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="reExecuteWebResourcetask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="reExecuteWebResourcetaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteCatalogComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteCatalogComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteCatalogComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createCatalogComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createCatalogComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createCatalogComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchIndexedCatalogComponents">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchIndexedCatalogComponents">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchIndexedCatalogComponentsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createComponentAttachment">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createComponentAttachment">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createComponentAttachmentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogComponentByKbComponentRelease">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCatalogComponentByKbComponentRelease">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCatalogComponentByKbComponentReleaseResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="completeComponentTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="completeComponentTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="completeComponentTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateCatalogComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateCatalogComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateCatalogComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getKbComponentReleases">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getKbComponentReleases">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getKbComponentReleasesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getKbComponentReleasesByHash">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getKbComponentReleasesByHash">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getKbComponentReleasesByHashResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateComponentAttachmentDescription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateComponentAttachmentDescription">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateComponentAttachmentDescriptionResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="resetComponentApproval">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="resetComponentApproval">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="resetComponentApprovalResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="resetWebResourceTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="resetWebResourceTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="resetWebResourceTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getComponentAttachmentDetails">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getComponentAttachmentDetails">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getComponentAttachmentDetailsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchIndexedKbComponentsAdvanced">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchIndexedKbComponentsAdvanced">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchIndexedKbComponentsAdvancedResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="saveComponentApproval">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="saveComponentApproval">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="saveComponentApprovalResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchCatalogComponents">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchCatalogComponents">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchCatalogComponentsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createCatalogComponentFromGenericKBComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createCatalogComponentFromGenericKBComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createCatalogComponentFromGenericKBComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchAllIndexedCatalogComponentsAdvanced">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchAllIndexedCatalogComponentsAdvanced">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchAllIndexedCatalogComponentsAdvancedResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchComponentWhereUsedByApprovalStatus">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchComponentWhereUsedByApprovalStatus">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchComponentWhereUsedByApprovalStatusResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCustomComponentReleases">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCustomComponentReleases">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCustomComponentReleasesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="saveWebResourceTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="saveWebResourceTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="saveWebResourceTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getLatestComponentWorkflow">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getLatestComponentWorkflow">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getLatestComponentWorkflowResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchComponentAttachments">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchComponentAttachments">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchComponentAttachmentsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="saveComponentTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="saveComponentTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="saveComponentTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getLicense">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getLicense">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getLicenseResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getHashesByKbComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getHashesByKbComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getHashesByKbComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchLicenses">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchLicenses">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchLicensesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getComponentWorkflowNodes">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getComponentWorkflowNodes">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getComponentWorkflowNodesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogComponentsByKbComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCatalogComponentsByKbComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCatalogComponentsByKbComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getCatalogComponentRelease">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getCatalogComponentRelease">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getCatalogComponentReleaseResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getKbComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getKbComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getKbComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="deleteGenericCustomComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="deleteGenericCustomComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="deleteGenericCustomComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="completeWebResourceTask">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="completeWebResourceTask">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="completeWebResourceTaskResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchAllIndexedCatalogComponents">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchAllIndexedCatalogComponents">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchAllIndexedCatalogComponentsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="createCatalogComponentFromKb">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createCatalogComponentFromKb">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createCatalogComponentFromKbResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchIndexedKbComponents">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchIndexedKbComponents">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchIndexedKbComponentsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchIndexedCatalogComponentsAdvanced">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchIndexedCatalogComponentsAdvanced">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchIndexedCatalogComponentsAdvancedResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="updateGenericCustomComponent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="updateGenericCustomComponent">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="updateGenericCustomComponentResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="completeComponentApproval">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="completeComponentApproval">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="completeComponentApprovalResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ColaApiService">
+    <wsdl:port name="ColaApiPort" binding="tns:ColaApiServiceSoapBinding">
+      <soap:address location="http://localhost:9090/ColaApiPort"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

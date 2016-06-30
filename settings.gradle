@@ -1,0 +1,11 @@
+def sdk_client_tools_codecenter_projects = [
+	'codecenter-sdk-client',
+	'codecenter-sdk-utilities',
+	'codecenter-sdk-examples',
+]
+
+sdk_client_tools_codecenter_projects.each{
+	String projectFolderName ->
+	include ":sdk-client-tools-codecenter:${projectFolderName}"
+	project(":sdk-client-tools-codecenter:${projectFolderName}").projectDir = new File("$rootDir/${projectFolderName}")
+}
