@@ -148,6 +148,8 @@
 <xs:element name="deleteRequestAttachment" type="tns:deleteRequestAttachment"/>
 <xs:element name="deleteRequestAttachmentResponse" type="tns:deleteRequestAttachmentResponse"/>
 <xs:element name="deleteRequestResponse" type="tns:deleteRequestResponse"/>
+<xs:element name="fulfillRequestObligation" type="tns:fulfillRequestObligation"/>
+<xs:element name="fulfillRequestObligationResponse" type="tns:fulfillRequestObligationResponse"/>
 <xs:element name="getLatestWorkflow" type="tns:getLatestWorkflow"/>
 <xs:element name="getLatestWorkflowResponse" type="tns:getLatestWorkflowResponse"/>
 <xs:element name="getRequest" type="tns:getRequest"/>
@@ -155,9 +157,13 @@
 <xs:element name="getRequestAttachmentContentResponse" type="tns:getRequestAttachmentContentResponse"/>
 <xs:element name="getRequestAttachmentDetails" type="tns:getRequestAttachmentDetails"/>
 <xs:element name="getRequestAttachmentDetailsResponse" type="tns:getRequestAttachmentDetailsResponse"/>
+<xs:element name="getRequestObligations" type="tns:getRequestObligations"/>
+<xs:element name="getRequestObligationsResponse" type="tns:getRequestObligationsResponse"/>
 <xs:element name="getRequestResponse" type="tns:getRequestResponse"/>
 <xs:element name="getRequestWorkflowNodes" type="tns:getRequestWorkflowNodes"/>
 <xs:element name="getRequestWorkflowNodesResponse" type="tns:getRequestWorkflowNodesResponse"/>
+<xs:element name="getRequestor" type="tns:getRequestor"/>
+<xs:element name="getRequestorResponse" type="tns:getRequestorResponse"/>
 <xs:element name="getTaskListForRequest" type="tns:getTaskListForRequest"/>
 <xs:element name="getTaskListForRequestResponse" type="tns:getTaskListForRequestResponse"/>
 <xs:element name="reExecuteWebResourcetask" type="tns:reExecuteWebResourcetask"/>
@@ -256,6 +262,16 @@
 <xs:complexType name="searchPossibleDevelopersResponse">
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns7:user"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getRequestor">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="requestId" type="ns1:requestApplicationComponentOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getRequestorResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns7:user"/>
     </xs:sequence>
   </xs:complexType>
 <xs:complexType name="updateRequestTask">
@@ -434,6 +450,25 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="return" type="ns1:requestAttachment"/>
     </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getRequestObligations">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="requestApplicationComponentOrIdToken" type="ns1:requestApplicationComponentOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getRequestObligationsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns5:obligationDataBean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="fulfillRequestObligation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="requestApplicationComponentOrIdToken" type="ns1:requestApplicationComponentOrIdToken"/>
+      <xs:element minOccurs="0" name="obligationUpdate" type="ns5:obligationUpdate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="fulfillRequestObligationResponse">
+    <xs:sequence/>
   </xs:complexType>
 <xs:complexType name="searchRequestAttachments">
     <xs:sequence>
@@ -1057,6 +1092,7 @@
       <xs:enumeration value="NO_CODE_CENTER_OBJECT_TYPE"/>
       <xs:enumeration value="CONFLICTING_CODE_CENTER_OBJECT_TYPES"/>
       <xs:enumeration value="NO_EXTERNAL_ID_MAPPING"/>
+      <xs:enumeration value="VALIDATION_BASE_INVALID_NVD_EXTERNAL_IDENTIFIERS"/>
       <xs:enumeration value="ATTRIBUTE_GROUP_NAME_ALREADY_EXISTS"/>
       <xs:enumeration value="SORT_COLUMN_NOT_SUPPORTED"/>
       <xs:enumeration value="SETTINGS_RESCHEDULE_ALREADY_RUNNING"/>
@@ -1196,6 +1232,10 @@
       <xs:enumeration value="GENERIC_COMPONENT_CANNOT_BE_UPDATED"/>
       <xs:enumeration value="COMPONENT_WHERE_USED_IN_APPLICATION"/>
       <xs:enumeration value="GENERIC_COMPONENT_FILED_EMPTY"/>
+      <xs:enumeration value="NO_OBLIGATION_ID_FOUND"/>
+      <xs:enumeration value="OBLIGATION_ID_CANNOT_NULL"/>
+      <xs:enumeration value="NO_OBLIGATION_LABEL_FOUND"/>
+      <xs:enumeration value="MULTIPLE_OBLIGATION_LABEL_FOUND"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>
@@ -1342,6 +1382,67 @@
       <xs:element minOccurs="0" name="id" type="xs:string"/>
       <xs:element minOccurs="0" name="timeUploaded" type="xs:dateTime"/>
       <xs:element minOccurs="0" name="userUploaded" type="ns6:userIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="obligationDataBean">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element name="fulfilled" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="obligationCategoryId" type="tns:obligationCategoryIdToken"/>
+      <xs:element minOccurs="0" name="obligationCategoryLabel" type="tns:obligationCategoryLabelToken"/>
+      <xs:element minOccurs="0" name="obligationId" type="tns:obligationIdToken"/>
+      <xs:element minOccurs="0" name="obligationLabelToken" type="tns:obligationLabelToken"/>
+      <xs:element minOccurs="0" name="originEntityId" type="xs:string"/>
+      <xs:element minOccurs="0" name="originEntityType" type="xs:string"/>
+      <xs:element name="propagate" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="obligationCategoryIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:obligationCategoryLabelOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="obligationCategoryLabelOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="obligationCategoryLabelToken">
+    <xs:complexContent>
+      <xs:extension base="tns:obligationCategoryLabelOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="label" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="obligationIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:obligationLabelOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="obligationLabelOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="obligationLabelToken">
+    <xs:complexContent>
+      <xs:extension base="tns:obligationLabelOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="label" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="obligationUpdate">
+    <xs:sequence>
+      <xs:element name="fulfillObligation" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="obligationLabelOrIdToken" type="tns:obligationLabelOrIdToken"/>
     </xs:sequence>
   </xs:complexType>
 <xs:complexType name="attachmentPageFilter">
@@ -1701,6 +1802,10 @@
     <wsdl:part name="parameters" element="tns:searchVulnerabilitiesResponse">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="fulfillRequestObligationResponse">
+    <wsdl:part name="parameters" element="tns:fulfillRequestObligationResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="resetDecision">
     <wsdl:part name="parameters" element="tns:resetDecision">
     </wsdl:part>
@@ -1765,6 +1870,10 @@
     <wsdl:part name="parameters" element="tns:getRequestAttachmentDetails">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getRequestObligationsResponse">
+    <wsdl:part name="parameters" element="tns:getRequestObligationsResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getTaskListForRequestResponse">
     <wsdl:part name="parameters" element="tns:getTaskListForRequestResponse">
     </wsdl:part>
@@ -1817,6 +1926,10 @@
     <wsdl:part name="parameters" element="tns:getRequest">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getRequestorResponse">
+    <wsdl:part name="parameters" element="tns:getRequestorResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="setVulnerabilityStatusResponse">
     <wsdl:part name="parameters" element="tns:setVulnerabilityStatusResponse">
     </wsdl:part>
@@ -1839,6 +1952,10 @@
   </wsdl:message>
   <wsdl:message name="searchPossibleDevelopers">
     <wsdl:part name="parameters" element="tns:searchPossibleDevelopers">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRequestor">
+    <wsdl:part name="parameters" element="tns:getRequestor">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="addDevelopersToRequestResponse">
@@ -1917,8 +2034,16 @@
     <wsdl:part name="parameters" element="tns:appealRequestApprovalResponse">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getRequestObligations">
+    <wsdl:part name="parameters" element="tns:getRequestObligations">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="submitRequestsResponse">
     <wsdl:part name="parameters" element="tns:submitRequestsResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fulfillRequestObligation">
+    <wsdl:part name="parameters" element="tns:fulfillRequestObligation">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="searchRequestAttachments">
@@ -2006,6 +2131,14 @@
       <wsdl:input name="searchPossibleDevelopers" message="tns:searchPossibleDevelopers">
     </wsdl:input>
       <wsdl:output name="searchPossibleDevelopersResponse" message="tns:searchPossibleDevelopersResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getRequestor">
+      <wsdl:input name="getRequestor" message="tns:getRequestor">
+    </wsdl:input>
+      <wsdl:output name="getRequestorResponse" message="tns:getRequestorResponse">
     </wsdl:output>
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
@@ -2162,6 +2295,22 @@
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="getRequestObligations">
+      <wsdl:input name="getRequestObligations" message="tns:getRequestObligations">
+    </wsdl:input>
+      <wsdl:output name="getRequestObligationsResponse" message="tns:getRequestObligationsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fulfillRequestObligation">
+      <wsdl:input name="fulfillRequestObligation" message="tns:fulfillRequestObligation">
+    </wsdl:input>
+      <wsdl:output name="fulfillRequestObligationResponse" message="tns:fulfillRequestObligationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="searchRequestAttachments">
       <wsdl:input name="searchRequestAttachments" message="tns:searchRequestAttachments">
     </wsdl:input>
@@ -2311,6 +2460,18 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="searchPossibleDevelopersResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getRequestor">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getRequestor">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getRequestorResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">
@@ -2539,6 +2700,30 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="getRequestAttachmentDetailsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getRequestObligations">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getRequestObligations">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getRequestObligationsResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fulfillRequestObligation">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="fulfillRequestObligation">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fulfillRequestObligationResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">

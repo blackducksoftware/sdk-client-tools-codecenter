@@ -503,6 +503,7 @@
       <xs:enumeration value="NO_CODE_CENTER_OBJECT_TYPE"/>
       <xs:enumeration value="CONFLICTING_CODE_CENTER_OBJECT_TYPES"/>
       <xs:enumeration value="NO_EXTERNAL_ID_MAPPING"/>
+      <xs:enumeration value="VALIDATION_BASE_INVALID_NVD_EXTERNAL_IDENTIFIERS"/>
       <xs:enumeration value="ATTRIBUTE_GROUP_NAME_ALREADY_EXISTS"/>
       <xs:enumeration value="SORT_COLUMN_NOT_SUPPORTED"/>
       <xs:enumeration value="SETTINGS_RESCHEDULE_ALREADY_RUNNING"/>
@@ -642,6 +643,10 @@
       <xs:enumeration value="GENERIC_COMPONENT_CANNOT_BE_UPDATED"/>
       <xs:enumeration value="COMPONENT_WHERE_USED_IN_APPLICATION"/>
       <xs:enumeration value="GENERIC_COMPONENT_FILED_EMPTY"/>
+      <xs:enumeration value="NO_OBLIGATION_ID_FOUND"/>
+      <xs:enumeration value="OBLIGATION_ID_CANNOT_NULL"/>
+      <xs:enumeration value="NO_OBLIGATION_LABEL_FOUND"/>
+      <xs:enumeration value="MULTIPLE_OBLIGATION_LABEL_FOUND"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>

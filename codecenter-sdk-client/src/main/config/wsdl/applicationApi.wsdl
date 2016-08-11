@@ -475,6 +475,7 @@
       <xs:enumeration value="NO_CODE_CENTER_OBJECT_TYPE"/>
       <xs:enumeration value="CONFLICTING_CODE_CENTER_OBJECT_TYPES"/>
       <xs:enumeration value="NO_EXTERNAL_ID_MAPPING"/>
+      <xs:enumeration value="VALIDATION_BASE_INVALID_NVD_EXTERNAL_IDENTIFIERS"/>
       <xs:enumeration value="ATTRIBUTE_GROUP_NAME_ALREADY_EXISTS"/>
       <xs:enumeration value="SORT_COLUMN_NOT_SUPPORTED"/>
       <xs:enumeration value="SETTINGS_RESCHEDULE_ALREADY_RUNNING"/>
@@ -614,6 +615,10 @@
       <xs:enumeration value="GENERIC_COMPONENT_CANNOT_BE_UPDATED"/>
       <xs:enumeration value="COMPONENT_WHERE_USED_IN_APPLICATION"/>
       <xs:enumeration value="GENERIC_COMPONENT_FILED_EMPTY"/>
+      <xs:enumeration value="NO_OBLIGATION_ID_FOUND"/>
+      <xs:enumeration value="OBLIGATION_ID_CANNOT_NULL"/>
+      <xs:enumeration value="NO_OBLIGATION_LABEL_FOUND"/>
+      <xs:enumeration value="MULTIPLE_OBLIGATION_LABEL_FOUND"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>
@@ -626,7 +631,34 @@
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data"/>
 <xs:import namespace="http://www.w3.org/2005/05/xmlmime"/>
-  <xs:complexType name="nameDescription">
+  <xs:complexType name="obligationUpdate">
+    <xs:sequence>
+      <xs:element name="fulfillObligation" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="obligationLabelOrIdToken" type="tns:obligationLabelOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType abstract="true" name="obligationLabelOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="obligationLabelToken">
+    <xs:complexContent>
+      <xs:extension base="tns:obligationLabelOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="label" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="obligationIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:obligationLabelOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="nameDescription">
     <xs:sequence>
       <xs:element minOccurs="0" name="description" type="xs:string"/>
       <xs:element minOccurs="0" name="name" type="xs:string"/>
@@ -703,6 +735,40 @@
       <xs:element minOccurs="0" name="workflowName" type="ns4:workflowNameToken"/>
       <xs:element minOccurs="0" name="workflowVersion" type="xs:int"/>
     </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="obligationDataBean">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element name="fulfilled" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="obligationCategoryId" type="tns:obligationCategoryIdToken"/>
+      <xs:element minOccurs="0" name="obligationCategoryLabel" type="tns:obligationCategoryLabelToken"/>
+      <xs:element minOccurs="0" name="obligationId" type="tns:obligationIdToken"/>
+      <xs:element minOccurs="0" name="obligationLabelToken" type="tns:obligationLabelToken"/>
+      <xs:element minOccurs="0" name="originEntityId" type="xs:string"/>
+      <xs:element minOccurs="0" name="originEntityType" type="xs:string"/>
+      <xs:element name="propagate" type="xs:boolean"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="obligationCategoryIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:obligationCategoryLabelOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="obligationCategoryLabelOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="obligationCategoryLabelToken">
+    <xs:complexContent>
+      <xs:extension base="tns:obligationCategoryLabelOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="label" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 <xs:complexType name="attachmentPageFilter">
     <xs:complexContent>
@@ -951,11 +1017,15 @@
 <xs:element name="disassociateProtexProjectResponse" type="tns:disassociateProtexProjectResponse"/>
 <xs:element name="exportCodeCenterOnlyComponentsFromLastValidation" type="tns:exportCodeCenterOnlyComponentsFromLastValidation"/>
 <xs:element name="exportCodeCenterOnlyComponentsFromLastValidationResponse" type="tns:exportCodeCenterOnlyComponentsFromLastValidationResponse"/>
+<xs:element name="fulfillApplicationObligation" type="tns:fulfillApplicationObligation"/>
+<xs:element name="fulfillApplicationObligationResponse" type="tns:fulfillApplicationObligationResponse"/>
 <xs:element name="getApplication" type="tns:getApplication"/>
 <xs:element name="getApplicationAttachmentContent" type="tns:getApplicationAttachmentContent"/>
 <xs:element name="getApplicationAttachmentContentResponse" type="tns:getApplicationAttachmentContentResponse"/>
 <xs:element name="getApplicationAttachmentDetails" type="tns:getApplicationAttachmentDetails"/>
 <xs:element name="getApplicationAttachmentDetailsResponse" type="tns:getApplicationAttachmentDetailsResponse"/>
+<xs:element name="getApplicationObligations" type="tns:getApplicationObligations"/>
+<xs:element name="getApplicationObligationsResponse" type="tns:getApplicationObligationsResponse"/>
 <xs:element name="getApplicationResponse" type="tns:getApplicationResponse"/>
 <xs:element name="getAssociatedApplication" type="tns:getAssociatedApplication"/>
 <xs:element name="getAssociatedApplicationResponse" type="tns:getAssociatedApplicationResponse"/>
@@ -1000,6 +1070,15 @@
     <xs:sequence>
       <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:requestSummary"/>
     </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="fulfillApplicationObligation">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationNameVersionOrIdToken" type="ns1:applicationNameVersionOrIdToken"/>
+      <xs:element minOccurs="0" name="obligationUpdate" type="ns3:obligationUpdate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="fulfillApplicationObligationResponse">
+    <xs:sequence/>
   </xs:complexType>
 <xs:complexType name="deleteApplication">
     <xs:sequence>
@@ -1186,6 +1265,16 @@
   </xs:complexType>
 <xs:complexType name="disassociateProtexProjectResponse">
     <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="getApplicationObligations">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="applicationNameVersionOrIdToken" type="ns1:applicationNameVersionOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getApplicationObligationsResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns3:obligationDataBean"/>
+    </xs:sequence>
   </xs:complexType>
 <xs:complexType name="getAssociatedProtexProject">
     <xs:sequence>
@@ -1600,6 +1689,10 @@
     <wsdl:part name="parameters" element="tns:searchApplications">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getApplicationObligationsResponse">
+    <wsdl:part name="parameters" element="tns:getApplicationObligationsResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="updateApplicationResponse">
     <wsdl:part name="parameters" element="tns:updateApplicationResponse">
     </wsdl:part>
@@ -1610,6 +1703,10 @@
   </wsdl:message>
   <wsdl:message name="clone">
     <wsdl:part name="parameters" element="tns:clone">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="fulfillApplicationObligationResponse">
+    <wsdl:part name="parameters" element="tns:fulfillApplicationObligationResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="searchApplicationAttachmentsResponse">
@@ -1680,6 +1777,10 @@
     <wsdl:part name="parameters" element="tns:exportCodeCenterOnlyComponentsFromLastValidationResponse">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="fulfillApplicationObligation">
+    <wsdl:part name="parameters" element="tns:fulfillApplicationObligation">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="lockApplication">
     <wsdl:part name="parameters" element="tns:lockApplication">
     </wsdl:part>
@@ -1748,6 +1849,10 @@
     <wsdl:part name="parameters" element="tns:disassociateProtexProject">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getApplicationObligations">
+    <wsdl:part name="parameters" element="tns:getApplicationObligations">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getAssociatedProtexProject">
     <wsdl:part name="parameters" element="tns:getAssociatedProtexProject">
     </wsdl:part>
@@ -1801,6 +1906,14 @@
       <wsdl:input name="getCodeCenterOnlyComponentsFromLastValidation" message="tns:getCodeCenterOnlyComponentsFromLastValidation">
     </wsdl:input>
       <wsdl:output name="getCodeCenterOnlyComponentsFromLastValidationResponse" message="tns:getCodeCenterOnlyComponentsFromLastValidationResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fulfillApplicationObligation">
+      <wsdl:input name="fulfillApplicationObligation" message="tns:fulfillApplicationObligation">
+    </wsdl:input>
+      <wsdl:output name="fulfillApplicationObligationResponse" message="tns:fulfillApplicationObligationResponse">
     </wsdl:output>
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
@@ -1957,6 +2070,14 @@
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="getApplicationObligations">
+      <wsdl:input name="getApplicationObligations" message="tns:getApplicationObligations">
+    </wsdl:input>
+      <wsdl:output name="getApplicationObligationsResponse" message="tns:getApplicationObligationsResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="getAssociatedProtexProject">
       <wsdl:input name="getAssociatedProtexProject" message="tns:getAssociatedProtexProject">
     </wsdl:input>
@@ -2046,6 +2167,18 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="getCodeCenterOnlyComponentsFromLastValidationResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="fulfillApplicationObligation">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="fulfillApplicationObligation">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="fulfillApplicationObligationResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">
@@ -2274,6 +2407,18 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="disassociateProtexProjectResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getApplicationObligations">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getApplicationObligations">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getApplicationObligationsResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">
