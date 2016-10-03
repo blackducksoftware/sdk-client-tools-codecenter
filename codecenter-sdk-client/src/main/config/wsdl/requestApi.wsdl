@@ -164,6 +164,8 @@
 <xs:element name="getRequestWorkflowNodesResponse" type="tns:getRequestWorkflowNodesResponse"/>
 <xs:element name="getRequestor" type="tns:getRequestor"/>
 <xs:element name="getRequestorResponse" type="tns:getRequestorResponse"/>
+<xs:element name="getRequestsAffectedByVulnerability" type="tns:getRequestsAffectedByVulnerability"/>
+<xs:element name="getRequestsAffectedByVulnerabilityResponse" type="tns:getRequestsAffectedByVulnerabilityResponse"/>
 <xs:element name="getTaskListForRequest" type="tns:getTaskListForRequest"/>
 <xs:element name="getTaskListForRequestResponse" type="tns:getTaskListForRequestResponse"/>
 <xs:element name="reExecuteWebResourcetask" type="tns:reExecuteWebResourcetask"/>
@@ -571,6 +573,16 @@
 <xs:complexType name="getRequestResponse">
     <xs:sequence>
       <xs:element minOccurs="0" name="return" type="ns1:request"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getRequestsAffectedByVulnerability">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="vulnerabilityNameOrIdToken" type="ns8:vulnerabilityNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getRequestsAffectedByVulnerabilityResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:requestSummary"/>
     </xs:sequence>
   </xs:complexType>
 <xs:complexType name="getRequestAttachmentContent">
@@ -1939,12 +1951,20 @@
     <wsdl:part name="parameters" element="tns:getRequest">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getRequestsAffectedByVulnerabilityResponse">
+    <wsdl:part name="parameters" element="tns:getRequestsAffectedByVulnerabilityResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getRequestorResponse">
     <wsdl:part name="parameters" element="tns:getRequestorResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="setVulnerabilityStatusResponse">
     <wsdl:part name="parameters" element="tns:setVulnerabilityStatusResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getRequestsAffectedByVulnerability">
+    <wsdl:part name="parameters" element="tns:getRequestsAffectedByVulnerability">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="deleteRequestAttachmentResponse">
@@ -2412,6 +2432,14 @@
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="getRequestsAffectedByVulnerability">
+      <wsdl:input name="getRequestsAffectedByVulnerability" message="tns:getRequestsAffectedByVulnerability">
+    </wsdl:input>
+      <wsdl:output name="getRequestsAffectedByVulnerabilityResponse" message="tns:getRequestsAffectedByVulnerabilityResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="getRequestAttachmentContent">
       <wsdl:input name="getRequestAttachmentContent" message="tns:getRequestAttachmentContent">
     </wsdl:input>
@@ -2873,6 +2901,18 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="getRequestResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getRequestsAffectedByVulnerability">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getRequestsAffectedByVulnerability">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getRequestsAffectedByVulnerabilityResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">
