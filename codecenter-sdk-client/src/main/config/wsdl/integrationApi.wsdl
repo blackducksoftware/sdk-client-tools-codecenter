@@ -1,6 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="DeepLicenseDataApiService" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:deepLicenseDataApi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:deepLicenseDataApi" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="IntegrationApiService" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:request="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" version="1.0">
+<xs:complexType name="vulnerabilityInfo">
+    <xs:sequence>
+      <xs:element name="highPriorityCount" type="xs:int"/>
+      <xs:element name="lowPriorityCount" type="xs:int"/>
+      <xs:element name="mediumPriorityCount" type="xs:int"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:integration.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns4="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:ns5="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integration.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data"/>
+<xs:element name="getLicenseCodeSharingRequirement" type="tns:getLicenseCodeSharingRequirement"/>
+<xs:element name="getLicenseCodeSharingRequirementResponse" type="tns:getLicenseCodeSharingRequirementResponse"/>
+<xs:element name="resolveExternalIdToCatalogComponent" type="tns:resolveExternalIdToCatalogComponent"/>
+<xs:element name="resolveExternalIdToCatalogComponentResponse" type="tns:resolveExternalIdToCatalogComponentResponse"/>
+<xs:complexType name="getLicenseCodeSharingRequirement">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="ns1:licenseNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getLicenseCodeSharingRequirementResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns2:licenseCodeSharingRequirement"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resolveExternalIdToCatalogComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="externalNamespaceKey" type="xs:string"/>
+      <xs:element minOccurs="0" name="resolutionRequest" type="ns2:externalIdResolutionRequest"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resolveExternalIdToCatalogComponentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:component"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integration.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:complexType name="externalIdResolutionRequest">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="ns2:attributeValue"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="externalId" type="xs:string"/>
+      <xs:element minOccurs="0" name="externalIdComponentPart" type="xs:string"/>
+      <xs:element minOccurs="0" name="proposedComponentName" type="xs:string"/>
+      <xs:element minOccurs="0" name="proposedVersionName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:simpleType name="licenseCodeSharingRequirement">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="RECIPROCAL"/>
+      <xs:enumeration value="WEAK_RECIPROCAL"/>
+      <xs:enumeration value="PERMISSIVE"/>
+      <xs:enumeration value="UNKNOWN"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault">
   <xs:element name="sdkFaultDetails" type="tns:sdkFaultDetails"/>
   <xs:complexType name="sdkFaultDetails">
@@ -391,220 +454,95 @@
   </xs:simpleType>
   <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>
 </xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fault="urn:codecenter.blackducksoftware.com:sdk:v7.0:deeplicense.data" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:deeplicense.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:deeplicense.data" version="1.0">
-<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
-<xs:complexType name="fileToken">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:complexType name="attributeValue">
     <xs:sequence>
-      <xs:element minOccurs="0" name="fileId" type="xs:long"/>
-      <xs:element minOccurs="0" name="scanId" type="xs:long"/>
+      <xs:element minOccurs="0" name="attributeId" type="ns1:attributeNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
-<xs:complexType abstract="true" name="licenseOrFamilyIdToken">
+<xs:complexType name="nameDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:simpleType name="approvalStatusEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ALL"/>
+      <xs:enumeration value="PENDING"/>
+      <xs:enumeration value="CANCELED"/>
+      <xs:enumeration value="APPROVED"/>
+      <xs:enumeration value="DEFERRED"/>
+      <xs:enumeration value="REJECTED"/>
+      <xs:enumeration value="APPEALED"/>
+      <xs:enumeration value="NOTSUBMITTED"/>
+      <xs:enumeration value="MOREINFO"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:application="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:approval="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data"/>
+<xs:complexType abstract="true" name="licenseNameOrIdToken">
     <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="licenseNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:licenseNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
 <xs:complexType name="licenseIdToken">
     <xs:complexContent>
-      <xs:extension base="tns:licenseOrFamilyIdToken">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:long"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="licenseFamilyIdToken">
-    <xs:complexContent>
-      <xs:extension base="tns:licenseOrFamilyIdToken">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:long"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="fileContent">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="fileData" type="xs:base64Binary"/>
-      <xs:element minOccurs="0" name="fileToken" type="tns:fileToken"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="occurrenceBeans" nillable="true" type="tns:licenseOrFamilyMatch"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="licenseOrFamilyMatch">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="end" type="xs:long"/>
-      <xs:element minOccurs="0" name="licenseOrFamilyIdToken" type="tns:licenseOrFamilyIdToken"/>
-      <xs:element minOccurs="0" name="start" type="xs:long"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="componentReleaseAggregate">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="licenses" nillable="true" type="tns:licenseOrFamily"/>
-      <xs:element minOccurs="0" name="releaseToken" type="tns:releaseToken"/>
-      <xs:element minOccurs="0" name="totalCount" type="xs:long"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType abstract="true" name="licenseOrFamily">
-    <xs:sequence/>
-  </xs:complexType>
-<xs:complexType abstract="true" name="licenseOrLicenseFamily">
-    <xs:complexContent>
-      <xs:extension base="tns:licenseOrFamily">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="familyBean" type="tns:family"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="family">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="familyName" type="xs:string"/>
-      <xs:element minOccurs="0" name="licenseFamilyIdToken" type="tns:licenseFamilyIdToken"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="license">
-    <xs:complexContent>
-      <xs:extension base="tns:licenseOrLicenseFamily">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="tns:licenseIdToken"/>
-          <xs:element minOccurs="0" name="licenseName" type="xs:string"/>
-          <xs:element minOccurs="0" name="occurrenceCount" type="xs:long"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="licenseFamily">
-    <xs:complexContent>
-      <xs:extension base="tns:licenseOrLicenseFamily">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="tns:licenseFamilyIdToken"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="releaseToken">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="releaseId" type="xs:long"/>
-      <xs:element minOccurs="0" name="scanId" type="xs:long"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="deepLicenseKbComponentReleaseToken">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="releaseId" type="ns1:kbComponentReleaseNameVersionOrIdToken"/>
-      <xs:element minOccurs="0" name="scanId" type="xs:long"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="deepLicensePageFilter">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="pageNumber" type="xs:int"/>
-      <xs:element minOccurs="0" name="pageSize" type="xs:int"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="filesByReleaseLicense">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="fileBeans" nillable="true" type="tns:file"/>
-      <xs:element minOccurs="0" name="releaseToken" type="tns:releaseToken"/>
-      <xs:element minOccurs="0" name="totalFileCount" type="xs:long"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="file">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="fileName" type="xs:string"/>
-      <xs:element minOccurs="0" name="filePath" type="xs:string"/>
-      <xs:element minOccurs="0" name="fileToken" type="tns:fileToken"/>
-      <xs:element minOccurs="0" name="uniqueFileMatchCount" type="xs:long"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:deeplicense.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:deepLicenseDataApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:deepLicenseDataApi" version="1.0">
-<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:deeplicense.data"/>
-<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
-<xs:element name="getFileInformation" type="tns:getFileInformation"/>
-<xs:element name="getFileInformationForLicenseOrFamily" type="tns:getFileInformationForLicenseOrFamily"/>
-<xs:element name="getFileInformationForLicenseOrFamilyResponse" type="tns:getFileInformationForLicenseOrFamilyResponse"/>
-<xs:element name="getFileInformationResponse" type="tns:getFileInformationResponse"/>
-<xs:element name="getFilesForLicense" type="tns:getFilesForLicense"/>
-<xs:element name="getFilesForLicenseResponse" type="tns:getFilesForLicenseResponse"/>
-<xs:element name="getLicensesForCatalogComponent" type="tns:getLicensesForCatalogComponent"/>
-<xs:element name="getLicensesForCatalogComponentResponse" type="tns:getLicensesForCatalogComponentResponse"/>
-<xs:element name="getLicensesForKbComponent" type="tns:getLicensesForKbComponent"/>
-<xs:element name="getLicensesForKbComponentResponse" type="tns:getLicensesForKbComponentResponse"/>
-<xs:complexType name="getFileInformationForLicenseOrFamily">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="fileToken" type="ns1:fileToken"/>
-      <xs:element minOccurs="0" name="licenseOrFamilyIdToken" type="ns1:licenseOrFamilyIdToken"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getFileInformationForLicenseOrFamilyResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="ns1:fileContent"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getLicensesForKbComponent">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="kbReleaseId" type="ns2:kbComponentReleaseNameVersionOrIdToken"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getLicensesForKbComponentResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="ns1:componentReleaseAggregate"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getLicensesForCatalogComponent">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="componentId" type="ns2:componentNameVersionOrIdToken"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getLicensesForCatalogComponentResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="ns1:componentReleaseAggregate"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getFileInformation">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="fileToken" type="ns1:fileToken"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getFileInformationResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="ns1:fileContent"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getFilesForLicense">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="releaseToken" type="ns1:deepLicenseKbComponentReleaseToken"/>
-      <xs:element minOccurs="0" name="licenseOrFamilyIdToken" type="ns1:licenseOrFamilyIdToken"/>
-      <xs:element minOccurs="0" name="pageFilter" type="ns1:deepLicensePageFilter"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getFilesForLicenseResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="ns1:filesByReleaseLicense"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:application="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:approval="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" version="1.0">
-<xs:complexType abstract="true" name="kbComponentReleaseNameVersionOrIdToken">
-    <xs:sequence/>
-  </xs:complexType>
-<xs:complexType name="kbComponentReleaseIdToken">
-    <xs:complexContent>
-      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+      <xs:extension base="tns:licenseNameOrIdToken">
         <xs:sequence>
           <xs:element minOccurs="0" name="id" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-<xs:complexType name="kbComponentReleaseNameVersionToken">
+<xs:complexType name="component">
     <xs:complexContent>
-      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+      <xs:extension base="common:nameDescription">
         <xs:sequence>
-          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element name="applicationComponent" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="applicationId" type="application:applicationIdToken"/>
+          <xs:element minOccurs="0" name="approvalStatus" type="common:approvalStatusEnum"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="common:attributeValue"/>
+          <xs:element minOccurs="0" name="categories" type="xs:string"/>
+          <xs:element minOccurs="0" name="dbEnvironments" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="declaredLicenses" nillable="true" type="tns:licenseSummary"/>
+          <xs:element name="deprecated" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="tns:componentIdToken"/>
+          <xs:element minOccurs="0" name="intendedAudiences" type="xs:string"/>
+          <xs:element minOccurs="0" name="kbComponentId" type="tns:kbComponentIdToken"/>
+          <xs:element minOccurs="0" name="kbReleaseId" type="tns:kbComponentReleaseIdToken"/>
+          <xs:element minOccurs="0" name="nameVersion" type="tns:componentNameVersionToken"/>
+          <xs:element minOccurs="0" name="numberContributors" type="xs:int"/>
+          <xs:element minOccurs="0" name="operatingSystems" type="xs:string"/>
+          <xs:element minOccurs="0" name="programmingLanguages" type="xs:string"/>
+          <xs:element minOccurs="0" name="projectMaturity" type="xs:string"/>
+          <xs:element minOccurs="0" name="releaseDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="userInterfaces" type="xs:string"/>
           <xs:element minOccurs="0" name="version" type="xs:string"/>
+          <xs:element minOccurs="0" name="vulnerabilityInfo" type="ns1:vulnerabilityInfo"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-<xs:complexType abstract="true" name="componentNameVersionOrIdToken">
-    <xs:sequence/>
+<xs:complexType name="licenseSummary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="tns:licenseIdToken"/>
+      <xs:element minOccurs="0" name="nameToken" type="tns:licenseNameToken"/>
+    </xs:sequence>
   </xs:complexType>
 <xs:complexType name="componentIdToken">
     <xs:complexContent>
@@ -614,6 +552,9 @@
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="componentNameVersionOrIdToken">
+    <xs:sequence/>
   </xs:complexType>
 <xs:complexType name="componentNameVersionToken">
     <xs:complexContent>
@@ -625,150 +566,156 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+<xs:complexType name="kbComponentIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="kbComponentNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="kbComponentNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponentReleaseIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="kbComponentReleaseNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="kbComponentReleaseNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" version="1.0">
+<xs:complexType abstract="true" name="attributeNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="attributeNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="attributeIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" version="1.0">
+<xs:complexType name="applicationIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:applicationNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="applicationNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="applicationNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:applicationNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="getFileInformationForLicenseOrFamily">
-    <wsdl:part name="parameters" element="tns:getFileInformationForLicenseOrFamily">
+  <wsdl:message name="resolveExternalIdToCatalogComponent">
+    <wsdl:part name="parameters" element="tns:resolveExternalIdToCatalogComponent">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="getLicensesForKbComponent">
-    <wsdl:part name="parameters" element="tns:getLicensesForKbComponent">
+  <wsdl:message name="getLicenseCodeSharingRequirementResponse">
+    <wsdl:part name="parameters" element="tns:getLicenseCodeSharingRequirementResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="getFileInformationForLicenseOrFamilyResponse">
-    <wsdl:part name="parameters" element="tns:getFileInformationForLicenseOrFamilyResponse">
+  <wsdl:message name="resolveExternalIdToCatalogComponentResponse">
+    <wsdl:part name="parameters" element="tns:resolveExternalIdToCatalogComponentResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="getLicensesForCatalogComponent">
-    <wsdl:part name="parameters" element="tns:getLicensesForCatalogComponent">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getFileInformation">
-    <wsdl:part name="parameters" element="tns:getFileInformation">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getLicensesForCatalogComponentResponse">
-    <wsdl:part name="parameters" element="tns:getLicensesForCatalogComponentResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getFileInformationResponse">
-    <wsdl:part name="parameters" element="tns:getFileInformationResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getFilesForLicenseResponse">
-    <wsdl:part name="parameters" element="tns:getFilesForLicenseResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getLicensesForKbComponentResponse">
-    <wsdl:part name="parameters" element="tns:getLicensesForKbComponentResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getFilesForLicense">
-    <wsdl:part name="parameters" element="tns:getFilesForLicense">
+  <wsdl:message name="getLicenseCodeSharingRequirement">
+    <wsdl:part name="parameters" element="tns:getLicenseCodeSharingRequirement">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="SdkFault">
     <wsdl:part name="SdkFault" element="ns1:SdkFault">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:portType name="DeepLicenseDataApi">
-    <wsdl:operation name="getFileInformationForLicenseOrFamily">
-      <wsdl:input name="getFileInformationForLicenseOrFamily" message="tns:getFileInformationForLicenseOrFamily">
+  <wsdl:portType name="IntegrationApi">
+    <wsdl:operation name="getLicenseCodeSharingRequirement">
+      <wsdl:input name="getLicenseCodeSharingRequirement" message="tns:getLicenseCodeSharingRequirement">
     </wsdl:input>
-      <wsdl:output name="getFileInformationForLicenseOrFamilyResponse" message="tns:getFileInformationForLicenseOrFamilyResponse">
+      <wsdl:output name="getLicenseCodeSharingRequirementResponse" message="tns:getLicenseCodeSharingRequirementResponse">
     </wsdl:output>
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="getLicensesForKbComponent">
-      <wsdl:input name="getLicensesForKbComponent" message="tns:getLicensesForKbComponent">
+    <wsdl:operation name="resolveExternalIdToCatalogComponent">
+      <wsdl:input name="resolveExternalIdToCatalogComponent" message="tns:resolveExternalIdToCatalogComponent">
     </wsdl:input>
-      <wsdl:output name="getLicensesForKbComponentResponse" message="tns:getLicensesForKbComponentResponse">
-    </wsdl:output>
-      <wsdl:fault name="SdkFault" message="tns:SdkFault">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getLicensesForCatalogComponent">
-      <wsdl:input name="getLicensesForCatalogComponent" message="tns:getLicensesForCatalogComponent">
-    </wsdl:input>
-      <wsdl:output name="getLicensesForCatalogComponentResponse" message="tns:getLicensesForCatalogComponentResponse">
-    </wsdl:output>
-      <wsdl:fault name="SdkFault" message="tns:SdkFault">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getFileInformation">
-      <wsdl:input name="getFileInformation" message="tns:getFileInformation">
-    </wsdl:input>
-      <wsdl:output name="getFileInformationResponse" message="tns:getFileInformationResponse">
-    </wsdl:output>
-      <wsdl:fault name="SdkFault" message="tns:SdkFault">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getFilesForLicense">
-      <wsdl:input name="getFilesForLicense" message="tns:getFilesForLicense">
-    </wsdl:input>
-      <wsdl:output name="getFilesForLicenseResponse" message="tns:getFilesForLicenseResponse">
+      <wsdl:output name="resolveExternalIdToCatalogComponentResponse" message="tns:resolveExternalIdToCatalogComponentResponse">
     </wsdl:output>
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="DeepLicenseDataApiServiceSoapBinding" type="tns:DeepLicenseDataApi">
+  <wsdl:binding name="IntegrationApiServiceSoapBinding" type="tns:IntegrationApi">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="getFileInformationForLicenseOrFamily">
+    <wsdl:operation name="getLicenseCodeSharingRequirement">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="getFileInformationForLicenseOrFamily">
+      <wsdl:input name="getLicenseCodeSharingRequirement">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="getFileInformationForLicenseOrFamilyResponse">
+      <wsdl:output name="getLicenseCodeSharingRequirementResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">
         <soap:fault name="SdkFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="getLicensesForKbComponent">
+    <wsdl:operation name="resolveExternalIdToCatalogComponent">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="getLicensesForKbComponent">
+      <wsdl:input name="resolveExternalIdToCatalogComponent">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="getLicensesForKbComponentResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SdkFault">
-        <soap:fault name="SdkFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getLicensesForCatalogComponent">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="getLicensesForCatalogComponent">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="getLicensesForCatalogComponentResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SdkFault">
-        <soap:fault name="SdkFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getFileInformation">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="getFileInformation">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="getFileInformationResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SdkFault">
-        <soap:fault name="SdkFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getFilesForLicense">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="getFilesForLicense">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="getFilesForLicenseResponse">
+      <wsdl:output name="resolveExternalIdToCatalogComponentResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">
@@ -776,9 +723,9 @@
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="DeepLicenseDataApiService">
-    <wsdl:port name="DeepLicenseDataApiPort" binding="tns:DeepLicenseDataApiServiceSoapBinding">
-      <soap:address location="http://localhost:9090/DeepLicenseDataApiPort"/>
+  <wsdl:service name="IntegrationApiService">
+    <wsdl:port name="IntegrationApiPort" binding="tns:IntegrationApiServiceSoapBinding">
+      <soap:address location="http://localhost:9090/IntegrationApiPort"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>
