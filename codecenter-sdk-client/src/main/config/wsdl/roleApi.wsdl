@@ -412,6 +412,7 @@
       <xs:enumeration value="PERMISSION_VIEW_RISK_PROFILE"/>
       <xs:enumeration value="PERMISSION_COMP_CREATE_FROM_KB"/>
       <xs:enumeration value="PERMISSION_WEB_RESOURCE_ACCESS"/>
+      <xs:enumeration value="PERMISSION_PROMOTE_TO_KB_RELEASE_COMPONENT"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
