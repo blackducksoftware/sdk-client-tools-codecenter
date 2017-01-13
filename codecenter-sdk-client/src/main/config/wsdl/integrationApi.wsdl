@@ -1,178 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="VulnerabilityApiService" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerabilityApi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerabilityApi" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="IntegrationApiService" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:ns4="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerabilityApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerabilityApi" version="1.0">
-<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
-<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data"/>
-<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
-<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
-<xs:element name="getCatalogKbComponents" type="tns:getCatalogKbComponents"/>
-<xs:element name="getCatalogKbComponentsResponse" type="tns:getCatalogKbComponentsResponse"/>
-<xs:element name="getVulnerabilitiesByDate" type="tns:getVulnerabilitiesByDate"/>
-<xs:element name="getVulnerabilitiesByDateResponse" type="tns:getVulnerabilitiesByDateResponse"/>
-<xs:element name="getVulnerability" type="tns:getVulnerability"/>
-<xs:element name="getVulnerabilityResponse" type="tns:getVulnerabilityResponse"/>
-<xs:element name="searchDirectMatchedVulnerabilitiesByCatalogComponent" type="tns:searchDirectMatchedVulnerabilitiesByCatalogComponent"/>
-<xs:element name="searchDirectMatchedVulnerabilitiesByCatalogComponentResponse" type="tns:searchDirectMatchedVulnerabilitiesByCatalogComponentResponse"/>
-<xs:element name="searchDirectMatchedVulnerabilitiesByKBComponentId" type="tns:searchDirectMatchedVulnerabilitiesByKBComponentId"/>
-<xs:element name="searchDirectMatchedVulnerabilitiesByKBComponentIdResponse" type="tns:searchDirectMatchedVulnerabilitiesByKBComponentIdResponse"/>
-<xs:element name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseId" type="tns:searchDirectMatchedVulnerabilitiesByKBComponentReleaseId"/>
-<xs:element name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseIdResponse" type="tns:searchDirectMatchedVulnerabilitiesByKBComponentReleaseIdResponse"/>
-<xs:element name="searchVulnerabilities" type="tns:searchVulnerabilities"/>
-<xs:element name="searchVulnerabilitiesByCatalog" type="tns:searchVulnerabilitiesByCatalog"/>
-<xs:element name="searchVulnerabilitiesByCatalogResponse" type="tns:searchVulnerabilitiesByCatalogResponse"/>
-<xs:element name="searchVulnerabilitiesByKBComponentRelease" type="tns:searchVulnerabilitiesByKBComponentRelease"/>
-<xs:element name="searchVulnerabilitiesByKBComponentReleaseResponse" type="tns:searchVulnerabilitiesByKBComponentReleaseResponse"/>
-<xs:element name="searchVulnerabilitiesResponse" type="tns:searchVulnerabilitiesResponse"/>
-<xs:complexType name="searchDirectMatchedVulnerabilitiesByCatalogComponent">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="componentId" type="ns1:componentNameVersionOrIdToken"/>
-      <xs:element minOccurs="0" name="pageFilter" type="ns2:vulnerabilityPageFilter"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchDirectMatchedVulnerabilitiesByCatalogComponentResponse">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:vulnerabilitySummary"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchVulnerabilitiesByCatalog">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="componentId" type="ns1:componentNameVersionOrIdToken"/>
-      <xs:element minOccurs="0" name="pageFilter" type="ns2:vulnerabilityPageFilter"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchVulnerabilitiesByCatalogResponse">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:vulnerabilitySummary"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseId">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="releaseId" type="ns1:kbComponentReleaseNameVersionOrIdToken"/>
-      <xs:element minOccurs="0" name="pageFilter" type="ns2:vulnerabilityPageFilter"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseIdResponse">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:vulnerabilitySummary"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getVulnerability">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="vulnerabilityNameOrIdToken" type="ns2:vulnerabilityNameOrIdToken"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getVulnerabilityResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="ns2:vulnerabilitySummary"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getVulnerabilitiesByDate">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="startDate" type="xs:dateTime"/>
-      <xs:element minOccurs="0" name="endDate" type="xs:dateTime"/>
-      <xs:element minOccurs="0" name="vulnerabilityDate" type="ns2:vulnerabilityDateEnum"/>
-      <xs:element name="includeMapped" type="xs:boolean"/>
-      <xs:element minOccurs="0" name="pageFilter" type="ns2:vulnerabilityPageFilter"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getVulnerabilitiesByDateResponse">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:vulnerabilitySummary"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchVulnerabilitiesByKBComponentRelease">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="releaseId" type="ns1:kbComponentReleaseNameVersionOrIdToken"/>
-      <xs:element minOccurs="0" name="pageFilter" type="ns2:vulnerabilityPageFilter"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchVulnerabilitiesByKBComponentReleaseResponse">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:vulnerabilitySummary"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchVulnerabilities">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="searchString" type="xs:string"/>
-      <xs:element minOccurs="0" name="pageFilter" type="ns2:vulnerabilityPageFilter"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchVulnerabilitiesResponse">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:vulnerabilitySummary"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchDirectMatchedVulnerabilitiesByKBComponentId">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="kbComponentId" type="ns1:kbComponentNameOrIdToken"/>
-      <xs:element minOccurs="0" name="pageFilter" type="ns2:vulnerabilityPageFilter"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="searchDirectMatchedVulnerabilitiesByKBComponentIdResponse">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns2:vulnerabilitySummary"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getCatalogKbComponents">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="vulnerabilityNameOrIdToken" type="ns2:vulnerabilityNameOrIdToken"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getCatalogKbComponentsResponse">
-    <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:component"/>
-    </xs:sequence>
-  </xs:complexType>
-</xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:request="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" version="1.0">
-<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
-<xs:complexType name="vulnerabilityPageFilter">
-    <xs:complexContent>
-      <xs:extension base="common:pageFilter">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="sortedColumn" type="tns:vulnerabilityColumn"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="vulnerabilitySummary">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="basescore" type="xs:string"/>
-      <xs:element minOccurs="0" name="created" type="xs:dateTime"/>
-      <xs:element minOccurs="0" name="description" type="xs:string"/>
-      <xs:element minOccurs="0" name="exploitabilityscore" type="xs:string"/>
-      <xs:element minOccurs="0" name="id" type="tns:vulnerabilityIdToken"/>
-      <xs:element minOccurs="0" name="impactscore" type="xs:string"/>
-      <xs:element minOccurs="0" name="modified" type="xs:dateTime"/>
-      <xs:element minOccurs="0" name="name" type="tns:vulnerabilityNameToken"/>
-      <xs:element minOccurs="0" name="numVulnPreviousVersion" type="xs:boolean"/>
-      <xs:element minOccurs="0" name="published" type="xs:dateTime"/>
-      <xs:element minOccurs="0" name="severity" type="tns:vulnerabilitySeverityEnum"/>
-      <xs:element minOccurs="0" name="updated" type="xs:dateTime"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="vulnerabilityIdToken">
-    <xs:complexContent>
-      <xs:extension base="tns:vulnerabilityNameOrIdToken">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="vulnerabilityNameOrIdToken">
-    <xs:sequence/>
-  </xs:complexType>
-<xs:complexType name="vulnerabilityNameToken">
-    <xs:complexContent>
-      <xs:extension base="tns:vulnerabilityNameOrIdToken">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="name" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:request="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" version="1.0">
 <xs:complexType name="vulnerabilityInfo">
     <xs:sequence>
       <xs:element name="highPriorityCount" type="xs:int"/>
@@ -180,29 +9,58 @@
       <xs:element name="mediumPriorityCount" type="xs:int"/>
     </xs:sequence>
   </xs:complexType>
-<xs:simpleType name="vulnerabilityColumn">
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:integration.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns4="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:ns5="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integration.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data"/>
+<xs:element name="getLicenseCodeSharingRequirement" type="tns:getLicenseCodeSharingRequirement"/>
+<xs:element name="getLicenseCodeSharingRequirementResponse" type="tns:getLicenseCodeSharingRequirementResponse"/>
+<xs:element name="resolveExternalIdToCatalogComponent" type="tns:resolveExternalIdToCatalogComponent"/>
+<xs:element name="resolveExternalIdToCatalogComponentResponse" type="tns:resolveExternalIdToCatalogComponentResponse"/>
+<xs:complexType name="getLicenseCodeSharingRequirement">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="arg0" type="ns1:licenseNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getLicenseCodeSharingRequirementResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns2:licenseCodeSharingRequirement"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resolveExternalIdToCatalogComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="externalNamespaceKey" type="xs:string"/>
+      <xs:element minOccurs="0" name="resolutionRequest" type="ns2:externalIdResolutionRequest"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resolveExternalIdToCatalogComponentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:component"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integration.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:complexType name="externalIdResolutionRequest">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="ns2:attributeValue"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="externalId" type="xs:string"/>
+      <xs:element minOccurs="0" name="externalIdComponentPart" type="xs:string"/>
+      <xs:element minOccurs="0" name="proposedComponentName" type="xs:string"/>
+      <xs:element minOccurs="0" name="proposedVersionName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:simpleType name="licenseCodeSharingRequirement">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="VULNERABILITY_NAME"/>
-      <xs:enumeration value="VULNERABILITY_SEVERITY"/>
-      <xs:enumeration value="VULNERABILITY_PUBLISHED"/>
-      <xs:enumeration value="VULNERABILITY_CVSS_EXPLOIT_SUBSCORE"/>
-      <xs:enumeration value="VULNERABILITY_CVSS_BASE_SCORE"/>
-      <xs:enumeration value="VULNERABILITY_CVSS_IMPACT_SUBSCORE"/>
-    </xs:restriction>
-  </xs:simpleType>
-<xs:simpleType name="vulnerabilitySeverityEnum">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="HIGH"/>
-      <xs:enumeration value="MEDIUM"/>
-      <xs:enumeration value="LOW"/>
-    </xs:restriction>
-  </xs:simpleType>
-<xs:simpleType name="vulnerabilityDateEnum">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="PUBLISHED"/>
-      <xs:enumeration value="MODIFIED"/>
-      <xs:enumeration value="CREATED"/>
-      <xs:enumeration value="UPDATED"/>
+      <xs:enumeration value="RECIPROCAL"/>
+      <xs:enumeration value="WEAK_RECIPROCAL"/>
+      <xs:enumeration value="PERMISSIVE"/>
+      <xs:enumeration value="UNKNOWN"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
@@ -601,23 +459,16 @@
 </xs:schema>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" version="1.0">
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
-<xs:complexType abstract="true" name="pageFilter">
+<xs:complexType name="attributeValue">
     <xs:sequence>
-      <xs:element minOccurs="0" name="firstRowIndex" type="xs:int"/>
-      <xs:element minOccurs="0" name="lastRowIndex" type="xs:int"/>
-      <xs:element minOccurs="0" name="sortAscending" type="xs:boolean"/>
+      <xs:element minOccurs="0" name="attributeId" type="ns1:attributeNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 <xs:complexType name="nameDescription">
     <xs:sequence>
       <xs:element minOccurs="0" name="description" type="xs:string"/>
       <xs:element minOccurs="0" name="name" type="xs:string"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="attributeValue">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="attributeId" type="ns1:attributeNameOrIdToken"/>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 <xs:simpleType name="approvalStatusEnum">
@@ -639,67 +490,23 @@
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data"/>
-<xs:complexType abstract="true" name="componentNameVersionOrIdToken">
+<xs:complexType abstract="true" name="licenseNameOrIdToken">
     <xs:sequence/>
   </xs:complexType>
-<xs:complexType name="componentIdToken">
+<xs:complexType name="licenseNameToken">
     <xs:complexContent>
-      <xs:extension base="tns:componentNameVersionOrIdToken">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="componentNameVersionToken">
-    <xs:complexContent>
-      <xs:extension base="tns:componentNameVersionOrIdToken">
+      <xs:extension base="tns:licenseNameOrIdToken">
         <xs:sequence>
           <xs:element minOccurs="0" name="name" type="xs:string"/>
-          <xs:element minOccurs="0" name="version" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-<xs:complexType abstract="true" name="kbComponentReleaseNameVersionOrIdToken">
-    <xs:sequence/>
-  </xs:complexType>
-<xs:complexType name="kbComponentReleaseIdToken">
+<xs:complexType name="licenseIdToken">
     <xs:complexContent>
-      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+      <xs:extension base="tns:licenseNameOrIdToken">
         <xs:sequence>
           <xs:element minOccurs="0" name="id" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="kbComponentReleaseNameVersionToken">
-    <xs:complexContent>
-      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="name" type="xs:string"/>
-          <xs:element minOccurs="0" name="version" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType abstract="true" name="kbComponentNameOrIdToken">
-    <xs:sequence/>
-  </xs:complexType>
-<xs:complexType name="kbComponentIdToken">
-    <xs:complexContent>
-      <xs:extension base="tns:kbComponentNameOrIdToken">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="kbComponentNameToken">
-    <xs:complexContent>
-      <xs:extension base="tns:kbComponentNameOrIdToken">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="name" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -740,23 +547,67 @@
       <xs:element minOccurs="0" name="nameToken" type="tns:licenseNameToken"/>
     </xs:sequence>
   </xs:complexType>
-<xs:complexType name="licenseIdToken">
+<xs:complexType name="componentIdToken">
     <xs:complexContent>
-      <xs:extension base="tns:licenseNameOrIdToken">
+      <xs:extension base="tns:componentNameVersionOrIdToken">
         <xs:sequence>
           <xs:element minOccurs="0" name="id" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-<xs:complexType abstract="true" name="licenseNameOrIdToken">
+<xs:complexType abstract="true" name="componentNameVersionOrIdToken">
     <xs:sequence/>
   </xs:complexType>
-<xs:complexType name="licenseNameToken">
+<xs:complexType name="componentNameVersionToken">
     <xs:complexContent>
-      <xs:extension base="tns:licenseNameOrIdToken">
+      <xs:extension base="tns:componentNameVersionOrIdToken">
         <xs:sequence>
           <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponentIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="kbComponentNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="kbComponentNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponentReleaseIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="kbComponentReleaseNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="kbComponentReleaseNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -810,260 +661,64 @@
   </xs:complexType>
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="searchDirectMatchedVulnerabilitiesByCatalogComponent">
-    <wsdl:part name="parameters" element="tns:searchDirectMatchedVulnerabilitiesByCatalogComponent">
+  <wsdl:message name="resolveExternalIdToCatalogComponent">
+    <wsdl:part name="parameters" element="tns:resolveExternalIdToCatalogComponent">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLicenseCodeSharingRequirementResponse">
+    <wsdl:part name="parameters" element="tns:getLicenseCodeSharingRequirementResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="resolveExternalIdToCatalogComponentResponse">
+    <wsdl:part name="parameters" element="tns:resolveExternalIdToCatalogComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLicenseCodeSharingRequirement">
+    <wsdl:part name="parameters" element="tns:getLicenseCodeSharingRequirement">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="SdkFault">
     <wsdl:part name="SdkFault" element="ns1:SdkFault">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseId">
-    <wsdl:part name="parameters" element="tns:searchDirectMatchedVulnerabilitiesByKBComponentReleaseId">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getVulnerabilityResponse">
-    <wsdl:part name="parameters" element="tns:getVulnerabilityResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchVulnerabilitiesByCatalogResponse">
-    <wsdl:part name="parameters" element="tns:searchVulnerabilitiesByCatalogResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchVulnerabilitiesByKBComponentRelease">
-    <wsdl:part name="parameters" element="tns:searchVulnerabilitiesByKBComponentRelease">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchVulnerabilities">
-    <wsdl:part name="parameters" element="tns:searchVulnerabilities">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseIdResponse">
-    <wsdl:part name="parameters" element="tns:searchDirectMatchedVulnerabilitiesByKBComponentReleaseIdResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getVulnerabilitiesByDateResponse">
-    <wsdl:part name="parameters" element="tns:getVulnerabilitiesByDateResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchDirectMatchedVulnerabilitiesByKBComponentId">
-    <wsdl:part name="parameters" element="tns:searchDirectMatchedVulnerabilitiesByKBComponentId">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchVulnerabilitiesByCatalog">
-    <wsdl:part name="parameters" element="tns:searchVulnerabilitiesByCatalog">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchVulnerabilitiesByKBComponentReleaseResponse">
-    <wsdl:part name="parameters" element="tns:searchVulnerabilitiesByKBComponentReleaseResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getVulnerability">
-    <wsdl:part name="parameters" element="tns:getVulnerability">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getVulnerabilitiesByDate">
-    <wsdl:part name="parameters" element="tns:getVulnerabilitiesByDate">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchDirectMatchedVulnerabilitiesByKBComponentIdResponse">
-    <wsdl:part name="parameters" element="tns:searchDirectMatchedVulnerabilitiesByKBComponentIdResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getCatalogKbComponentsResponse">
-    <wsdl:part name="parameters" element="tns:getCatalogKbComponentsResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="getCatalogKbComponents">
-    <wsdl:part name="parameters" element="tns:getCatalogKbComponents">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchDirectMatchedVulnerabilitiesByCatalogComponentResponse">
-    <wsdl:part name="parameters" element="tns:searchDirectMatchedVulnerabilitiesByCatalogComponentResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:message name="searchVulnerabilitiesResponse">
-    <wsdl:part name="parameters" element="tns:searchVulnerabilitiesResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:portType name="VulnerabilityApi">
-    <wsdl:operation name="searchDirectMatchedVulnerabilitiesByCatalogComponent">
-      <wsdl:input name="searchDirectMatchedVulnerabilitiesByCatalogComponent" message="tns:searchDirectMatchedVulnerabilitiesByCatalogComponent">
+  <wsdl:portType name="IntegrationApi">
+    <wsdl:operation name="getLicenseCodeSharingRequirement">
+      <wsdl:input name="getLicenseCodeSharingRequirement" message="tns:getLicenseCodeSharingRequirement">
     </wsdl:input>
-      <wsdl:output name="searchDirectMatchedVulnerabilitiesByCatalogComponentResponse" message="tns:searchDirectMatchedVulnerabilitiesByCatalogComponentResponse">
+      <wsdl:output name="getLicenseCodeSharingRequirementResponse" message="tns:getLicenseCodeSharingRequirementResponse">
     </wsdl:output>
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="searchVulnerabilitiesByCatalog">
-      <wsdl:input name="searchVulnerabilitiesByCatalog" message="tns:searchVulnerabilitiesByCatalog">
+    <wsdl:operation name="resolveExternalIdToCatalogComponent">
+      <wsdl:input name="resolveExternalIdToCatalogComponent" message="tns:resolveExternalIdToCatalogComponent">
     </wsdl:input>
-      <wsdl:output name="searchVulnerabilitiesByCatalogResponse" message="tns:searchVulnerabilitiesByCatalogResponse">
-    </wsdl:output>
-      <wsdl:fault name="SdkFault" message="tns:SdkFault">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseId">
-      <wsdl:input name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseId" message="tns:searchDirectMatchedVulnerabilitiesByKBComponentReleaseId">
-    </wsdl:input>
-      <wsdl:output name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseIdResponse" message="tns:searchDirectMatchedVulnerabilitiesByKBComponentReleaseIdResponse">
-    </wsdl:output>
-      <wsdl:fault name="SdkFault" message="tns:SdkFault">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getVulnerability">
-      <wsdl:input name="getVulnerability" message="tns:getVulnerability">
-    </wsdl:input>
-      <wsdl:output name="getVulnerabilityResponse" message="tns:getVulnerabilityResponse">
-    </wsdl:output>
-      <wsdl:fault name="SdkFault" message="tns:SdkFault">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getVulnerabilitiesByDate">
-      <wsdl:input name="getVulnerabilitiesByDate" message="tns:getVulnerabilitiesByDate">
-    </wsdl:input>
-      <wsdl:output name="getVulnerabilitiesByDateResponse" message="tns:getVulnerabilitiesByDateResponse">
-    </wsdl:output>
-      <wsdl:fault name="SdkFault" message="tns:SdkFault">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="searchVulnerabilitiesByKBComponentRelease">
-      <wsdl:input name="searchVulnerabilitiesByKBComponentRelease" message="tns:searchVulnerabilitiesByKBComponentRelease">
-    </wsdl:input>
-      <wsdl:output name="searchVulnerabilitiesByKBComponentReleaseResponse" message="tns:searchVulnerabilitiesByKBComponentReleaseResponse">
-    </wsdl:output>
-      <wsdl:fault name="SdkFault" message="tns:SdkFault">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="searchVulnerabilities">
-      <wsdl:input name="searchVulnerabilities" message="tns:searchVulnerabilities">
-    </wsdl:input>
-      <wsdl:output name="searchVulnerabilitiesResponse" message="tns:searchVulnerabilitiesResponse">
-    </wsdl:output>
-      <wsdl:fault name="SdkFault" message="tns:SdkFault">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="searchDirectMatchedVulnerabilitiesByKBComponentId">
-      <wsdl:input name="searchDirectMatchedVulnerabilitiesByKBComponentId" message="tns:searchDirectMatchedVulnerabilitiesByKBComponentId">
-    </wsdl:input>
-      <wsdl:output name="searchDirectMatchedVulnerabilitiesByKBComponentIdResponse" message="tns:searchDirectMatchedVulnerabilitiesByKBComponentIdResponse">
-    </wsdl:output>
-      <wsdl:fault name="SdkFault" message="tns:SdkFault">
-    </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getCatalogKbComponents">
-      <wsdl:input name="getCatalogKbComponents" message="tns:getCatalogKbComponents">
-    </wsdl:input>
-      <wsdl:output name="getCatalogKbComponentsResponse" message="tns:getCatalogKbComponentsResponse">
+      <wsdl:output name="resolveExternalIdToCatalogComponentResponse" message="tns:resolveExternalIdToCatalogComponentResponse">
     </wsdl:output>
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="VulnerabilityApiServiceSoapBinding" type="tns:VulnerabilityApi">
+  <wsdl:binding name="IntegrationApiServiceSoapBinding" type="tns:IntegrationApi">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="searchDirectMatchedVulnerabilitiesByCatalogComponent">
+    <wsdl:operation name="getLicenseCodeSharingRequirement">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="searchDirectMatchedVulnerabilitiesByCatalogComponent">
+      <wsdl:input name="getLicenseCodeSharingRequirement">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="searchDirectMatchedVulnerabilitiesByCatalogComponentResponse">
+      <wsdl:output name="getLicenseCodeSharingRequirementResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">
         <soap:fault name="SdkFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="searchVulnerabilitiesByCatalog">
+    <wsdl:operation name="resolveExternalIdToCatalogComponent">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="searchVulnerabilitiesByCatalog">
+      <wsdl:input name="resolveExternalIdToCatalogComponent">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="searchVulnerabilitiesByCatalogResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SdkFault">
-        <soap:fault name="SdkFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseId">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseId">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="searchDirectMatchedVulnerabilitiesByKBComponentReleaseIdResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SdkFault">
-        <soap:fault name="SdkFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getVulnerability">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="getVulnerability">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="getVulnerabilityResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SdkFault">
-        <soap:fault name="SdkFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getVulnerabilitiesByDate">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="getVulnerabilitiesByDate">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="getVulnerabilitiesByDateResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SdkFault">
-        <soap:fault name="SdkFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="searchVulnerabilitiesByKBComponentRelease">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="searchVulnerabilitiesByKBComponentRelease">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="searchVulnerabilitiesByKBComponentReleaseResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SdkFault">
-        <soap:fault name="SdkFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="searchVulnerabilities">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="searchVulnerabilities">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="searchVulnerabilitiesResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SdkFault">
-        <soap:fault name="SdkFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="searchDirectMatchedVulnerabilitiesByKBComponentId">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="searchDirectMatchedVulnerabilitiesByKBComponentId">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="searchDirectMatchedVulnerabilitiesByKBComponentIdResponse">
-        <soap:body use="literal"/>
-      </wsdl:output>
-      <wsdl:fault name="SdkFault">
-        <soap:fault name="SdkFault" use="literal"/>
-      </wsdl:fault>
-    </wsdl:operation>
-    <wsdl:operation name="getCatalogKbComponents">
-      <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="getCatalogKbComponents">
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output name="getCatalogKbComponentsResponse">
+      <wsdl:output name="resolveExternalIdToCatalogComponentResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">
@@ -1071,9 +726,9 @@
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="VulnerabilityApiService">
-    <wsdl:port name="VulnerabilityApiPort" binding="tns:VulnerabilityApiServiceSoapBinding">
-      <soap:address location="http://localhost:9090/VulnerabilityApiPort"/>
+  <wsdl:service name="IntegrationApiService">
+    <wsdl:port name="IntegrationApiPort" binding="tns:IntegrationApiServiceSoapBinding">
+      <soap:address location="http://localhost:9090/IntegrationApiPort"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

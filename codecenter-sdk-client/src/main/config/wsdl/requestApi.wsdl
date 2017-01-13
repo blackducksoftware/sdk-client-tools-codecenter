@@ -1029,6 +1029,7 @@
       <xs:enumeration value="ATTRIBUTE_NAME_FOUND_WITH_NULL"/>
       <xs:enumeration value="ATTRIBUTE_TYPE_FOUND_WITH_NULL"/>
       <xs:enumeration value="VULNERABILITY_STATUS_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_BEAN_FOUND_UPDATE"/>
       <xs:enumeration value="VULNERABILITY_STATUS_NAME_FOUND_NULL"/>
       <xs:enumeration value="NO_VULNERABILITY_STATUS_ID_FOUND"/>
       <xs:enumeration value="NO_VULNERABILITY_ID_FOUND"/>
@@ -1229,6 +1230,9 @@
       <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_FUTURE"/>
       <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_DIFFERENCE"/>
       <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_INVALID"/>
+      <xs:enumeration value="REPORT_VALIDATION_SEARCH_AUDIT_REPORT_FILTER_AUDITLOGID_NULL"/>
+      <xs:enumeration value="REPORT_VALIDATION_SEARCH_AUDIT_REPORT_FILTER_AUDITLOGID_INVALID"/>
+      <xs:enumeration value="REPORT_VALIDATION_SEARCH_AUDIT_LOG_FILTER_NULL"/>
       <xs:enumeration value="STARTDATE_CANNOT_BE_GREATER_THAN_ENDDATE"/>
       <xs:enumeration value="VALIDATION_WORKFLOW_LATEST_NOTEXIST"/>
       <xs:enumeration value="REQUEST_VULNE_UPDATE_NULL"/>
