@@ -435,6 +435,9 @@
       <xs:enumeration value="OBLIGATION_ID_CANNOT_NULL"/>
       <xs:enumeration value="NO_OBLIGATION_LABEL_FOUND"/>
       <xs:enumeration value="MULTIPLE_OBLIGATION_LABEL_FOUND"/>
+      <xs:enumeration value="BOARD_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="NO_NULL_BOARD_NAME"/>
+      <xs:enumeration value="BOARD_ALREADY_PRESENT"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>
