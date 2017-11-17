@@ -1,48 +1,66 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="WorkflowApiService" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:workflowApi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:workflowApi" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
+<wsdl:definitions name="IntegrationApiService" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/">
   <wsdl:types>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:workflow.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:workflowApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:workflowApi" version="1.0">
-<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:workflow.data"/>
-<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data"/>
-<xs:element name="getAllWorkflows" type="tns:getAllWorkflows"/>
-<xs:element name="getAllWorkflowsResponse" type="tns:getAllWorkflowsResponse"/>
-<xs:element name="getWorkflow" type="tns:getWorkflow"/>
-<xs:element name="getWorkflowResponse" type="tns:getWorkflowResponse"/>
-<xs:complexType name="getAllWorkflows">
-    <xs:sequence/>
-  </xs:complexType>
-<xs:complexType name="getAllWorkflowsResponse">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:request="urn:codecenter.blackducksoftware.com:sdk:v7.0:request.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" version="1.0">
+<xs:complexType name="vulnerabilityInfo">
     <xs:sequence>
-      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:workflowBean"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getWorkflow">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="arg0" type="ns2:workflowNameOrIdToken"/>
-    </xs:sequence>
-  </xs:complexType>
-<xs:complexType name="getWorkflowResponse">
-    <xs:sequence>
-      <xs:element minOccurs="0" name="return" type="ns1:workflowBean"/>
+      <xs:element name="highPriorityCount" type="xs:int"/>
+      <xs:element name="lowPriorityCount" type="xs:int"/>
+      <xs:element name="mediumPriorityCount" type="xs:int"/>
     </xs:sequence>
   </xs:complexType>
 </xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:workflow.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:workflow.data" version="1.0">
-<xs:complexType name="workflowBean">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:integration.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns4="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:ns5="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integrationApi" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integration.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data"/>
+<xs:element name="getLicenseCodeSharingRequirement" type="tns:getLicenseCodeSharingRequirement"/>
+<xs:element name="getLicenseCodeSharingRequirementResponse" type="tns:getLicenseCodeSharingRequirementResponse"/>
+<xs:element name="resolveExternalIdToCatalogComponent" type="tns:resolveExternalIdToCatalogComponent"/>
+<xs:element name="resolveExternalIdToCatalogComponentResponse" type="tns:resolveExternalIdToCatalogComponentResponse"/>
+<xs:complexType name="getLicenseCodeSharingRequirement">
     <xs:sequence>
-      <xs:element minOccurs="0" name="description" type="xs:string"/>
-      <xs:element name="global" type="xs:boolean"/>
-      <xs:element minOccurs="0" name="latestType" type="tns:workflowLatestTypeEnum"/>
-      <xs:element minOccurs="0" name="workflowId" type="xs:string"/>
-      <xs:element minOccurs="0" name="workflowName" type="xs:string"/>
+      <xs:element minOccurs="0" name="arg0" type="ns1:licenseNameOrIdToken"/>
     </xs:sequence>
   </xs:complexType>
-<xs:simpleType name="workflowLatestTypeEnum">
+<xs:complexType name="getLicenseCodeSharingRequirementResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns2:licenseCodeSharingRequirement"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resolveExternalIdToCatalogComponent">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="externalNamespaceKey" type="xs:string"/>
+      <xs:element minOccurs="0" name="resolutionRequest" type="ns2:externalIdResolutionRequest"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="resolveExternalIdToCatalogComponentResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:component"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:integration.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:complexType name="externalIdResolutionRequest">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="ns2:attributeValue"/>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="externalId" type="xs:string"/>
+      <xs:element minOccurs="0" name="externalIdComponentPart" type="xs:string"/>
+      <xs:element minOccurs="0" name="proposedComponentName" type="xs:string"/>
+      <xs:element minOccurs="0" name="proposedVersionName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:simpleType name="licenseCodeSharingRequirement">
     <xs:restriction base="xs:string">
-      <xs:enumeration value="RESTART_DELETE_ALL"/>
-      <xs:enumeration value="RESTART"/>
-      <xs:enumeration value="RESTART_DELETE_DECISIONS"/>
-      <xs:enumeration value="DONOT_RESTART"/>
+      <xs:enumeration value="RECIPROCAL"/>
+      <xs:enumeration value="WEAK_RECIPROCAL"/>
+      <xs:enumeration value="PERMISSIVE"/>
+      <xs:enumeration value="UNKNOWN"/>
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
@@ -442,83 +460,268 @@
   </xs:simpleType>
   <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>
 </xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" version="1.0">
-<xs:complexType abstract="true" name="workflowNameOrIdToken">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:complexType name="attributeValue">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="attributeId" type="ns1:attributeNameOrIdToken"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="values" nillable="true" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="nameDescription">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="description" type="xs:string"/>
+      <xs:element minOccurs="0" name="name" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:simpleType name="approvalStatusEnum">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="ALL"/>
+      <xs:enumeration value="PENDING"/>
+      <xs:enumeration value="CANCELED"/>
+      <xs:enumeration value="APPROVED"/>
+      <xs:enumeration value="DEFERRED"/>
+      <xs:enumeration value="REJECTED"/>
+      <xs:enumeration value="APPEALED"/>
+      <xs:enumeration value="NOTSUBMITTED"/>
+      <xs:enumeration value="MOREINFO"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:application="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" xmlns:approval="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" version="1.0">
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:vulnerability.data"/>
+<xs:complexType abstract="true" name="licenseNameOrIdToken">
     <xs:sequence/>
   </xs:complexType>
-<xs:complexType name="workflowIdToken">
+<xs:complexType name="licenseNameToken">
     <xs:complexContent>
-      <xs:extension base="tns:workflowNameOrIdToken">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="id" type="xs:string"/>
-        </xs:sequence>
-      </xs:extension>
-    </xs:complexContent>
-  </xs:complexType>
-<xs:complexType name="workflowNameToken">
-    <xs:complexContent>
-      <xs:extension base="tns:workflowNameOrIdToken">
+      <xs:extension base="tns:licenseNameOrIdToken">
         <xs:sequence>
           <xs:element minOccurs="0" name="name" type="xs:string"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+<xs:complexType name="licenseIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:licenseNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="component">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element name="applicationComponent" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="applicationId" type="application:applicationIdToken"/>
+          <xs:element minOccurs="0" name="approvalStatus" type="common:approvalStatusEnum"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="attributeValues" nillable="true" type="common:attributeValue"/>
+          <xs:element minOccurs="0" name="categories" type="xs:string"/>
+          <xs:element minOccurs="0" name="dbEnvironments" type="xs:string"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="declaredLicenses" nillable="true" type="tns:licenseSummary"/>
+          <xs:element name="deprecated" type="xs:boolean"/>
+          <xs:element minOccurs="0" name="homepage" type="xs:string"/>
+          <xs:element minOccurs="0" name="id" type="tns:componentIdToken"/>
+          <xs:element minOccurs="0" name="intendedAudiences" type="xs:string"/>
+          <xs:element minOccurs="0" name="kbComponentId" type="tns:kbComponentIdToken"/>
+          <xs:element minOccurs="0" name="kbReleaseId" type="tns:kbComponentReleaseIdToken"/>
+          <xs:element minOccurs="0" name="nameVersion" type="tns:componentNameVersionToken"/>
+          <xs:element minOccurs="0" name="numberContributors" type="xs:int"/>
+          <xs:element minOccurs="0" name="operatingSystems" type="xs:string"/>
+          <xs:element minOccurs="0" name="programmingLanguages" type="xs:string"/>
+          <xs:element minOccurs="0" name="projectMaturity" type="xs:string"/>
+          <xs:element minOccurs="0" name="releaseDate" type="xs:dateTime"/>
+          <xs:element minOccurs="0" name="userInterfaces" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+          <xs:element minOccurs="0" name="vulnerabilityInfo" type="ns1:vulnerabilityInfo"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="licenseSummary">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="id" type="tns:licenseIdToken"/>
+      <xs:element minOccurs="0" name="nameToken" type="tns:licenseNameToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="componentIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:componentNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="componentNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="componentNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:componentNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponentIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="kbComponentNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="kbComponentNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="kbComponentReleaseIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="kbComponentReleaseNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="kbComponentReleaseNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:kbComponentReleaseNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" version="1.0">
+<xs:complexType abstract="true" name="attributeNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="attributeNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="attributeIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:attributeNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:administration="urn:codecenter.blackducksoftware.com:sdk:v7.0:administration.data" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:cola="urn:codecenter.blackducksoftware.com:sdk:v7.0:cola.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:application.data" version="1.0">
+<xs:complexType name="applicationIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:applicationNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType abstract="true" name="applicationNameVersionOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="applicationNameVersionToken">
+    <xs:complexContent>
+      <xs:extension base="tns:applicationNameVersionOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+          <xs:element minOccurs="0" name="version" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 </xs:schema>
   </wsdl:types>
-  <wsdl:message name="getWorkflowResponse">
-    <wsdl:part name="parameters" element="tns:getWorkflowResponse">
+  <wsdl:message name="resolveExternalIdToCatalogComponent">
+    <wsdl:part name="parameters" element="tns:resolveExternalIdToCatalogComponent">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="getAllWorkflows">
-    <wsdl:part name="parameters" element="tns:getAllWorkflows">
+  <wsdl:message name="getLicenseCodeSharingRequirementResponse">
+    <wsdl:part name="parameters" element="tns:getLicenseCodeSharingRequirementResponse">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="getWorkflow">
-    <wsdl:part name="parameters" element="tns:getWorkflow">
+  <wsdl:message name="resolveExternalIdToCatalogComponentResponse">
+    <wsdl:part name="parameters" element="tns:resolveExternalIdToCatalogComponentResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getLicenseCodeSharingRequirement">
+    <wsdl:part name="parameters" element="tns:getLicenseCodeSharingRequirement">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="SdkFault">
     <wsdl:part name="SdkFault" element="ns1:SdkFault">
     </wsdl:part>
   </wsdl:message>
-  <wsdl:message name="getAllWorkflowsResponse">
-    <wsdl:part name="parameters" element="tns:getAllWorkflowsResponse">
-    </wsdl:part>
-  </wsdl:message>
-  <wsdl:portType name="WorkflowApi">
-    <wsdl:operation name="getAllWorkflows">
-      <wsdl:input name="getAllWorkflows" message="tns:getAllWorkflows">
+  <wsdl:portType name="IntegrationApi">
+    <wsdl:operation name="getLicenseCodeSharingRequirement">
+      <wsdl:input name="getLicenseCodeSharingRequirement" message="tns:getLicenseCodeSharingRequirement">
     </wsdl:input>
-      <wsdl:output name="getAllWorkflowsResponse" message="tns:getAllWorkflowsResponse">
+      <wsdl:output name="getLicenseCodeSharingRequirementResponse" message="tns:getLicenseCodeSharingRequirementResponse">
     </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="getWorkflow">
-      <wsdl:input name="getWorkflow" message="tns:getWorkflow">
+    <wsdl:operation name="resolveExternalIdToCatalogComponent">
+      <wsdl:input name="resolveExternalIdToCatalogComponent" message="tns:resolveExternalIdToCatalogComponent">
     </wsdl:input>
-      <wsdl:output name="getWorkflowResponse" message="tns:getWorkflowResponse">
+      <wsdl:output name="resolveExternalIdToCatalogComponentResponse" message="tns:resolveExternalIdToCatalogComponentResponse">
     </wsdl:output>
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
     </wsdl:operation>
   </wsdl:portType>
-  <wsdl:binding name="WorkflowApiServiceSoapBinding" type="tns:WorkflowApi">
+  <wsdl:binding name="IntegrationApiServiceSoapBinding" type="tns:IntegrationApi">
     <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="getAllWorkflows">
+    <wsdl:operation name="getLicenseCodeSharingRequirement">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="getAllWorkflows">
+      <wsdl:input name="getLicenseCodeSharingRequirement">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="getAllWorkflowsResponse">
+      <wsdl:output name="getLicenseCodeSharingRequirementResponse">
         <soap:body use="literal"/>
       </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
     </wsdl:operation>
-    <wsdl:operation name="getWorkflow">
+    <wsdl:operation name="resolveExternalIdToCatalogComponent">
       <soap:operation soapAction="" style="document"/>
-      <wsdl:input name="getWorkflow">
+      <wsdl:input name="resolveExternalIdToCatalogComponent">
         <soap:body use="literal"/>
       </wsdl:input>
-      <wsdl:output name="getWorkflowResponse">
+      <wsdl:output name="resolveExternalIdToCatalogComponentResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">
@@ -526,9 +729,9 @@
       </wsdl:fault>
     </wsdl:operation>
   </wsdl:binding>
-  <wsdl:service name="WorkflowApiService">
-    <wsdl:port name="WorkflowApiPort" binding="tns:WorkflowApiServiceSoapBinding">
-      <soap:address location="http://localhost:9090/WorkflowApiPort"/>
+  <wsdl:service name="IntegrationApiService">
+    <wsdl:port name="IntegrationApiPort" binding="tns:IntegrationApiServiceSoapBinding">
+      <soap:address location="http://localhost:9090/IntegrationApiPort"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

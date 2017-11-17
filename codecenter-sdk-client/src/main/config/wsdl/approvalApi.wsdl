@@ -60,6 +60,29 @@
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:fault="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data" version="1.0">
+<xs:complexType abstract="true" name="roleNameOrIdToken">
+    <xs:sequence/>
+  </xs:complexType>
+<xs:complexType name="roleNameToken">
+    <xs:complexContent>
+      <xs:extension base="tns:roleNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="name" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+<xs:complexType name="roleIdToken">
+    <xs:complexContent>
+      <xs:extension base="tns:roleNameOrIdToken">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="id" type="xs:string"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+</xs:schema>
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault" attributeFormDefault="unqualified" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:fault">
   <xs:element name="sdkFaultDetails" type="tns:sdkFaultDetails"/>
   <xs:complexType name="sdkFaultDetails">
@@ -213,6 +236,7 @@
       <xs:enumeration value="ATTRIBUTE_NAME_FOUND_WITH_NULL"/>
       <xs:enumeration value="ATTRIBUTE_TYPE_FOUND_WITH_NULL"/>
       <xs:enumeration value="VULNERABILITY_STATUS_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_BEAN_FOUND_UPDATE"/>
       <xs:enumeration value="VULNERABILITY_STATUS_NAME_FOUND_NULL"/>
       <xs:enumeration value="NO_VULNERABILITY_STATUS_ID_FOUND"/>
       <xs:enumeration value="NO_VULNERABILITY_ID_FOUND"/>
@@ -413,6 +437,9 @@
       <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_FUTURE"/>
       <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_DIFFERENCE"/>
       <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_INVALID"/>
+      <xs:enumeration value="REPORT_VALIDATION_SEARCH_AUDIT_REPORT_FILTER_AUDITLOGID_NULL"/>
+      <xs:enumeration value="REPORT_VALIDATION_SEARCH_AUDIT_REPORT_FILTER_AUDITLOGID_INVALID"/>
+      <xs:enumeration value="REPORT_VALIDATION_SEARCH_AUDIT_LOG_FILTER_NULL"/>
       <xs:enumeration value="STARTDATE_CANNOT_BE_GREATER_THAN_ENDDATE"/>
       <xs:enumeration value="VALIDATION_WORKFLOW_LATEST_NOTEXIST"/>
       <xs:enumeration value="REQUEST_VULNE_UPDATE_NULL"/>
@@ -445,6 +472,9 @@
       <xs:enumeration value="OBLIGATION_ID_CANNOT_NULL"/>
       <xs:enumeration value="NO_OBLIGATION_LABEL_FOUND"/>
       <xs:enumeration value="MULTIPLE_OBLIGATION_LABEL_FOUND"/>
+      <xs:enumeration value="BOARD_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="NO_NULL_BOARD_NAME"/>
+      <xs:enumeration value="BOARD_ALREADY_PRESENT"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>
@@ -515,10 +545,11 @@
     </xs:complexContent>
   </xs:complexType>
 </xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:approvalApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approvalApi" version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:ns3="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:ns4="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:approvalApi" elementFormDefault="unqualified" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approvalApi" version="1.0">
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data"/>
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data"/>
 <xs:element name="configureApproverRules" type="tns:configureApproverRules"/>
 <xs:element name="configureApproverRulesResponse" type="tns:configureApproverRulesResponse"/>
 <xs:element name="configureBoardRules" type="tns:configureBoardRules"/>
@@ -527,6 +558,8 @@
 <xs:element name="configureTaskAssigneeRuleResponse" type="tns:configureTaskAssigneeRuleResponse"/>
 <xs:element name="configureTaskGroupRule" type="tns:configureTaskGroupRule"/>
 <xs:element name="configureTaskGroupRuleResponse" type="tns:configureTaskGroupRuleResponse"/>
+<xs:element name="createApprovalBoard" type="tns:createApprovalBoard"/>
+<xs:element name="createApprovalBoardResponse" type="tns:createApprovalBoardResponse"/>
 <xs:element name="createWorkflowWebResourceDefinition" type="tns:createWorkflowWebResourceDefinition"/>
 <xs:element name="createWorkflowWebResourceDefinitionResponse" type="tns:createWorkflowWebResourceDefinitionResponse"/>
 <xs:element name="deleteApproverRules" type="tns:deleteApproverRules"/>
@@ -545,8 +578,10 @@
 <xs:element name="getApproverRulesResponse" type="tns:getApproverRulesResponse"/>
 <xs:element name="getApprovers" type="tns:getApprovers"/>
 <xs:element name="getApproversResponse" type="tns:getApproversResponse"/>
+<xs:element name="getBoard" type="tns:getBoard"/>
 <xs:element name="getBoardMembers" type="tns:getBoardMembers"/>
 <xs:element name="getBoardMembersResponse" type="tns:getBoardMembersResponse"/>
+<xs:element name="getBoardResponse" type="tns:getBoardResponse"/>
 <xs:element name="getBoardRules" type="tns:getBoardRules"/>
 <xs:element name="getBoardRulesResponse" type="tns:getBoardRulesResponse"/>
 <xs:element name="getTask" type="tns:getTask"/>
@@ -663,8 +698,8 @@
   </xs:complexType>
 <xs:complexType name="getBoardMembers">
     <xs:sequence>
-      <xs:element minOccurs="0" name="arg0" type="ns1:boardNameOrIdToken"/>
-      <xs:element minOccurs="0" name="arg1" type="ns3:userPageFilter"/>
+      <xs:element minOccurs="0" name="boardId" type="ns1:boardNameOrIdToken"/>
+      <xs:element minOccurs="0" name="pageFilter" type="ns3:userPageFilter"/>
     </xs:sequence>
   </xs:complexType>
 <xs:complexType name="getBoardMembersResponse">
@@ -730,6 +765,16 @@
 <xs:complexType name="deleteTaskGroupRuleResponse">
     <xs:sequence/>
   </xs:complexType>
+<xs:complexType name="createApprovalBoard">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="boardCreate" type="ns1:boardCreate"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="createApprovalBoardResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:boardIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
 <xs:complexType name="configureTaskAssigneeRule">
     <xs:sequence>
       <xs:element minOccurs="0" name="taskAssigneeRule" type="ns1:taskAssigneeRule"/>
@@ -792,6 +837,16 @@
 <xs:complexType name="deleteApproverRulesResponse">
     <xs:sequence/>
   </xs:complexType>
+<xs:complexType name="getBoard">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="boardId" type="ns1:boardNameOrIdToken"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="getBoardResponse">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="return" type="ns1:board"/>
+    </xs:sequence>
+  </xs:complexType>
 <xs:complexType name="getApproval">
     <xs:sequence>
       <xs:element minOccurs="0" name="approvalId" type="ns1:approvalNameOrIdToken"/>
@@ -803,10 +858,11 @@
     </xs:sequence>
   </xs:complexType>
 </xs:schema>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" version="1.0">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:attribute="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data" xmlns:common="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data" xmlns:ns1="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data" xmlns:ns2="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data" xmlns:tns="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" targetNamespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:approval.data" version="1.0">
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:user.data"/>
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:attribute.data"/>
 <xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:common.data"/>
+<xs:import namespace="urn:codecenter.blackducksoftware.com:sdk:v7.0:role.data"/>
 <xs:complexType name="approvalApproverRule">
     <xs:sequence>
       <xs:element minOccurs="0" name="approvalId" type="tns:approvalNameOrIdToken"/>
@@ -1136,6 +1192,17 @@
       <xs:element minOccurs="0" name="taskGroupId" type="tns:taskGroupNameOrIdToken"/>
     </xs:sequence>
   </xs:complexType>
+<xs:complexType name="boardCreate">
+    <xs:complexContent>
+      <xs:extension base="common:nameDescription">
+        <xs:sequence>
+          <xs:element name="receiveVulnerabilityAlerts" type="xs:boolean"/>
+          <xs:element maxOccurs="unbounded" minOccurs="0" name="roleNameOrIdTokens" nillable="true" type="ns2:roleNameOrIdToken"/>
+          <xs:element minOccurs="0" name="userNameOrIdToken" type="ns1:userNameOrIdToken"/>
+        </xs:sequence>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
 <xs:complexType name="approvalPageFilter">
     <xs:complexContent>
       <xs:extension base="common:pageFilter">
@@ -1307,6 +1374,10 @@
     <wsdl:part name="SdkFault" element="ns1:SdkFault">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="getBoardResponse">
+    <wsdl:part name="parameters" element="tns:getBoardResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getBoardMembersResponse">
     <wsdl:part name="parameters" element="tns:getBoardMembersResponse">
     </wsdl:part>
@@ -1323,6 +1394,10 @@
     <wsdl:part name="parameters" element="tns:getTaskResponse">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="createApprovalBoardResponse">
+    <wsdl:part name="parameters" element="tns:createApprovalBoardResponse">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="configureTaskGroupRule">
     <wsdl:part name="parameters" element="tns:configureTaskGroupRule">
     </wsdl:part>
@@ -1337,6 +1412,10 @@
   </wsdl:message>
   <wsdl:message name="deleteTaskGroupRuleResponse">
     <wsdl:part name="parameters" element="tns:deleteTaskGroupRuleResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="getBoard">
+    <wsdl:part name="parameters" element="tns:getBoard">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="configureBoardRulesResponse">
@@ -1417,6 +1496,10 @@
   </wsdl:message>
   <wsdl:message name="getBoardRules">
     <wsdl:part name="parameters" element="tns:getBoardRules">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="createApprovalBoard">
+    <wsdl:part name="parameters" element="tns:createApprovalBoard">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getTaskAssigneeRuleResponse">
@@ -1600,6 +1683,14 @@
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="createApprovalBoard">
+      <wsdl:input name="createApprovalBoard" message="tns:createApprovalBoard">
+    </wsdl:input>
+      <wsdl:output name="createApprovalBoardResponse" message="tns:createApprovalBoardResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="configureTaskAssigneeRule">
       <wsdl:input name="configureTaskAssigneeRule" message="tns:configureTaskAssigneeRule">
     </wsdl:input>
@@ -1652,6 +1743,14 @@
       <wsdl:input name="deleteApproverRules" message="tns:deleteApproverRules">
     </wsdl:input>
       <wsdl:output name="deleteApproverRulesResponse" message="tns:deleteApproverRulesResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getBoard">
+      <wsdl:input name="getBoard" message="tns:getBoard">
+    </wsdl:input>
+      <wsdl:output name="getBoardResponse" message="tns:getBoardResponse">
     </wsdl:output>
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
@@ -1871,6 +1970,18 @@
         <soap:fault name="SdkFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="createApprovalBoard">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="createApprovalBoard">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="createApprovalBoardResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="configureTaskAssigneeRule">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input name="configureTaskAssigneeRule">
@@ -1949,6 +2060,18 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="deleteApproverRulesResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getBoard">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="getBoard">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getBoardResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">

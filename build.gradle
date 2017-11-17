@@ -16,6 +16,8 @@ subprojects {
 	sourceCompatibility = 1.7
 	targetCompatibility = 1.7
 	
+	task listSpecificDependency(type: DependencyInsightReportTask) << {}
+	
 	gradle.projectsEvaluated {
         tasks.withType(JavaCompile) {
             options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
@@ -25,16 +27,20 @@ subprojects {
 	ext.wsdlUriVersion = codeCenterWsdlVersion
 	
 	apply from: "$projectDir/../dependencies/core.gradle"
+	
+	configurations.all{
+		resolutionStrategy{
+			force "xml-resolver:xml-resolver:$xmlresolverVersion"
+			force "org.apache.velocity:velocity:$velocityVersion"
+			force "commons-collections:commons-collections:$commonsCollectionVersion"
+		}
+	}
 
 	repositories {
 		maven { url "http://jcenter.bintray.com" }
 		maven { url "https://maven.repository.redhat.com/ga" }
 	}
-	dependencies {
-    		runtime "xml-resolver:xml-resolver:1.2"
-		runtime "xml-resolver:xml-resolver:$xmlresolverVersion"	
-	}
-
+	
 	task sourcesJar(type:Jar){
 		from sourceSets.main.allSource
 		classifier = 'sources'

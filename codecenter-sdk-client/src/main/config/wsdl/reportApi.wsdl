@@ -42,6 +42,8 @@
 <xs:element name="getRiskProfileSummaryResponse" type="tns:getRiskProfileSummaryResponse"/>
 <xs:element name="getStandardReportParamsValue" type="tns:getStandardReportParamsValue"/>
 <xs:element name="getStandardReportParamsValueResponse" type="tns:getStandardReportParamsValueResponse"/>
+<xs:element name="searchAuditLogEntries" type="tns:searchAuditLogEntries"/>
+<xs:element name="searchAuditLogEntriesResponse" type="tns:searchAuditLogEntriesResponse"/>
 <xs:complexType name="getStandardReportParamsValue">
     <xs:sequence>
       <xs:element minOccurs="0" name="arg0" type="xs:string"/>
@@ -87,6 +89,16 @@
 <xs:complexType name="getApplicationReportResponse">
     <xs:sequence>
       <xs:element minOccurs="0" name="return" type="xs:base64Binary"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchAuditLogEntries">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="auditSearchFilter" type="ns1:auditSearchFilter"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="searchAuditLogEntriesResponse">
+    <xs:sequence>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="return" type="ns1:auditLogBean"/>
     </xs:sequence>
   </xs:complexType>
 <xs:complexType name="getRiskProfileSummary">
@@ -143,6 +155,37 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="key" type="xs:string"/>
       <xs:element minOccurs="0" name="value" type="xs:anyType"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="auditSearchFilter">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="fromAuditLogID" type="xs:long"/>
+      <xs:element minOccurs="0" name="fromDate" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="toAuditLogID" type="xs:long"/>
+      <xs:element minOccurs="0" name="toDate" type="xs:dateTime"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="auditLogBean">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="associatedEntityId" type="xs:string"/>
+      <xs:element minOccurs="0" name="associatedEntityType" type="xs:string"/>
+      <xs:element maxOccurs="unbounded" minOccurs="0" name="auditChangesBean" nillable="true" type="tns:auditChangesBean"/>
+      <xs:element minOccurs="0" name="auditTime" type="xs:dateTime"/>
+      <xs:element minOccurs="0" name="auditType" type="xs:string"/>
+      <xs:element minOccurs="0" name="entityId" type="xs:string"/>
+      <xs:element minOccurs="0" name="entityLabel" type="xs:string"/>
+      <xs:element minOccurs="0" name="entityType" type="xs:string"/>
+      <xs:element minOccurs="0" name="id" type="xs:long"/>
+      <xs:element minOccurs="0" name="userName" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
+<xs:complexType name="auditChangesBean">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="filedName" type="xs:string"/>
+      <xs:element minOccurs="0" name="postId" type="xs:string"/>
+      <xs:element minOccurs="0" name="postValue" type="xs:string"/>
+      <xs:element minOccurs="0" name="preId" type="xs:string"/>
+      <xs:element minOccurs="0" name="prevValue" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
 <xs:complexType name="riskProfileOptions">
@@ -372,6 +415,7 @@
       <xs:enumeration value="ATTRIBUTE_NAME_FOUND_WITH_NULL"/>
       <xs:enumeration value="ATTRIBUTE_TYPE_FOUND_WITH_NULL"/>
       <xs:enumeration value="VULNERABILITY_STATUS_BEAN_FOUND_NULL"/>
+      <xs:enumeration value="VULNERABILITY_STATUS_BEAN_FOUND_UPDATE"/>
       <xs:enumeration value="VULNERABILITY_STATUS_NAME_FOUND_NULL"/>
       <xs:enumeration value="NO_VULNERABILITY_STATUS_ID_FOUND"/>
       <xs:enumeration value="NO_VULNERABILITY_ID_FOUND"/>
@@ -572,6 +616,9 @@
       <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_FUTURE"/>
       <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_DIFFERENCE"/>
       <xs:enumeration value="REPORT_VALIDATION_AUDIT_REPORT_FILTER_DATE_INVALID"/>
+      <xs:enumeration value="REPORT_VALIDATION_SEARCH_AUDIT_REPORT_FILTER_AUDITLOGID_NULL"/>
+      <xs:enumeration value="REPORT_VALIDATION_SEARCH_AUDIT_REPORT_FILTER_AUDITLOGID_INVALID"/>
+      <xs:enumeration value="REPORT_VALIDATION_SEARCH_AUDIT_LOG_FILTER_NULL"/>
       <xs:enumeration value="STARTDATE_CANNOT_BE_GREATER_THAN_ENDDATE"/>
       <xs:enumeration value="VALIDATION_WORKFLOW_LATEST_NOTEXIST"/>
       <xs:enumeration value="REQUEST_VULNE_UPDATE_NULL"/>
@@ -604,6 +651,9 @@
       <xs:enumeration value="OBLIGATION_ID_CANNOT_NULL"/>
       <xs:enumeration value="NO_OBLIGATION_LABEL_FOUND"/>
       <xs:enumeration value="MULTIPLE_OBLIGATION_LABEL_FOUND"/>
+      <xs:enumeration value="BOARD_CREATE_BEAN_NULL"/>
+      <xs:enumeration value="NO_NULL_BOARD_NAME"/>
+      <xs:enumeration value="BOARD_ALREADY_PRESENT"/>
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="SdkFault" nillable="true" type="tns:sdkFaultDetails"/>
@@ -705,6 +755,10 @@
     <wsdl:part name="parameters" element="tns:getApplicationReport">
     </wsdl:part>
   </wsdl:message>
+  <wsdl:message name="searchAuditLogEntries">
+    <wsdl:part name="parameters" element="tns:searchAuditLogEntries">
+    </wsdl:part>
+  </wsdl:message>
   <wsdl:message name="getRiskProfileSummaryResponse">
     <wsdl:part name="parameters" element="tns:getRiskProfileSummaryResponse">
     </wsdl:part>
@@ -731,6 +785,10 @@
   </wsdl:message>
   <wsdl:message name="getReportResponse">
     <wsdl:part name="parameters" element="tns:getReportResponse">
+    </wsdl:part>
+  </wsdl:message>
+  <wsdl:message name="searchAuditLogEntriesResponse">
+    <wsdl:part name="parameters" element="tns:searchAuditLogEntriesResponse">
     </wsdl:part>
   </wsdl:message>
   <wsdl:message name="getRiskProfileSummary">
@@ -768,6 +826,14 @@
       <wsdl:input name="getApplicationReport" message="tns:getApplicationReport">
     </wsdl:input>
       <wsdl:output name="getApplicationReportResponse" message="tns:getApplicationReportResponse">
+    </wsdl:output>
+      <wsdl:fault name="SdkFault" message="tns:SdkFault">
+    </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchAuditLogEntries">
+      <wsdl:input name="searchAuditLogEntries" message="tns:searchAuditLogEntries">
+    </wsdl:input>
+      <wsdl:output name="searchAuditLogEntriesResponse" message="tns:searchAuditLogEntriesResponse">
     </wsdl:output>
       <wsdl:fault name="SdkFault" message="tns:SdkFault">
     </wsdl:fault>
@@ -830,6 +896,18 @@
         <soap:body use="literal"/>
       </wsdl:input>
       <wsdl:output name="getApplicationReportResponse">
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SdkFault">
+        <soap:fault name="SdkFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchAuditLogEntries">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input name="searchAuditLogEntries">
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchAuditLogEntriesResponse">
         <soap:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SdkFault">

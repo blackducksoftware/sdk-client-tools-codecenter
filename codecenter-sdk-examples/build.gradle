@@ -13,6 +13,6 @@ sourceSets{
 dependencies {
 	compile project(':sdk-client-tools-codecenter:codecenter-sdk-client')
 	compile project(':sdk-client-tools-codecenter:codecenter-sdk-utilities')
-	compile group: 'org.springframework', name: 'spring-core', version: '4.0.9.RELEASE'
-	compile group: 'args4j', name: 'args4j', version: '2.33'
+	compile group: 'org.springframework', name: 'spring-core', version: springVersion
+	compile group: 'args4j', name: 'args4j', version: args4jVersion
 }
