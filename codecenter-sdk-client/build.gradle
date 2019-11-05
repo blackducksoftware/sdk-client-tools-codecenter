@@ -16,6 +16,7 @@ sourceSets {
 dependencies {
     // The generated code references the CXF XJC runtime for date/time mapping
     compile group: 'org.apache.cxf.xjc-utils', name: 'cxf-xjc-runtime', version: cxfXjcRuntimeVersion
+    compile group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: bouncyCastle
 }
 
 // WSDL to Java ====================================================================================
